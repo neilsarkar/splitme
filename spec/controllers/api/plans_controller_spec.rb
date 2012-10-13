@@ -36,4 +36,28 @@ describe Api::PlansController do
       plan_json["total_price"].should == "$400.00"
     end
   end
+
+  describe "#show", pending: true do
+    it "shows an individual plan" do
+      plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
+      get :show, token: @user.token, id: plan.id
+
+      response.should be_success
+      plan_json = json["response"]
+      plan_json["title"].should == plan.title
+      plan_json["description"].should == plan.description
+      plan_json["total_price"].should == "$400.00"
+    end
+
+    it "returns 404 if the user does not own the plan" do
+      plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
+      get :show, token: @user.token, id: plan.id
+
+      response.should be_success
+      plan_json = json["response"]
+      plan_json["title"].should == plan.title
+      plan_json["description"].should == plan.description
+      plan_json["total_price"].should == "$400.00"
+    end
+  end
 end

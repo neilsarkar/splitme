@@ -4,7 +4,7 @@ class Plan < ActiveRecord::Base
 
   validates_presence_of :title
 
-  validate :price_given
+  validate :price_exclusive_or
 
   def as_json(*)
     {
@@ -44,9 +44,11 @@ class Plan < ActiveRecord::Base
     (price.to_s.gsub(/[^\d.]/,'').to_f * 100).to_i
   end
 
-  def price_given
+  def price_exclusive_or
     if total_price.blank? && price_per_person.blank?
       @errors[:price] << "You must provide either a total price or a per person price"
+    elsif total_price.present? && price_per_person.present?
+      @errors[:price] << "You cannot specify both a total price and a per person price"
     end
   end
 end

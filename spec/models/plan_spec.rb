@@ -20,9 +20,18 @@ describe Plan do
       plan.price_per_person = 1000
       plan.should be_valid
     end
+
+    it "does not allow both total price and price per person" do
+      plan = FactoryGirl.build(:plan, total_price: 10000, price_per_person: 10000)
+      plan.should_not be_valid
+      plan.should have_at_least(1).error_on(:price)
+
+      plan.price_per_person = nil
+      plan.should be_valid
+    end
   end
 
-  describe "price manipulation" do
+  describe "price calculations" do
     describe "#total_price_string" do
       it "presents a dollar representation" do
         plan = Plan.new(total_price: 10000)

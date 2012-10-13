@@ -13,4 +13,5 @@ class Api::PlansController < Api::BaseController
       render_error(400, plan.errors)
     end
   end
+
 end

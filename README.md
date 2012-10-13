@@ -68,6 +68,11 @@
 <pre>
   {
     :id
+    :title
+    :description
+    :total_price
+    :price_per_person
+    :token
   }
 </pre>
 
@@ -78,10 +83,37 @@
 <pre>
   [
     {
+      :id
       :title
       :description
-      :total_price || :price_per_person
+      :total_price
+      :price_per_person
+      :token
     },
     ...
   ]
+</pre>
+
+## Show (PENDING)
+
+### Request: GET /plans/:id
+
+<pre>
+  {
+    :id
+    :title
+    :description
+    :total_price
+    :price_per_person
+    :token
+    participants: [
+      {
+        :name
+        :email
+        :phone_number
+        :joined_at
+      },
+      ...
+    ]
+  }
 </pre>
