@@ -34,4 +34,6 @@ Splitme::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  BALANCED_API_KEY = "233fba60121911e28f7a026ba7f8ec28"
 end

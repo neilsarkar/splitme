@@ -71,6 +71,5 @@ module Splitme
     config.assets.initialize_on_precompile = false
 
     config.filter_parameters += [:password, :bank_routing_number, :bank_account_number]
-
   end
 end
