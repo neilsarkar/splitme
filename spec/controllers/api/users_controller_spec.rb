@@ -23,7 +23,7 @@ describe Api::UsersController do
       post :create, json: { name: "Neil Sarkar" }
 
       response.should be_bad_request
-      json["meta"]["errors"].should == ["You're", "burnt"]
+      json["meta"]["errors"].should == ["You're and burnt"]
     end
   end
 end

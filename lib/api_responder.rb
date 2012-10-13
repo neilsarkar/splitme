@@ -25,7 +25,7 @@ module ApiResponder
     end
 
     def render_error(code, errors = nil)
-      errors = errors.full_messages if errors.respond_to?(:full_messages)
+      errors = errors.full_messages.to_sentence if errors.respond_to?(:full_messages)
       api_response = ApiResponse.new(nil, :code => code, :errors => errors)
       render :json => api_response, :status => code
     end
