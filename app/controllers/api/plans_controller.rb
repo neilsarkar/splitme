@@ -16,6 +16,6 @@ class Api::PlansController < Api::BaseController
 
   def show
     plan = current_user.plans.find(params[:id])
-    render_response(plan)
+    render_response(plan.as_json(participants: true))
   end
 end

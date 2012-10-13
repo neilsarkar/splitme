@@ -6,14 +6,16 @@ class Plan < ActiveRecord::Base
 
   validate :price_exclusive_or
 
-  def as_json(*)
-    {
+  def as_json(options = {})
+    json = {
       id: id,
       title: title,
       description: description,
       total_price: total_price_string,
       price_per_person: price_per_person_string
     }
+    json[:participants] = participants.as_json if options[:participants].present?
+    json
   end
 
   def total_price_string
@@ -30,6 +32,16 @@ class Plan < ActiveRecord::Base
 
   def price_per_person=(price)
     super(parse_price(price))
+  end
+
+  def participants
+    @participants ||= [
+      Participant.new(name: "Neil Sarkar", email: "neil@groupme.com", phone_number: "9173706969", card_type: "Visa"),
+      Participant.new(name: "Cam Hunt", email: "cam@groupme.com", phone_number: "5035506472", card_type: "Visa"),
+      Participant.new(name: "Pat Nakajima", email: "pat@groupme.com", phone_number: "2121231234", card_type: "MasterCard"),
+      Participant.new(name: "Joey Pfeifer", email: "joey@groupme.com", phone_number: "2121231235", card_type: "Discover"),
+      Participant.new(name: "Kevin David Crowe", email: "kevindavidcrowe@gmail.com", phone_number: "2121231255", card_type: "American Express")
+    ]
   end
 
   private

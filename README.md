@@ -96,7 +96,7 @@
   ]
 </pre>
 
-## Show (PENDING)
+## Show (PARTICIPANT DATA IS FAKE)
 
 ### Request: GET /plans/:id
 
