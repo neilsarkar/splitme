@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'balanced'
 gem 'bcrypt-ruby'
 gem 'jquery-rails'
 gem 'pg'

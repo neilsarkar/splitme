@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
                   :email,
                   :name,
                   :phone_number,
-                  :token
+                  :token,
+                  :password
 
   validates_presence_of :bank_account_number,
                         :bank_routing_number,
