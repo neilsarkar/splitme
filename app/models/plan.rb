@@ -15,7 +15,8 @@ class Plan < ActiveRecord::Base
       title: title,
       description: description,
       total_price: total_price_string,
-      price_per_person: price_per_person_string
+      price_per_person: price_per_person_string,
+      fixed_price: read_attribute(:total_price).present?
     }
     json[:participants] = participants.as_json if options[:participants].present?
     json

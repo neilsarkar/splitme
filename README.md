@@ -73,6 +73,7 @@
     :total_price
     :price_per_person
     :token
+    :is_fixed_price
   }
 </pre>
 
@@ -91,6 +92,7 @@
       :total_price
       :price_per_person
       :token
+      :is_fixed_price
     },
     ...
   ]
@@ -110,6 +112,7 @@
     :total_price
     :price_per_person
     :token
+    :is_fixed_price
     participants: [
       {
         :id
