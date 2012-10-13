@@ -26,4 +26,33 @@ describe Api::UsersController do
       json["meta"]["errors"].should == ["You're and burnt"]
     end
   end
+
+  describe "#authenticate" do
+    it "returns 404 if user does not exist" do
+      post :authenticate, json: {
+        user: { email: "neil@groupme.com", password: "nice" }
+      }
+
+      response.status.should == 404
+    end
+
+    it "returns 401 if password is incorrect" do
+      user = FactoryGirl.create(:user, email: "neil@groupme.com", password: "gunit")
+      post :authenticate, json: {
+        user: { email: "neil@groupme.com", password: "nice" }
+      }
+
+      response.status.should == 401
+    end
+
+    it "returns user data if authentication is successful" do
+      user = FactoryGirl.create(:user, email: "neil@groupme.com", password: "gunit")
+      post :authenticate, json: {
+        user: { email: "neil@groupme.com", password: "gunit" }
+      }
+
+      response.should be_success
+      json["response"]["token"].should == user.token
+    end
+  end
 end
