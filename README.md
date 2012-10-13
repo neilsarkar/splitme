@@ -6,15 +6,15 @@
 <pre>
   {
     user: {
-      :bank_account_number
-      :bank_routing_number
-      :email
-      :name
-      :phone_number
-      :password
-      :date_of_birth
-      :street_address
-      :zip_code
+      :bank_account_number*
+      :bank_routing_number*
+      :email*
+      :name*
+      :phone_number*
+      :password*
+      :date_of_birth*
+      :street_address*
+      :zip_code*
     }
   }
 </pre>
@@ -32,8 +32,8 @@
 <pre>
   {
     user: {
-      :email
-      :password
+      :email*
+      :password*
     }
   }
 </pre>
@@ -57,9 +57,9 @@
 <pre>
   {
     plan: {
-      :title
-      :total_price
-      :price_per_person
+      :title*
+      :description
+      :total_price || :price_per_person
     }
   }
 </pre>
