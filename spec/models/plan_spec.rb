@@ -31,6 +31,16 @@ describe Plan do
     end
   end
 
+  describe "#before_create" do
+    it "sets token" do
+      plan = FactoryGirl.build(:plan)
+      String.should_receive(:random_alphanumeric).with(40).and_return("TOKEN")
+      plan.token.should be_nil
+      plan.save
+      plan.token.should == "TOKEN"
+    end
+  end
+
   describe "price calculations" do
     describe "#total_price_string" do
       it "presents a dollar representation" do

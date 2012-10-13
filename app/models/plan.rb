@@ -6,9 +6,12 @@ class Plan < ActiveRecord::Base
 
   validate :price_exclusive_or
 
+  before_create :set_token
+
   def as_json(options = {})
     json = {
       id: id,
+      token: token,
       title: title,
       description: description,
       total_price: total_price_string,
@@ -45,6 +48,10 @@ class Plan < ActiveRecord::Base
   end
 
   private
+
+  def set_token
+    self.token = String.random_alphanumeric(40)
+  end
 
   def price_string(price)
     "$%.2f" % (price.to_f / 100)
