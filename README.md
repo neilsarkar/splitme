@@ -115,7 +115,7 @@
         :name
         :email
         :phone_number
-        :joined_at
+        :card_type
       },
       ...
     ]
