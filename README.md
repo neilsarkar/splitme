@@ -70,3 +70,18 @@
     :id
   }
 </pre>
+
+## Index
+
+### Request: GET /plans
+
+<pre>
+  [
+    {
+      :title
+      :description
+      :total_price || :price_per_person
+    },
+    ...
+  ]
+</pre>

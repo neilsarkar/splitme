@@ -1,4 +1,9 @@
 class Api::PlansController < Api::BaseController
+  def index
+    plans = current_user.plans.order("created_at desc")
+    render_response(plans)
+  end
+
   def create
     plan = Plan.new(params[:plan])
     plan.user = current_user

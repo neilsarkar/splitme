@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  has_many :plans
+
   has_secure_password
 
   attr_accessible :bank_account_number,

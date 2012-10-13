@@ -23,4 +23,17 @@ describe Api::PlansController do
       json["response"]["id"].should == plan.id
     end
   end
+
+  describe "#index" do
+    it "shows all plans for current user" do
+      plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
+      get :index, token: @user.token
+
+      response.should be_success
+      plan_json = json["response"][0]
+      plan_json["title"].should == plan.title
+      plan_json["description"].should == plan.description
+      plan_json["total_price"].should == "$400.00"
+    end
+  end
 end
