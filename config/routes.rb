@@ -2,7 +2,10 @@ Splitme::Application.routes.draw do
   constraints :subdomain => "api" do
     scope :module => "api", :as => "api" do
       resources :plans, only: [:index, :create, :show]
-      resources :users, only: [:create]
+      match "/plans/:id/collect/:participant_id" => "plans#collect", via: :post
+      resources :users, only: [:create] do
+        post :collect, on: :member
+      end
       match "/users/authenticate" => "users#authenticate", via: :post
     end
   end

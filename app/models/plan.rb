@@ -37,6 +37,10 @@ class Plan < ActiveRecord::Base
     super(parse_price(price))
   end
 
+  def collect!
+    true
+  end
+
   def participants
     @participants ||= [
       Participant.new(name: "Neil Sarkar", email: "neil@groupme.com", phone_number: "9173706969", card_type: "Visa"),
@@ -50,7 +54,7 @@ class Plan < ActiveRecord::Base
   private
 
   def set_token
-    self.token = String.random_alphanumeric(40)
+    self.token = String.random_alphanumeric(20)
   end
 
   def price_string(price)

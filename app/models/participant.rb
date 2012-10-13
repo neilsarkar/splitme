@@ -5,6 +5,7 @@ class Participant < ActiveRecord::Base
 
   def as_json(*)
     {
+      id: id,
       email: email,
       name: name,
       phone_number: phone_number,

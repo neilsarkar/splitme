@@ -18,4 +18,13 @@ class Api::PlansController < Api::BaseController
     plan = current_user.plans.find(params[:id])
     render_response(plan.as_json(participants: true))
   end
+
+  def collect
+    plan = current_user.plans.find(params[:id])
+    if plan.collect!
+      head :ok
+    else
+      head 400
+    end
+  end
 end

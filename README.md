@@ -112,6 +112,7 @@
     :token
     participants: [
       {
+        :id
         :name
         :email
         :phone_number
@@ -123,3 +124,13 @@
 </pre>
 
 ### Response 404 (Plan doesn't exist or User doesn't own plan)
+
+## Collect (ALWAYS RETURNS SUCCESS)
+
+### Request: POST /plans/:id/collect/:participant_id
+
+### Response 200
+
+### Response 409 (Card has already been charged)
+
+### Response 400 (Card is invalid)
