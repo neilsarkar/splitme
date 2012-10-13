@@ -22,9 +22,7 @@
 ### Response: 201
 <pre>
   {
-    user: {
-      :token
-    }
+    :token
   }
 </pre>
 
@@ -43,9 +41,7 @@
 ### Response: 200
 <pre>
   {
-    user: {
-      :token
-    }
+    :token
   }
 </pre>
 
