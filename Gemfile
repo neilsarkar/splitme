@@ -6,6 +6,7 @@ gem 'pg'
 gem 'rails', '3.2.8'
 gem 'slim'
 gem 'thin'
+gem 'yajl-ruby'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

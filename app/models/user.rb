@@ -20,4 +20,14 @@ class User < ActiveRecord::Base
   def generate_token
     self.token = String.random_alphanumeric(40)
   end
+
+  def as_json(*)
+    {
+      token: token
+    }
+  end
+
+  def to_json(*)
+    Yajl::Encoder.encode(as_json)
+  end
 end

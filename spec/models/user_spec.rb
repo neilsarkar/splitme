@@ -33,7 +33,7 @@ describe User do
     end
 
     it "requires password" do
-      user = Factory.build(:user, :password => nil)
+      user = FactoryGirl.build(:user, :password => nil)
       user.should_not be_valid
       user.should have_at_least(1).error_on(:password)
     end
@@ -50,5 +50,15 @@ describe User do
   it "accepts a password" do
     user = FactoryGirl.create(:user, password: "gunit")
     User.find_by_email(user.email).authenticate("gunit").should == user
+  end
+
+  describe "#to_json" do
+    it "returns the token" do
+      user = FactoryGirl.create(:user)
+
+      Yajl::Parser.parse(user.to_json).should == {
+        "token" => user.token
+      }
+    end
   end
 end
