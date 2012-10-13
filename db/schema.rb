@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121013034632) do
+ActiveRecord::Schema.define(:version => 20121013050858) do
 
   create_table "users", :force => true do |t|
     t.string   "name",                 :null => false
@@ -24,6 +24,9 @@ ActiveRecord::Schema.define(:version => 20121013034632) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
     t.string   "balanced_payments_id"
+    t.string   "street_address"
+    t.string   "zip_code"
+    t.string   "date_of_birth"
   end
 
   add_index "users", ["token"], :name => "index_users_on_token", :unique => true

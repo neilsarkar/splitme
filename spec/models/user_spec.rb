@@ -69,7 +69,13 @@ describe User do
           account_number: "1234567890",
           bank_code: "321174851",
           name: "Neil Sarkar"
-        ).and_return(stub(uri: "http://balancedpayments.com/uri", save: true))
+        ).and_return(
+          stub({
+            save: stub({
+              uri: "http://balancedpayments.com/uri"
+            })
+          })
+        )
 
         marketplace = stub
         marketplace.should_receive(:create_merchant).with(
@@ -77,7 +83,10 @@ describe User do
           {
             type: "person",
             name: "Neil Sarkar",
-            phone_number: "+12121231234"
+            phone_number: "+12121231234",
+            street_address: "1600 Pennsylvania Avenue",
+            postal_code: "90210",
+            dob: "1984-01"
           },
           "http://balancedpayments.com/uri"
         ).and_return(stub(id: "abcdef"))
@@ -89,7 +98,10 @@ describe User do
           name: "Neil Sarkar",
           phone_number: "12121231234",
           bank_account_number: "1234567890",
-          bank_routing_number: "321174851"
+          bank_routing_number: "321174851",
+          street_address: "1600 Pennsylvania Avenue",
+          zip_code: "90210",
+          date_of_birth: "1/1984"
         })
         user.balanced_payments_id.should == "abcdef"
       end

@@ -9,5 +9,8 @@ FactoryGirl.define do
     user.sequence(:email) { |n| "user#{n}@gmail.com" }
     user.sequence(:name) { |n| "User #{n}" }
     user.password "Poopsammich66"
+    user.street_address "162 Baraud Road"
+    user.zip_code "10583"
+    user.date_of_birth "7/1989"
   end
 end

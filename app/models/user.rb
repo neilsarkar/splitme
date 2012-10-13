@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
                         :password
 
   validate :us_phone_number, if: :phone_number?
+  validate :valid_date_of_birth
 
   before_create :generate_token, :register_with_balanced_payments
 
@@ -49,24 +50,37 @@ class User < ActiveRecord::Base
     self.token = String.random_alphanumeric(40)
   end
 
-
   def register_with_balanced_payments
     bank_account = Balanced::BankAccount.new({
       account_number: bank_account_number,
       bank_code: bank_routing_number,
       name: name
-    })
-    bank_account.save
+    }).save
 
     merchant = Balanced::Marketplace.my_marketplace.create_merchant(
       email,
       {
         type: "person",
         name: name,
-        phone_number: "+#{phone_number}"
+        phone_number: "+#{phone_number}",
+        street_address: street_address,
+        postal_code: zip_code,
+        dob: balanced_dob
       },
       bank_account.uri
     )
     self.balanced_payments_id = merchant.id
+  end
+
+  def valid_date_of_birth
+    unless date_of_birth.match /\d+\/\d{4}/
+      @errors[:date_of_birth] << "Date of birth must be in format mm/yyyy"
+    end
+  end
+
+  def balanced_dob
+    month, year = date_of_birth.split("/")
+    month = "0#{month}" if month.length == 1
+    "#{year}-#{month}"
   end
 end

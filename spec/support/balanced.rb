@@ -11,7 +11,7 @@ module Balanced
     end
 
     def save
-      true
+      self
     end
   end
 
