@@ -1,4 +1,3 @@
-ActiveSupport::JSON.backend = "Yajl"
 require 'yajl/json_gem'
 
 class NilClass
