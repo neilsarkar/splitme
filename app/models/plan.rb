@@ -6,6 +6,12 @@ class Plan < ActiveRecord::Base
 
   validate :price_given
 
+  def as_json(*)
+    {
+      id: id
+    }
+  end
+
   private
 
   def price_given

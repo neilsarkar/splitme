@@ -19,7 +19,6 @@ module JsonHelper
       @last_json
     end
   end
-
 end
 
 RSpec::Rails::ControllerExampleGroup.send(:include, JsonHelper)

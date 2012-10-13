@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
                         :password,
                         :date_of_birth
 
+  validates_uniqueness_of :email
+
   validate :us_phone_number, if: :phone_number?
   validate :valid_date_of_birth, if: :date_of_birth?
 
@@ -29,10 +31,6 @@ class User < ActiveRecord::Base
     {
       token: token
     }
-  end
-
-  def to_json(*)
-    Yajl::Encoder.encode(as_json)
   end
 
   def phone_number=(phone_number)

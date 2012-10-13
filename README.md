@@ -2,7 +2,7 @@
 
 ## Create
 
-### Request: POST /users/create
+### Request: POST /users
 <pre>
   {
     user: {
@@ -48,3 +48,25 @@
 ### Response: 404 (Email not found)
 
 ### Response: 401 (Password Incorrect)
+
+# Plans
+
+## Create
+
+### Request: POST /plans
+<pre>
+  {
+    plan: {
+      :title
+      :total_price
+      :price_per_person
+    }
+  }
+</pre>
+
+### Response: 201
+<pre>
+  {
+    :id
+  }
+</pre>
