@@ -80,6 +80,8 @@
 
 ### Request: GET /plans
 
+### Response 200
+
 <pre>
   [
     {
@@ -97,6 +99,8 @@
 ## Show (PENDING)
 
 ### Request: GET /plans/:id
+
+### Response 200
 
 <pre>
   {
@@ -117,3 +121,5 @@
     ]
   }
 </pre>
+
+### Response 404 (Plan doesn't exist or User doesn't own plan)

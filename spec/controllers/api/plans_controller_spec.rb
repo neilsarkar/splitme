@@ -37,7 +37,7 @@ describe Api::PlansController do
     end
   end
 
-  describe "#show", pending: true do
+  describe "#show" do
     it "shows an individual plan" do
       plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
       get :show, token: @user.token, id: plan.id

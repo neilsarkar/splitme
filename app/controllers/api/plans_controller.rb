@@ -1,9 +1,4 @@
 class Api::PlansController < Api::BaseController
-  def index
-    plans = current_user.plans.order("created_at desc")
-    render_response(plans)
-  end
-
   def create
     plan = Plan.new(params[:plan])
     plan.user = current_user
@@ -14,4 +9,13 @@ class Api::PlansController < Api::BaseController
     end
   end
 
+  def index
+    plans = current_user.plans.order("created_at desc")
+    render_response(plans)
+  end
+
+  def show
+    plan = current_user.plans.find(params[:id])
+    render_response(plan)
+  end
 end

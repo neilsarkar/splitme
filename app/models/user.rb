@@ -8,7 +8,6 @@ class User < ActiveRecord::Base
                   :email,
                   :name,
                   :phone_number,
-                  :token,
                   :password,
                   :date_of_birth,
                   :street_address,
