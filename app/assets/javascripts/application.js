@@ -12,4 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require_tree ./vendor
+//= require_tree ./initializers
+//= require ./views/base
+//= require_tree ./views
+//= require router

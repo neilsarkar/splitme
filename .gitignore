@@ -16,3 +16,4 @@
 
 chromedriver.log
 *~
+.DS_Store
