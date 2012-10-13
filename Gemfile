@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'bcrypt-ruby'
 gem 'jquery-rails'
 gem 'pg'
 gem 'rails', '3.2.8'
@@ -18,6 +19,7 @@ end
 
 group :development, :test do
   gem "capybara"
+  gem "factory_girl_rails"
   gem "rspec-rails"
   gem "pry"
 end

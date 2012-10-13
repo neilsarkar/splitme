@@ -6,11 +6,15 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require "pry"
 
+require 'factory_girl_rails'
+
 alias running proc
 
 Dir["#{File.dirname(__FILE__)}/support/*.rb"].each {|f| require_relative f}
 
 RSpec.configure do |config|
+  config.use_transactional_fixtures = true
+
   config.before :suite do
     Capybara.default_driver = :chrome
   end
