@@ -13,4 +13,11 @@ FactoryGirl.define do
     user.zip_code "10583"
     user.date_of_birth "7/1989"
   end
+
+  factory :plan do |plan|
+    plan.title "Plan Party"
+    plan.description "Let's do this"
+    plan.total_price 10000
+    plan.association :user
+  end
 end

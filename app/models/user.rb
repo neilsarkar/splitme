@@ -7,17 +7,21 @@ class User < ActiveRecord::Base
                   :name,
                   :phone_number,
                   :token,
-                  :password
+                  :password,
+                  :date_of_birth,
+                  :street_address,
+                  :zip_code
 
   validates_presence_of :bank_account_number,
                         :bank_routing_number,
                         :email,
                         :name,
                         :phone_number,
-                        :password
+                        :password,
+                        :date_of_birth
 
   validate :us_phone_number, if: :phone_number?
-  validate :valid_date_of_birth
+  validate :valid_date_of_birth, if: :date_of_birth?
 
   before_create :generate_token, :register_with_balanced_payments
 
