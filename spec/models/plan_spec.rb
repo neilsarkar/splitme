@@ -42,6 +42,32 @@ describe Plan do
   end
 
   describe "price calculations" do
+    describe "#total_price" do
+      it "reads attribute when set" do
+        plan = Plan.new(total_price: 10000)
+        plan.total_price.should == 10000
+      end
+
+      it "calculates from price per person when not set" do
+        plan = Plan.new(price_per_person: 1000)
+        plan.stub(participants: [1,2,3,4])
+        plan.total_price.should == 5000
+      end
+    end
+
+    describe "#price_per_person" do
+      it "reads attribute when set" do
+        plan = Plan.new(price_per_person: 1000)
+        plan.price_per_person.should == 1000
+      end
+
+      it "calculates from price per person when not set" do
+        plan = Plan.new(total_price: 1000)
+        plan.stub(participants: [1,2])
+        plan.price_per_person.should == 333
+      end
+    end
+
     describe "#total_price_string" do
       it "presents a dollar representation" do
         plan = Plan.new(total_price: 10000)

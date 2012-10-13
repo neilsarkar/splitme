@@ -29,6 +29,14 @@ class Plan < ActiveRecord::Base
     price_string(price_per_person)
   end
 
+  def total_price
+    @total_price ||= (super || price_per_person * participants_count)
+  end
+
+  def price_per_person
+    @price_per_person ||= (super || total_price / participants_count)
+  end
+
   def total_price=(price)
     super(parse_price(price))
   end
@@ -53,6 +61,10 @@ class Plan < ActiveRecord::Base
 
   private
 
+  def participants_count
+    participants.blank? ? 1 : participants.length + 1
+  end
+
   def set_token
     self.token = String.random_alphanumeric(20)
   end
@@ -68,9 +80,9 @@ class Plan < ActiveRecord::Base
   end
 
   def price_exclusive_or
-    if total_price.blank? && price_per_person.blank?
+    if read_attribute(:total_price).blank? && read_attribute(:price_per_person).blank?
       @errors[:price] << "You must provide either a total price or a per person price"
-    elsif total_price.present? && price_per_person.present?
+    elsif read_attribute(:total_price).present? && read_attribute(:price_per_person).present?
       @errors[:price] << "You cannot specify both a total price and a per person price"
     end
   end
