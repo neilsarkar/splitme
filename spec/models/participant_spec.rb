@@ -26,4 +26,28 @@ describe Participant do
       participant.should have_at_least(1).error_on(:card_uri)
     end
   end
+
+  describe "#before_create" do
+    it "creates a Balanced buyer" do
+      participant = FactoryGirl.build(:participant, :card_uri => "https://balancedpayments.com/visa")
+
+      buyer = stub(uri: "https://balancedpayments.com/me")
+      marketplace = stub(create_buyer: buyer)
+      Balanced::Marketplace.should_receive(:my_marketplace).and_return(marketplace)
+
+      participant.save
+      participant.buyer_uri.should == "https://balancedpayments.com/me"
+    end
+
+    it "parses errors if Balanced creation fails" do
+      participant = FactoryGirl.build(:participant, :card_uri => "https://balancedpayments.com/visa")
+
+      marketplace = stub
+      marketplace.stub(:create_buyer).and_raise(Balanced::Conflict)
+      Balanced::Marketplace.should_receive(:my_marketplace).and_return(marketplace)
+
+      participant.save.should be_false
+      participant.errors[:registration].should == ["Something went wrong in creating your buyer account"]
+    end
+  end
 end

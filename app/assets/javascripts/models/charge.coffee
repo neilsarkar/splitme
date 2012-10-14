@@ -36,7 +36,7 @@ class SM.Charge
 
   join_plan: (options) =>
     SM.post(
-      "#{window.config.urls.api}/plans/#{@plan.get('token')}/join"
+      "#{window.config.urls.api}/participants/#{@plan.get('token')}/create"
       participant: @user_attributes
       {
         success: =>
@@ -45,4 +45,3 @@ class SM.Charge
           options.error(errors)
       }
     )
-

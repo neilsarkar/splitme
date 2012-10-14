@@ -49,15 +49,4 @@ class Api::PlansController < Api::BaseController
     plan = Plan.includes(:user).find_by_token!(params[:plan_token])
     render_response(plan.as_json(participants: true, treasurer_name: true))
   end
-
-  def join
-    plan = Plan.find_by_token!(params[:plan_token])
-    participant = Participant.new(params[:participant])
-    if participant.save
-      Commitment.create(plan: plan, participant: participant)
-      render_response(participant, code: 201)
-    else
-      render_error(400, participant.errors)
-    end
-  end
 end

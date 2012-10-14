@@ -21,8 +21,8 @@ class SM.JoinView extends SM.BaseView
   <input id='js-card-number' placeholder='Credit Card Number' />
 
   <label for='js-expiration-month'>Expiration Date</label>
-  <input id='js-expiration-month' placeholder='MM' />
-  <input id='js-expiration-year' placeholder='YYYY' />
+  <input id='js-expiration-month' placeholder='MM' type='tel'/>
+  <input id='js-expiration-year' placeholder='YYYY' type='tel'/>
 
   <br />
   <br />

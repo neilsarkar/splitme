@@ -3,6 +3,8 @@ class Participant < ActiveRecord::Base
 
   validates_presence_of :email, :name, :phone_number, :card_uri
 
+  before_create :create_balanced_buyer
+
   def as_json(*)
     {
       id: id,
@@ -11,5 +13,15 @@ class Participant < ActiveRecord::Base
       phone_number: phone_number,
       card_type: card_type
     }
+  end
+
+  private
+
+  def create_balanced_buyer
+    balanced_buyer = Balanced::Marketplace.my_marketplace.create_buyer(email, card_uri)
+    self.buyer_uri = balanced_buyer.uri
+  rescue
+    @errors[:registration] << "Something went wrong in creating your buyer account"
+    false
   end
 end

@@ -10,7 +10,7 @@ class Commitment < ActiveRecord::Base
   before_create :set_state
 
   def collect!
-
+    raise "Nope."
   end
 
   def unpaid?

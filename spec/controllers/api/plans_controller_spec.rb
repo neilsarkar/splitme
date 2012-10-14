@@ -132,29 +132,4 @@ describe Api::PlansController do
       response.status.should == 404
     end
   end
-
-  describe "#join" do
-    it "creates a participant" do
-      plan = FactoryGirl.create(:plan)
-
-      post :join, plan_token: plan.token, json: {
-        participant: {
-          name: "Neil Sarkar",
-          email: "neil@groupme.com",
-          phone_number: "9173706969",
-          card_uri: "https://balancedpayments.com/nice"
-        }
-      }
-
-      response.status.should == 201
-
-      participant = Participant.last
-
-      participant.name.should == "Neil Sarkar"
-      participant.email.should == "neil@groupme.com"
-      participant.phone_number.should == "9173706969"
-      participant.card_uri.should == "https://balancedpayments.com/nice"
-      plan.reload.participants.should include participant
-    end
-  end
 end
