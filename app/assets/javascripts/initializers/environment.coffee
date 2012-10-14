@@ -16,4 +16,5 @@ if window.config.env == "production"
 else if window.config.env == "development"
   window.config.urls.api = "http://api.splitme.dev:3000"
 else if window.config.env == "test"
-  window.config.urls.api = "http://api.splitme.dev:3000"
+  port = window.config.host.match(/:(\d+)$/)[1]
+  window.config.urls.api = "http://api.splitme.dev:#{port}"

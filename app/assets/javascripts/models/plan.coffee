@@ -5,3 +5,9 @@ class SM.Plan extends SM.Base
     })
 
     @fetch(options)
+
+  parse: (json) =>
+    json = super(json)
+    @participants = json.participants
+    delete json.participants
+    json

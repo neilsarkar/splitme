@@ -4,11 +4,8 @@ class SM.BaseView extends Backbone.View
   render: =>
     @trigger("pre_render")
 
-    if @template
-      @renderTemplate(@template)
-
-    if @views
-      @renderSubviews()
+    @renderTemplate()
+    @renderSubviews()
 
     @trigger("render")
     @
