@@ -1,13 +1,12 @@
 Splitme::Application.routes.draw do
   namespace :api do
+    match "/plans/:plan_id/collect/:participant_id" => "commitments#collect", via: :post
+
     resources :plans, only: [:index, :create, :show]
-    match "/plans/:id/collect/:participant_id" => "plans#collect", via: :post
     match "/plans/:plan_token/join" => "plans#join", via: :post
     match "/plans/:plan_token/preview" => "plans#preview"
 
-    resources :users, only: [:create] do
-      post :collect, on: :member
-    end
+    resources :users, only: [:create]
     match "/users/authenticate" => "users#authenticate", via: :post
 
     match "/" => "hi#hi"

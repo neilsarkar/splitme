@@ -92,25 +92,6 @@ describe Api::PlansController do
     end
   end
 
-  describe "#collect" do
-    it "returns 200 if collection is successful" do
-      plan = FactoryGirl.create(:plan, user: @user)
-      Plan.any_instance.should_receive(:collect!).and_return(true)
-
-      post :collect, token: @user.token, id: plan.id, participant_id: 1
-
-      response.should be_success
-    end
-
-    it "returns errors if collection fails" do
-      plan = FactoryGirl.create(:plan, user: @user)
-      Plan.any_instance.should_receive(:collect!).and_return(false)
-
-      post :collect, token: @user.token, id: plan.id, participant_id: 1
-      response.should be_bad_request
-    end
-  end
-
   describe "#preview" do
     it "shows an individual plan" do
       plan = FactoryGirl.create(:plan, total_price: 40000)

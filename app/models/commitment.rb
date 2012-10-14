@@ -6,4 +6,28 @@ class Commitment < ActiveRecord::Base
 
   belongs_to :participant
   belongs_to :plan
+
+  before_create :set_state
+
+  def collect!
+
+  end
+
+  def unpaid?
+    state == "unpaid"
+  end
+
+  def failed?
+    state == "failed"
+  end
+
+  def paid?
+    state == "paid"
+  end
+
+  private
+
+  def set_state
+    self.state = "unpaid"
+  end
 end

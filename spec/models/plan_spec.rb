@@ -116,4 +116,10 @@ describe Plan do
       end
     end
   end
+
+  describe "#collect!" do
+    it "returns false if participant has already paid" do
+
+    end
+  end
 end
