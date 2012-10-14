@@ -71,13 +71,13 @@ describe Api::PlansController do
       response.should be_success
 
       plan_json = json["response"]
-      plan_json["breakdown"].should == [
-        { "people" => 1, "price_per_person" => "$100.00" },
-        { "people" => 2, "price_per_person" => "$50.00" },
-        { "people" => 3, "price_per_person" => "$33.34" },
-        { "people" => 4, "price_per_person" => "$25.00" },
-        { "people" => 5, "price_per_person" => "$20.00" }
-      ]
+      plan_json["breakdown"].should == {
+       "1" => "$100.00",
+       "2" => "$50.00",
+       "3" => "$33.34",
+       "4" => "$25.00",
+       "5" => "$20.00"
+      }
     end
 
     it "returns 404 if the user does not own the plan" do

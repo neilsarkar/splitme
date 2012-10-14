@@ -26,13 +26,13 @@ class Api::PlansController < Api::BaseController
       Participant.new(name: "Joey Pfeifer", email: "joey@groupme.com", phone_number: "2121231235", card_type: "Discover"),
       Participant.new(name: "Kevin David Crowe", email: "kevindavidcrowe@gmail.com", phone_number: "2121231255", card_type: "American Express")
     ]
-    json[:breakdown] = [
-      { people: 1, price_per_person: "$100.00" },
-      { people: 2, price_per_person: "$50.00" },
-      { people: 3, price_per_person: "$33.34" },
-      { people: 4, price_per_person: "$25.00" },
-      { people: 5, price_per_person: "$20.00" }
-    ]
+    json[:breakdown] = {
+      "1" => "$100.00",
+      "2" => "$50.00",
+      "3" => "$33.34",
+      "4" => "$25.00",
+      "5" => "$20.00"
+    }
     render_response(json)
   end
 

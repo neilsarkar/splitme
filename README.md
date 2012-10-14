@@ -158,11 +158,11 @@
     :price_per_person
     :token
     :is_fixed_price
-    breakdown: [
-      { people: 1, price_per_person: "$100.00" }
-      { people: 2, price_per_person: "$50.00" }
+    breakdown: {
+      1: "$100.00"
+      2: "$50.00"
       ...
-    ]
+    }
     participants: [
       {
         :id
