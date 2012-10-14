@@ -1,9 +1,4 @@
 class SetAccessControlHeaders
-  VALID_HOSTS = %w[
-    api.splitmeapp.com
-    api.splitme.dev
-  ]
-
   ALLOWED_HEADERS = %w[
     Accept
     Content-Type
@@ -21,7 +16,7 @@ class SetAccessControlHeaders
   end
 
   def call(env)
-    if env["REQUEST_METHOD"] == "OPTIONS" && valid_host?(env)
+    if env["REQUEST_METHOD"] == "OPTIONS"
       headers = {
         "Access-Control-Allow-Origin" => env["HTTP_ORIGIN"],
         "Access-Control-Allow-Headers" => ALLOWED_HEADERS.join(', '),
@@ -33,11 +28,5 @@ class SetAccessControlHeaders
     else
       @app.call(env)
     end
-  end
-
-  private
-
-  def valid_host?(env)
-    VALID_HOSTS.include? Rack::Request.new(env).host
   end
 end
