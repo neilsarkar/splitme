@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'airbrake'
 gem 'balanced'
 gem 'bcrypt-ruby'
 gem 'jquery-rails'
