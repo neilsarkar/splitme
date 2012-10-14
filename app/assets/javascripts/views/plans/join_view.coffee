@@ -49,10 +49,10 @@ class SM.JoinView extends SM.BaseView
     )
 
     charge.create({
-      success: =>
-        @$("form").alertSuccess
-      error: =>
-        @$("form").alertError
+      success: (message) =>
+        @$("form").alertSuccess(message)
+      error: (message) =>
+        @$("form").alertError(message)
     })
 
   clearInvalid: (e) =>

@@ -8,6 +8,14 @@ $.fn.alertMessage = (message, htmlClass) ->
   unless $(this).is("form")
     throw "Tried to call alertError outside of a form"
 
+  if message instanceof Object
+    arr = []
+    for key, val of message
+      arr.push("#{key}: #{val}")
+    message = arr.join("<br />")
+  else if message instanceof Array
+    message = message.join("<br />")
+
   $(this).enableForm()
   $(this).clearMessage()
   $alert = $("<div class='alert #{htmlClass}'></div>")
