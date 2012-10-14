@@ -10,6 +10,8 @@ Splitme::Application.routes.draw do
         post :collect, on: :member
       end
       match "/users/authenticate" => "users#authenticate", via: :post
+
+      match "/" => "hi#hi"
     end
   end
 
