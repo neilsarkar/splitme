@@ -10,5 +10,7 @@ Splitme::Application.routes.draw do
     end
   end
 
+  mount JasmineRails::Engine => "/specs" if Rails.env.development?
+
   root to: "site#hi"
 end

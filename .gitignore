@@ -17,3 +17,4 @@
 chromedriver.log
 *~
 .DS_Store
+.jhw-cache
