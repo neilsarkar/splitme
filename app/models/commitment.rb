@@ -1,5 +1,5 @@
 class Commitment < ActiveRecord::Base
-  attr_accessible :participant_id, :plan_id
+  attr_accessible :participant_id, :plan_id, :participant, :plan
 
   validates_presence_of :participant_id, :plan_id
   validates_uniqueness_of :participant_id, :scope => :plan_id

@@ -8,6 +8,9 @@ class Plan < ActiveRecord::Base
 
   before_create :set_token
 
+  has_many :commitments
+  has_many :participants, through: :commitments
+
   def as_json(options = {})
     json = {
       id: id,
@@ -48,16 +51,6 @@ class Plan < ActiveRecord::Base
 
   def collect!
     true
-  end
-
-  def participants
-    @participants ||= [
-      Participant.new(name: "Neil Sarkar", email: "neil@groupme.com", phone_number: "9173706969", card_type: "Visa"),
-      Participant.new(name: "Cam Hunt", email: "cam@groupme.com", phone_number: "5035506472", card_type: "Visa"),
-      Participant.new(name: "Pat Nakajima", email: "pat@groupme.com", phone_number: "2121231234", card_type: "MasterCard"),
-      Participant.new(name: "Joey Pfeifer", email: "joey@groupme.com", phone_number: "2121231235", card_type: "Discover"),
-      Participant.new(name: "Kevin David Crowe", email: "kevindavidcrowe@gmail.com", phone_number: "2121231255", card_type: "American Express")
-    ]
   end
 
   private

@@ -35,5 +35,5 @@ Splitme::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  BALANCED_API_KEY = "233fba60121911e28f7a026ba7f8ec28"
+  BALANCED_API_KEY = "847306f815c411e28fcb026ba7f8ec28"
 end

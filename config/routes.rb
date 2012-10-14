@@ -3,6 +3,7 @@ Splitme::Application.routes.draw do
     scope :module => "api", :as => "api" do
       resources :plans, only: [:index, :create, :show]
       match "/plans/:id/collect/:participant_id" => "plans#collect", via: :post
+      match "/plans/:plan_token/join" => "plans#join", via: :post
       match "/plans/:plan_token/preview" => "plans#preview"
 
       resources :users, only: [:create] do
