@@ -1,18 +1,19 @@
 doctype html
-
 html
-head
-  title Splitme
-  = stylesheet_link_tag "application", media: "all"
-  = javascript_include_tag "application"
-  = javascript_include_tag "https://js.balancedpayments.com/v1/balanced.js"
-  = csrf_meta_tags
-body
-  #page
-    | Loading...
+  head
+    title SplitMe
+    = stylesheet_link_tag "application", media: "all"
+    - unless Rails.env.test?
+      = javascript_include_tag "https://js.balancedpayments.com/v1/balanced.js"
+    = javascript_include_tag "application"
 
-  javascript:
-    jQuery(function($) {
-      window.app = new SM.App
-      Backbone.history.start({pushState: true})
-    })
+  body
+    #page
+      #loading Loading
+
+    javascript:
+      jQuery(function($) {
+        $("#loading").dotdotdot()
+        window.app = new SM.App
+        Backbone.history.start({pushState: true})
+      })

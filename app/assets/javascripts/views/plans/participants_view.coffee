@@ -2,8 +2,10 @@ class SM.ParticipantsView extends SM.BaseView
   initialize: (@plan) ->
 
   template: """
-<h3>Who's in?</h3>
- {{#participants}}
+<div class='participant'>
+  {{treasurer_name}}
+</div>
+{{#participants}}
   <div class='participant'>
     {{name}}
   </div>
@@ -12,3 +14,4 @@ class SM.ParticipantsView extends SM.BaseView
 
   toJSON: =>
     participants: @plan.participants
+    treasurer_name: @plan.get("treasurer_name")

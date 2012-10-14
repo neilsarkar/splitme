@@ -53,6 +53,7 @@ describe Api::PlansController do
 
     it "shows participants" do
       plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
+      commitment = FactoryGirl.create(:commitment, plan: plan)
       get :show, token: @user.token, id: plan.id
 
       response.should be_success
@@ -110,6 +111,7 @@ describe Api::PlansController do
 
     it "shows participants" do
       plan = FactoryGirl.create(:plan, total_price: 40000)
+      commitment = FactoryGirl.create(:commitment, plan: plan)
       get :preview, plan_token: plan.token
 
       response.should be_success
@@ -120,10 +122,42 @@ describe Api::PlansController do
       plan_json["participants"][0]["phone_number"].should == plan.participants.first.phone_number
     end
 
+    it "shows creator name" do
+      plan = FactoryGirl.create(:plan)
+      get :preview, plan_token: plan.token
+
+      json["response"]["treasurer_name"].should == plan.user.name
+    end
+
     it "returns 404 if plan cannot be found" do
       get :preview, plan_token: "PRETEND"
 
       response.status.should == 404
+    end
+  end
+
+  describe "#join" do
+    it "creates a participant" do
+      plan = FactoryGirl.create(:plan)
+
+      post :join, plan_token: plan.token, json: {
+        participant: {
+          name: "Neil Sarkar",
+          email: "neil@groupme.com",
+          phone_number: "9173706969",
+          card_uri: "https://balancedpayments.com/nice"
+        }
+      }
+
+      response.status.should == 201
+
+      participant = Participant.last
+
+      participant.name.should == "Neil Sarkar"
+      participant.email.should == "neil@groupme.com"
+      participant.phone_number.should == "9173706969"
+      participant.card_uri.should == "https://balancedpayments.com/nice"
+      plan.reload.participants.should include participant
     end
   end
 end

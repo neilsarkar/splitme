@@ -1,6 +1,7 @@
 class SetAccessControlHeaders
   VALID_HOSTS = %w[
     api.splitmeapp.com
+    api.splitme.dev
   ]
 
   ALLOWED_HEADERS = %w[
@@ -28,7 +29,7 @@ class SetAccessControlHeaders
         "Access-Control-Allow-Credentials" => 'false',
         "Access-Control-Max-Age" => "86400"
       }
-      [200, headers, ""]
+      [200, headers, []]
     else
       @app.call(env)
     end
