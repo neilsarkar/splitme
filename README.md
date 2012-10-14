@@ -98,7 +98,7 @@
   ]
 </pre>
 
-## Show (Returns Stubbed Participants and Breakdown)
+## Show (Returns Stubbed Breakdown)
 
 ### Request: GET /plans/:id
 
@@ -125,7 +125,7 @@
         :email
         :phone_number
         :card_type
-        :state
+        state: ("unpaid" || "failed" || "escrowed" || "collected")
       },
       ...
     ]
@@ -133,16 +133,6 @@
 </pre>
 
 ### Response: 404 (Plan doesn't exist or User doesn't own plan)
-
-## Collect (Always returns success)
-
-### Request: POST /plans/:id/collect/:participant_id
-
-### Response: 200
-
-### Response: 409 (Card has already been charged)
-
-### Response: 400 (Card charge failed)
 
 ## Preview
 
@@ -207,4 +197,22 @@
 </pre>
 
 ### Response: 400 (Creation failed)
+
+# Charge
+
+## Charge
+
+### Request: POST /plans/:id/charge/:participant_id
+
+### Response: 200
+
+### Response: 409 (Card has already been charged)
+
+<pre>
+  {
+    state: ("unpaid" || "failed" || "escrowed" || "collected")
+  }
+</pre>
+
+### Response: 400 (Card charge failed)
 

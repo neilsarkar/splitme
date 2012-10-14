@@ -24,6 +24,17 @@ module Balanced
     end
   end
 
+  class Account
+    def self.find_by_email(email)
+      FakeAccount.new
+    end
+  end
+
+  class FakeAccount
+    def debit(amount, name)
+      true
+    end
+  end
 
   class FakeMarketplace
     def create_merchant(*)

@@ -51,17 +51,27 @@ describe Api::PlansController do
       plan_json["token"].should == plan.token
     end
 
-    it "shows stubbed participants" do
+    it "shows participants" do
       plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
+      commitment = FactoryGirl.create(:commitment, plan: plan)
       get :show, token: @user.token, id: plan.id
 
       response.should be_success
       plan_json = json["response"]
+      plan_json["participants"].length.should == plan.participants.length
+      plan_json["participants"][0]["name"].should == plan.participants.first.name
+      plan_json["participants"][0]["email"].should == plan.participants.first.email
+      plan_json["participants"][0]["phone_number"].should == plan.participants.first.phone_number
+    end
 
-      plan_json["participants"].length.should == 5
-      plan_json["participants"][0]["name"].should == "Neil Sarkar"
-      plan_json["participants"][0]["email"].should == "neil@groupme.com"
-      plan_json["participants"][0]["phone_number"].should == "9173706969"
+    it "doesn't blow up with no participants" do
+      plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
+      get :show, token: @user.token, id: plan.id
+
+      response.should be_success
+
+      plan_json = json["response"]
+      plan_json["participants"].length.should == 0
     end
 
     it "shows stubbed breakdown" do

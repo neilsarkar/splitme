@@ -9,8 +9,18 @@ class Commitment < ActiveRecord::Base
 
   before_create :set_state
 
-  def collect!
-    raise "Nope."
+  def charge!
+    plan.update_attribute :locked, true unless plan.locked?
+
+    buyer = Balanced::Account.find_by_email(participant.email)
+    if buyer.debit(plan.price_per_person, plan.title)
+      mark_escrowed!
+    else
+      mark_failed!
+    end
+  rescue
+    mark_failed!
+    false
   end
 
   def unpaid?
@@ -21,11 +31,33 @@ class Commitment < ActiveRecord::Base
     state == "failed"
   end
 
-  def paid?
-    state == "paid"
+  def escrow?
+    state == "escrowed"
+  end
+
+  def collected?
+    state == "collected"
+  end
+
+  def as_json(*)
+    {
+      state: state
+    }
   end
 
   private
+
+  def mark_failed!
+    update_attribute :state, "failed"
+  end
+
+  def mark_escrowed!
+    update_attribute :state, "escrowed"
+  end
+
+  def mark_collected!
+    update_attribute :state, "collected"
+  end
 
   def set_state
     self.state = "unpaid"

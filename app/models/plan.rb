@@ -21,7 +21,8 @@ class Plan < ActiveRecord::Base
       price_per_person: price_per_person_string,
       fixed_price: read_attribute(:total_price).present?
     }
-    json[:participants] = participants.as_json if options[:participants].present?
+
+    json[:participants] = participants_json if options[:participants].present?
     json[:treasurer_name] = user.name if options[:treasurer_name].present?
     json
   end
@@ -50,14 +51,16 @@ class Plan < ActiveRecord::Base
     super(parse_price(price))
   end
 
-  def collect!
-    true
-  end
-
   private
 
   def participants_count
     participants.blank? ? 1 : participants.length + 1
+  end
+
+  def participants_json
+    commitments.map do |commitment|
+      commitment.participant.as_json.merge(state: commitment.state)
+    end
   end
 
   def set_token
