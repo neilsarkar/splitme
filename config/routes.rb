@@ -4,7 +4,9 @@ Splitme::Application.routes.draw do
 
     match "/participants/:plan_token/create" => "participants#create", via: :post
 
-    resources :plans, only: [:index, :create, :show]
+    resources :plans, only: [:index, :create, :show] do
+      post :collect, :on => :member
+    end
     match "/plans/:plan_token/preview" => "plans#preview"
 
     resources :users, only: [:create]

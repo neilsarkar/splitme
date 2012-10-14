@@ -142,4 +142,30 @@ describe Api::PlansController do
       response.status.should == 404
     end
   end
+
+  describe "#collect" do
+    before do
+      @plan = FactoryGirl.create(:plan, total_price: 1000)
+      @user = @plan.user
+    end
+
+    it "404s if user does not own plan" do
+      plan = FactoryGirl.create(:plan)
+      post :collect, id: plan.id, token: @user.token
+      response.status.should == 404
+    end
+
+    it "collects funds and returns 200" do
+      Plan.any_instance.should_receive(:collected?).and_return(false)
+      Plan.any_instance.should_receive(:collect!).and_return(true)
+      post :collect, id: @plan.id, token: @user.token
+      response.status.should == 200
+    end
+
+    it "returns 409 if funds are already collected" do
+      Plan.any_instance.should_receive(:collected?).and_return(true)
+      post :collect, id: @plan.id, token: @user.token
+      response.status.should == 409
+    end
+  end
 end

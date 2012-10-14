@@ -33,4 +33,14 @@ class Api::PlansController < Api::BaseController
     plan = Plan.includes(:user).find_by_token!(params[:plan_token])
     render_response(plan.as_json(participants: true, treasurer_name: true))
   end
+
+  def collect
+    plan = current_user.plans.find(params[:id])
+    if plan.collected?
+      render_error(409)
+    else
+      plan.collect!
+      render_response(plan)
+    end
+  end
 end

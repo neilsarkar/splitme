@@ -51,6 +51,22 @@ class Plan < ActiveRecord::Base
     super(parse_price(price))
   end
 
+  def total_escrowed
+    @total_escrowed ||= commitments.escrowed.size * price_per_person
+  end
+
+  def collected?
+    commitments.present? and commitments.collected.size == commitments.size
+  end
+
+  def collect!
+    return unless total_escrowed > 0
+    merchant = Balanced::Account.find_by_email(user.email)
+    if merchant.credit(total_escrowed)
+      commitments.escrowed.each &:mark_collected!
+    end
+  end
+
   private
 
   def participants_count

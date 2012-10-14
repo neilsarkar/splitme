@@ -9,6 +9,9 @@ class Commitment < ActiveRecord::Base
 
   before_create :set_state
 
+  scope :escrowed, where(state: "escrowed")
+  scope :collected, where(state: "collected")
+
   def charge!
     plan.update_attribute :locked, true unless plan.locked?
 
@@ -31,7 +34,7 @@ class Commitment < ActiveRecord::Base
     state == "failed"
   end
 
-  def escrow?
+  def escrowed?
     state == "escrowed"
   end
 
@@ -45,6 +48,10 @@ class Commitment < ActiveRecord::Base
     }
   end
 
+  def mark_collected!
+    update_attribute :state, "collected"
+  end
+
   private
 
   def mark_failed!
@@ -53,10 +60,6 @@ class Commitment < ActiveRecord::Base
 
   def mark_escrowed!
     update_attribute :state, "escrowed"
-  end
-
-  def mark_collected!
-    update_attribute :state, "collected"
   end
 
   def set_state

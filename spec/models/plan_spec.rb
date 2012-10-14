@@ -116,4 +116,100 @@ describe Plan do
       end
     end
   end
+
+  describe "#total_escrowed" do
+    it "calculates amount from successful commitments" do
+      plan = FactoryGirl.create(:plan, total_price: 10000)
+
+      commitment_1 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_1.send :mark_escrowed!
+
+      commitment_2 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_2.send :mark_failed!
+
+      plan.total_escrowed.should == 3333
+    end
+
+    it "calculates amount from successful commitments for per_person plans" do
+      plan = FactoryGirl.create(:plan, price_per_person: 10000, total_price: nil)
+
+      commitment_1 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_1.send :mark_escrowed!
+
+      commitment_2 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_2.send :mark_escrowed!
+
+      commitment_3 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_3.send :mark_failed!
+
+      commitment_4 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_4.send :mark_failed!
+
+      plan.total_escrowed.should == 20000
+    end
+  end
+
+  describe "#collected?" do
+    it "returns true if all commitments are collected" do
+      plan = FactoryGirl.create(:plan)
+
+      plan.should_not be_collected
+
+      commitment_1 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_1.send :mark_collected!
+
+      commitment_2 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_2.send :mark_failed!
+
+      plan.reload.should_not be_collected
+
+      commitment_2.send :mark_collected!
+      plan.reload.should be_collected
+    end
+  end
+
+  describe "#collect!" do
+    it "ticks collected on all escrowed accounts" do
+      plan = FactoryGirl.create(:plan)
+
+      commitment_1 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_1.send :mark_escrowed!
+      commitment_2 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_2.send :mark_escrowed!
+
+      plan.collect!
+
+      commitment_1.reload.should be_collected
+      commitment_2.reload.should be_collected
+    end
+
+    it "credits merchant" do
+      plan = FactoryGirl.create(:plan)
+      plan.stub(total_escrowed: 10000)
+
+      merchant = stub
+      merchant.should_receive(:credit).with(10000)
+      Balanced::Account.should_receive(:find_by_email).with(plan.user.email).
+        and_return(merchant)
+      plan.collect!
+    end
+
+    context "error" do
+      it "raises error from Balanced" do
+        plan = FactoryGirl.create(:plan)
+        commitment = FactoryGirl.create(:commitment, plan: plan)
+        commitment.send :mark_escrowed!
+        merchant = stub
+        merchant.stub(:credit).and_raise(Balanced::Error)
+        Balanced::Account.stub(:find_by_email).with(plan.user.email).
+          and_return(merchant)
+
+        running {
+          plan.collect!
+        }.should raise_error
+
+        commitment.reload.should be_escrowed
+      end
+    end
+  end
 end

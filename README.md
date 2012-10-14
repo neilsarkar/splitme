@@ -169,6 +169,14 @@
 
 ### Response: 404 (Plan doesn't exist)
 
+## Collect
+
+### POST /plans/:id/collect
+
+### Response: 200
+
+### Response: 409 (Already collected)
+
 # Participants
 
 ## Create

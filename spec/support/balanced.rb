@@ -34,6 +34,10 @@ module Balanced
     def debit(amount, name)
       true
     end
+
+    def credit(amount)
+      true
+    end
   end
 
   class FakeMarketplace
