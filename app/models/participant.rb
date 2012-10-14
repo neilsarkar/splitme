@@ -1,7 +1,7 @@
 class Participant < ActiveRecord::Base
-  attr_accessible :balanced_payments_id, :card_type, :email, :name, :phone_number
+  attr_accessible :card_type, :card_uri, :email, :name, :phone_number
 
-  validates_presence_of :email, :name, :phone_number
+  validates_presence_of :email, :name, :phone_number, :card_uri
 
   def as_json(*)
     {
