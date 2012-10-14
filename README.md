@@ -125,6 +125,7 @@
         :email
         :phone_number
         :card_type
+        :state
       },
       ...
     ]
@@ -178,9 +179,11 @@
 
 ### Response: 404 (Plan doesn't exist)
 
-## Join
+# Participants
 
-### Request: POST /plans/:plan_token/join
+## Create
+
+### Request: POST /participants/:plan_token/create
 
 <pre>
   {
@@ -196,7 +199,6 @@
 
 <pre>
   {
-    :id
     :email
     :name
     :phone_number
@@ -204,4 +206,5 @@
   }
 </pre>
 
-### Response: 400 (Bad request)
+### Response: 400 (Creation failed)
+
