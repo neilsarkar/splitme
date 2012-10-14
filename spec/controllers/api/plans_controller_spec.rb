@@ -51,17 +51,33 @@ describe Api::PlansController do
       plan_json["token"].should == plan.token
     end
 
-    it "shows participants" do
+    it "shows stubbed participants" do
       plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
-      commitment = FactoryGirl.create(:commitment, plan: plan)
       get :show, token: @user.token, id: plan.id
 
       response.should be_success
       plan_json = json["response"]
-      plan_json["participants"].length.should == plan.participants.length
-      plan_json["participants"][0]["name"].should == plan.participants.first.name
-      plan_json["participants"][0]["email"].should == plan.participants.first.email
-      plan_json["participants"][0]["phone_number"].should == plan.participants.first.phone_number
+
+      plan_json["participants"].length.should == 5
+      plan_json["participants"][0]["name"].should == "Neil Sarkar"
+      plan_json["participants"][0]["email"].should == "neil@groupme.com"
+      plan_json["participants"][0]["phone_number"].should == "9173706969"
+    end
+
+    it "shows stubbed breakdown" do
+      plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
+      get :show, token: @user.token, id: plan.id
+
+      response.should be_success
+
+      plan_json = json["response"]
+      plan_json["breakdown"].should == [
+        { "people" => 1, "price_per_person" => "$100.00" },
+        { "people" => 2, "price_per_person" => "$50.00" },
+        { "people" => 3, "price_per_person" => "$33.34" },
+        { "people" => 4, "price_per_person" => "$25.00" },
+        { "people" => 5, "price_per_person" => "$20.00" }
+      ]
     end
 
     it "returns 404 if the user does not own the plan" do

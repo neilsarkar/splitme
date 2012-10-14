@@ -98,7 +98,7 @@
   ]
 </pre>
 
-## Show (PARTICIPANT DATA IS FAKE)
+## Show (Returns Stubbed Participants and Breakdown)
 
 ### Request: GET /plans/:id
 
@@ -113,6 +113,11 @@
     :price_per_person
     :token
     :is_fixed_price
+    breakdown: [
+      { people: 1, price_per_person: "$100.00" }
+      { people: 2, price_per_person: "$50.00" }
+      ...
+    ]
     participants: [
       {
         :id
@@ -128,7 +133,7 @@
 
 ### Response: 404 (Plan doesn't exist or User doesn't own plan)
 
-## Collect (ALWAYS RETURNS SUCCESS)
+## Collect (Always returns success)
 
 ### Request: POST /plans/:id/collect/:participant_id
 
@@ -136,7 +141,7 @@
 
 ### Response: 409 (Card has already been charged)
 
-### Response: 400 (Card is invalid)
+### Response: 400 (Card charge failed)
 
 ## Preview
 
@@ -153,6 +158,11 @@
     :price_per_person
     :token
     :is_fixed_price
+    breakdown: [
+      { people: 1, price_per_person: "$100.00" }
+      { people: 2, price_per_person: "$50.00" }
+      ...
+    ]
     participants: [
       {
         :id

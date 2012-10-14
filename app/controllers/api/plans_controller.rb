@@ -18,7 +18,22 @@ class Api::PlansController < Api::BaseController
 
   def show
     plan = current_user.plans.find(params[:id])
-    render_response(plan.as_json(participants: true))
+    json = plan.as_json
+    json[:participants] = [
+      Participant.new(name: "Neil Sarkar", email: "neil@groupme.com", phone_number: "9173706969", card_type: "Visa"),
+      Participant.new(name: "Cam Hunt", email: "cam@groupme.com", phone_number: "5035506472", card_type: "Visa"),
+      Participant.new(name: "Pat Nakajima", email: "pat@groupme.com", phone_number: "2121231234", card_type: "MasterCard"),
+      Participant.new(name: "Joey Pfeifer", email: "joey@groupme.com", phone_number: "2121231235", card_type: "Discover"),
+      Participant.new(name: "Kevin David Crowe", email: "kevindavidcrowe@gmail.com", phone_number: "2121231255", card_type: "American Express")
+    ]
+    json[:breakdown] = [
+      { people: 1, price_per_person: "$100.00" },
+      { people: 2, price_per_person: "$50.00" },
+      { people: 3, price_per_person: "$33.34" },
+      { people: 4, price_per_person: "$25.00" },
+      { people: 5, price_per_person: "$20.00" }
+    ]
+    render_response(json)
   end
 
   def collect
