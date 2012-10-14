@@ -1,7 +1,8 @@
 require "spec_helper"
 
 describe "Viewing Plan" do
-  it "Shows plan details", pending: true do
+  it "Shows plan details" do
+    pending "Seleniummmmmmm....."
     plan = FactoryGirl.create(:plan, total_price: 10000)
     commitment_1 = FactoryGirl.create(:commitment, plan: plan)
     commitment_2 = FactoryGirl.create(:commitment, plan: plan)

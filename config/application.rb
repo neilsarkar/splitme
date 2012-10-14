@@ -71,5 +71,8 @@ module Splitme
     config.assets.initialize_on_precompile = false
 
     config.filter_parameters += [:password, :bank_routing_number, :bank_account_number]
+
+    require Rails.root.join('app/middleware/set_access_control_headers')
+    config.middleware.use SetAccessControlHeaders
   end
 end

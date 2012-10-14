@@ -93,4 +93,37 @@ describe Api::PlansController do
       response.should be_bad_request
     end
   end
+
+  describe "#preview" do
+    it "shows an individual plan" do
+      plan = FactoryGirl.create(:plan, total_price: 40000)
+      get :preview, plan_token: plan.token
+
+      response.should be_success
+      plan_json = json["response"]
+      plan_json["title"].should == plan.title
+      plan_json["description"].should == plan.description
+      plan_json["total_price"].should == "$400.00"
+      plan_json["price_per_person"].should == plan.price_per_person_string
+      plan_json["token"].should == plan.token
+    end
+
+    it "shows participants" do
+      plan = FactoryGirl.create(:plan, total_price: 40000)
+      get :preview, plan_token: plan.token
+
+      response.should be_success
+      plan_json = json["response"]
+      plan_json["participants"].length.should == plan.participants.length
+      plan_json["participants"][0]["name"].should == plan.participants.first.name
+      plan_json["participants"][0]["email"].should == plan.participants.first.email
+      plan_json["participants"][0]["phone_number"].should == plan.participants.first.phone_number
+    end
+
+    it "returns 404 if plan cannot be found" do
+      get :preview, plan_token: "PRETEND"
+
+      response.status.should == 404
+    end
+  end
 end

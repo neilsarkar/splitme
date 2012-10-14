@@ -1,4 +1,6 @@
 class Api::PlansController < Api::BaseController
+  skip_before_filter :require_user, only: [:preview]
+
   def create
     plan = Plan.new(params[:plan])
     plan.user = current_user
@@ -26,5 +28,10 @@ class Api::PlansController < Api::BaseController
     else
       head 400
     end
+  end
+
+  def preview
+    plan = Plan.find_by_token!(params[:plan_token])
+    render_response(plan.as_json(participants: true))
   end
 end
