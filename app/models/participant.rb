@@ -20,8 +20,9 @@ class Participant < ActiveRecord::Base
   def create_balanced_buyer
     balanced_buyer = Balanced::Marketplace.my_marketplace.create_buyer(email, card_uri)
     self.buyer_uri = balanced_buyer.uri
-  rescue
-    @errors[:registration] << "Something went wrong in creating your buyer account"
+  rescue Exception => e
+    raise e unless e.respond_to?(:message)
+    @errors[:registration] << e.message
     false
   end
 end

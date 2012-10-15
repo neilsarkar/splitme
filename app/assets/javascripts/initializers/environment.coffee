@@ -16,7 +16,7 @@ if window.config.env == "production"
   balanced.init("/v1/marketplaces/TEST-MP14KgtveZC0ssxCee81gTbW")
 else if window.config.env == "development"
   window.config.urls.api = "http://splitme.dev:3000/api"
-  balanced.init("/v1/marketplaces/TEST-MP14KgtveZC0ssxCee81gTbW")
+  balanced.init("/v1/marketplaces/TEST-MP428UdVEvy6F1lLztbdA99d")
 else if window.config.env == "test"
   port = window.config.host.match(/:(\d+)$/)[1]
   window.config.urls.api = "http://splitme.dev:#{port}/api"

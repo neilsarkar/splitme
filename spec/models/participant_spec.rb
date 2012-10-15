@@ -42,12 +42,14 @@ describe Participant do
     it "parses errors if Balanced creation fails" do
       participant = FactoryGirl.build(:participant, :card_uri => "https://balancedpayments.com/visa")
 
+      error = Exception.new
+      error.stub(message: {cool: "nice"}.inspect)
       marketplace = stub
-      marketplace.stub(:create_buyer).and_raise(Balanced::Conflict)
+      marketplace.stub(:create_buyer).and_raise(error)
       Balanced::Marketplace.should_receive(:my_marketplace).and_return(marketplace)
 
       participant.save.should be_false
-      participant.errors[:registration].should == ["Something went wrong in creating your buyer account"]
+      participant.errors[:registration].should == [error.message]
     end
   end
 end
