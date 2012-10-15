@@ -1,4 +1,4 @@
-Base url: https://splitmeapp.com/api
+Base url: https://www.splitmeapp.com/api
 
 # Users
 
