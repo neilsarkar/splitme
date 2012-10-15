@@ -1,3 +1,5 @@
+Base url: https://splitmeapp.com/api
+
 # Users
 
 ## Create
