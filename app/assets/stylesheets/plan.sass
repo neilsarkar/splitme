@@ -1,6 +1,94 @@
 body.show_plan
-  tr.current
-    background-color: rgba(200, 180, 255, 0.5)
+  color: #646254
+  font-size: 14px
+
+  .section
+    padding: 20px
+    border-top: 1px solid #e5e3d9
+    &:first-child
+      border-top: 0
+    &.participant
+      padding-left: 10px
+      padding-right: 10px
+
+  .invited
+    color: #adaba0
+    margin-bottom: 10px
+
+  .title
+    font-size: 24px
+    font-weight: bold
+    .price
+      background-color: #d4d2c3
+      color: #fff
+      font-size: 17px
+      padding: 6px 8px
+
+  .description
+    margin-bottom: 20px
+
+  .line
+    overflow: hidden
+    color: #88867a
+    .people
+      float: left
+    .price
+      float: right
+    &.current
+      font-weight: bold
+      color: #646254
+
+  .subheading
+    text-transform: uppercase
+    color: #adaba1
+    margin: 0 10px 10px
+    font-size: 12px
+    font-weight: bold
+    margin-top: 20px
+    &:first-child
+      margin-top: 0
+
+  #participants
+    box-shadow: 0 1px 3px #888
+    border-radius: 3px
+    background-color: #FFF
+    .participant
+      border-top: 1px solid #f6f5ef
+      padding: 10px
+      &:first-child
+        border-top: 0
+
+  input:not([type=submit])
+    width: 100%
+    padding: 10px
+    border: 1px solid #e5e3d9
+    border-radius: 3px
+    margin-top: 10px
+    box-shadow: none
+    &:first-child
+      margin-top: 0
+
+  input[type=tel]
+    padding: 20px 10px
+
+  input.month
+    width: 45%
+    float: left
+
+  input.year
+    width: 45%
+    float: right
+
   input.invalid
-    border: 1px solid red
+    border: 1px solid #c97573
     background-color: rgba(255, 0, 0, 0.1)
+
+  .disclaimer
+    background-color: #dcdace
+    padding: 10px 15px
+    margin: 10px 0
+    clear: both
+    border-radius: 3px
+
+  input[type="submit"]
+    width: 100%

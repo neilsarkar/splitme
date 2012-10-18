@@ -4,19 +4,16 @@ class SM.PriceBreakdownView extends SM.BaseView
     @recalculate()
 
   template: """
-Total: {{total_price}}
-<table>
-  <tr>
-    <th>People</th>
-    <th>Cost per Person</th>
-  </tr>
-  {{#breakdown}}
-    <tr class={{class_name}}>
-      <td>{{number}}</td>
-      <td>{{price}}</td>
-    </tr>
-  {{/breakdown}}
-</table>
+{{#breakdown}}
+  <div class="line {{class_name}}">
+    <div class="people">
+      {{number}} People
+    </div>
+    <div class="price">
+      {{price}} / Person
+    </div>
+  </div>
+{{/breakdown}}
 """
 
   recalculate: =>
@@ -39,4 +36,3 @@ Total: {{total_price}}
 
   toJSON: =>
     breakdown: @breakdown
-    total_price: @plan.get("total_price")

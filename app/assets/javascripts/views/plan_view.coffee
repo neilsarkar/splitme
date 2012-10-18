@@ -18,14 +18,24 @@ class SM.PlanView extends SM.BaseView
     )
 
   template: """
-<h1>{{title}}</h1>
-<h2>{{description}}</h2>
-<h3> Price Breakdown </h3>
-<div id='price-breakdown'></div>
-<h3> Who's in </h3>
-<div id='participants'></div>
-<h3> Join </h3>
-<div id='join'></div>
+<img src='/assets/header.png' />
+<div class='section'>
+  <div class='invited'>You've been invited to join</div>
+  <div class='title'>
+    {{title}}
+    <span class='price'>{{total_price}}</span>
+  </div>
+</div>
+<div class='section'>
+  <div class='description'>{{description}}</div>
+  <div id='price-breakdown'></div>
+</div>
+<div class='participant section'>
+  <div class='subheading'>Who's In</div>
+  <div id='participants'></div>
+  <div class='subheading'>Join In</div>
+  <div id='join'></div>
+</div>
 """
 
   toJSON: =>

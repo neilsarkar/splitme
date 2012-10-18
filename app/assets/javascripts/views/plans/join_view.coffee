@@ -8,27 +8,36 @@ class SM.JoinView extends SM.BaseView
 
   template: """
 <form action='javascript:void(0)' method="POST">
-  <label for='js-name'>Name</label>
   <input id='js-name' placeholder='Name' />
 
-  <label for='js-email'>Email</label>
   <input id='js-email' placeholder='Email' />
 
-  <label for='js-phone-number'>Phone Number</label>
   <input id='js-phone-number' placeholder='Phone Number'/>
 
-  <label for='js-card-number'>Credit Card Number</label>
   <input id='js-card-number' placeholder='Credit Card Number' />
 
-  <label for='js-expiration-month'>Expiration Date</label>
-  <input id='js-expiration-month' placeholder='MM' type='tel'/>
-  <input id='js-expiration-year' placeholder='YYYY' type='tel'/>
+  <input id='js-expiration-month' class='month' placeholder='Exp. Month (MM)' type='tel'/>
+  <input id='js-expiration-year' class='year' placeholder='Exp. Year (YYYY)' type='tel'/>
 
-  <br />
-  <br />
+  <div class="disclaimer">
+    <p>
+      The current price per person is {{price_per_person}}.
+    </p>
+    <p>
+      This price will go down if more people join.
+    </p>
+    <p>
+      Your card will NOT be charged a dime until {{creator_name}} decides to collect.
+    </p>
+  </div>
+
   <input type='submit' value="I'm in" class='btn btn-success'/>
 </form>
 """
+
+  toJSON: =>
+    creator_name: @plan.get("treasurer_name")
+    price_per_person: @plan.get("price_per_person")
 
   process: =>
     @$("form").disableForm()
