@@ -13,18 +13,18 @@ class Api::PlansController < Api::BaseController
 
   def index
     plans = current_user.plans.order("created_at desc")
-    render_response(plans)
+    json = plans.map { |plan| plan.as_json(preview: true)}
+    render_response(json)
   end
 
   def show
     plan = current_user.plans.find(params[:id])
-    json = plan.as_json(participants: true, breakdown: true)
-    render_response(json)
+    render_response(plan)
   end
 
   def preview
     plan = Plan.includes(:user).find_by_token!(params[:plan_token])
-    render_response(plan.as_json(participants: true, treasurer_name: true, breakdown: true))
+    render_response(plan)
   end
 
   def collect

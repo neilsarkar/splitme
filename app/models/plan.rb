@@ -23,9 +23,12 @@ class Plan < ActiveRecord::Base
       locked: locked?
     }
 
-    json[:participants] = participants_json if options[:participants].present?
-    json[:treasurer_name] = user.name if options[:treasurer_name].present?
-    json[:breakdown] = PriceBreakdown.new(self).result if options[:breakdown].present?
+    unless json[:preview].present?
+      json[:participants] = participants_json
+      json[:treasurer_name] = user.name
+      json[:breakdown] = PriceBreakdown.new(self).result
+    end
+
     json
   end
 
