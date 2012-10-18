@@ -43,6 +43,10 @@ class Plan < ActiveRecord::Base
     @price_per_person ||= (super || total_price / participants_count)
   end
 
+  def price_per_person_with_fees
+    price_per_person + 100 + (price_per_person*0.03).round
+  end
+
   def total_price=(price)
     super(parse_price(price))
   end

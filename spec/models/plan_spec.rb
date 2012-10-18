@@ -68,6 +68,15 @@ describe Plan do
       end
     end
 
+    describe "#price_per_person_with_fees" do
+      it "should be price per person plus 3% plus $1" do
+        plan = Plan.new(price_per_person: 3334)
+        # $1 fee = $1.00 = 100
+        # 3% fee = $1.0002 = 100. Round down bc the $1 fee will cover missing cents
+        plan.price_per_person_with_fees.should == 3534
+      end
+    end
+
     describe "#total_price_string" do
       it "presents a dollar representation" do
         plan = Plan.new(total_price: 10000)

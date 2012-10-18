@@ -27,7 +27,7 @@ describe Commitment do
       commitment = FactoryGirl.create(:commitment)
       buyer = stub
       buyer.should_receive(:debit).
-        with(commitment.plan.price_per_person, commitment.plan.title).
+        with(commitment.plan.price_per_person_with_fees, commitment.plan.title).
         and_return(true)
       Balanced::Account.stub(:find_by_email).
         with(commitment.participant.email).
