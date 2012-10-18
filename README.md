@@ -191,14 +191,6 @@ https://splitme-b.herokuapp.com/api
 
 ### Response: 404 (Plan doesn't exist)
 
-## Collect
-
-### POST /plans/:id/collect
-
-### Response: 200
-
-### Response: 409 (Already collected)
-
 # Participants
 
 ## Create
@@ -245,4 +237,12 @@ https://splitme-b.herokuapp.com/api
 </pre>
 
 ### Response: 400 (Card charge failed)
+
+# Collect
+
+### POST /plans/:id/collect
+
+### Response: 200
+
+### Response: 409 (Already collected)
 
