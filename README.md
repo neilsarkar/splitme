@@ -117,12 +117,7 @@ Base url: https://www.splitmeapp.com/api
     :token
     :is_fixed_price
     :locked
-    breakdown: [
-      { people: 2, price_per_person: "$100.00", current: true }
-      { people: 3, price_per_person: "$50.00", next: true }
-      { people: 4, price_per_person: "$33.34" }
-      ...
-    ]
+    :breakdown
     participants: [
       {
         :id
@@ -135,6 +130,24 @@ Base url: https://www.splitmeapp.com/api
       ...
     ]
   }
+</pre>
+
+*Sample breakdown for fixed price*
+<pre style='font-style: italic'>
+[
+  { people: 2, price_per_person: "$50.00", current: true }
+  { people: 3, price_per_person: "$33.34", next: true }
+  { people: 4, price_per_person: "$25.00" }
+  { people: 5, price_per_person: "$20.00" }
+  { people: 6, price_per_person: "$16.67" }
+]
+</pre>
+
+*Sample breakdown for per person price*
+<pre style='font-style: italic'>
+[
+  { people: "Any number", price_per_person: "$25.00", current: true}
+]
 </pre>
 
 ### Response: 404 (Plan doesn't exist or User doesn't own plan)

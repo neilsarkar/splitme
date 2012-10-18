@@ -13,16 +13,24 @@ class PriceBreakdown
   end
 
   def calculate
-    return [] unless @plan.fixed_price?
-
-    (current..(current+4)).to_a.inject([]) do |result, people|
-      line = {
-        people: people,
-        price_per_person: price_string(people)
-      }
-      line[:current] = true if people == current
-      line[:next] = true if people == current + 1
-      result.push(line)
+    if @plan.fixed_price?
+      (current..(current+4)).to_a.inject([]) do |result, people|
+        line = {
+          people: people,
+          price_per_person: price_string(people)
+        }
+        line[:current] = true if people == current
+        line[:next] = true if people == current + 1
+        result.push(line)
+      end
+    else
+      [
+        {
+          people: "Any number",
+          price_per_person: @plan.price_per_person_string,
+          current: true
+        }
+      ]
     end
   end
 

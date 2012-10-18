@@ -67,10 +67,16 @@ describe PriceBreakdown do
     end
 
     context "when plan price is per person" do
-      it "returns an empty array" do
-        plan = stub(total_price: 10000, participants: [], fixed_price?: false)
+      it "returns one line" do
+        plan = stub(price_per_person_string: "$10.00", participants: [], fixed_price?: false)
         price_breakdown = PriceBreakdown.new(plan)
-        price_breakdown.result.should == []
+        price_breakdown.result.should == [
+          {
+            people: "Any number",
+            price_per_person: "$10.00",
+            current: true
+          }
+        ]
       end
     end
   end
