@@ -47,6 +47,7 @@ describe Api::PlansController do
       plan_json["title"].should == plan.title
       plan_json["description"].should == plan.description
       plan_json["total_price"].should == "$400.00"
+      plan_json["is_fixed_price"].should == true
       plan_json["price_per_person"].should == plan.price_per_person_string
       plan_json["token"].should == plan.token
       plan_json["locked"].should be_false

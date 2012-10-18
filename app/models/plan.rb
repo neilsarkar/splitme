@@ -19,7 +19,7 @@ class Plan < ActiveRecord::Base
       description: description,
       total_price: total_price_string,
       price_per_person: price_per_person_string,
-      fixed_price: fixed_price?,
+      is_fixed_price: fixed_price?,
       locked: locked?
     }
 
