@@ -18,20 +18,13 @@ class Api::PlansController < Api::BaseController
 
   def show
     plan = current_user.plans.find(params[:id])
-    json = plan.as_json(participants: true)
-    json[:breakdown] = {
-      "1" => "$100.00",
-      "2" => "$50.00",
-      "3" => "$33.34",
-      "4" => "$25.00",
-      "5" => "$20.00"
-    }
+    json = plan.as_json(participants: true, breakdown: true)
     render_response(json)
   end
 
   def preview
     plan = Plan.includes(:user).find_by_token!(params[:plan_token])
-    render_response(plan.as_json(participants: true, treasurer_name: true))
+    render_response(plan.as_json(participants: true, treasurer_name: true, breakdown: true))
   end
 
   def collect

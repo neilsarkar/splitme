@@ -19,12 +19,13 @@ class Plan < ActiveRecord::Base
       description: description,
       total_price: total_price_string,
       price_per_person: price_per_person_string,
-      fixed_price: read_attribute(:total_price).present?,
+      fixed_price: fixed_price?,
       locked: locked?
     }
 
     json[:participants] = participants_json if options[:participants].present?
     json[:treasurer_name] = user.name if options[:treasurer_name].present?
+    json[:breakdown] = PriceBreakdown.new(self).breakdown if options[:breakdown].present?
     json
   end
 
@@ -74,6 +75,10 @@ class Plan < ActiveRecord::Base
 
   def lock!
     update_attribute :locked, true unless locked?
+  end
+
+  def fixed_price?
+    read_attribute(:total_price).present?
   end
 
   private

@@ -75,20 +75,14 @@ describe Api::PlansController do
       plan_json["participants"].length.should == 0
     end
 
-    it "shows stubbed breakdown" do
+    it "shows breakdown" do
       plan = FactoryGirl.create(:plan, user: @user, total_price: 40000)
       get :show, token: @user.token, id: plan.id
 
       response.should be_success
 
       plan_json = json["response"]
-      plan_json["breakdown"].should == {
-       "1" => "$100.00",
-       "2" => "$50.00",
-       "3" => "$33.34",
-       "4" => "$25.00",
-       "5" => "$20.00"
-      }
+      plan_json["breakdown"].should == PriceBreakdown.new(plan).breakdown.as_json
     end
 
     it "shows plan as locked if it is locked" do
