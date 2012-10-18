@@ -5,14 +5,20 @@ class Participant < ActiveRecord::Base
 
   before_create :create_balanced_buyer
 
-  def as_json(*)
-    {
-      id: id,
-      email: email,
-      name: name,
-      phone_number: phone_number,
-      card_type: card_type
-    }
+  def as_json(options = {})
+    if options == :public
+      {
+        name: name
+      }
+    else
+      {
+        id: id,
+        email: email,
+        name: name,
+        phone_number: phone_number,
+        card_type: card_type
+      }
+    end
   end
 
   private

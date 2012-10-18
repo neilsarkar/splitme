@@ -101,7 +101,7 @@ Base url: https://www.splitmeapp.com/api
   ]
 </pre>
 
-## Show (Returns Stubbed Breakdown)
+## Show
 
 ### Request: GET /plans/:id
 
@@ -118,8 +118,9 @@ Base url: https://www.splitmeapp.com/api
     :is_fixed_price
     :locked
     breakdown: [
-      { people: 1, price_per_person: "$100.00" }
-      { people: 2, price_per_person: "$50.00" }
+      { people: 2, price_per_person: "$100.00", current: true }
+      { people: 3, price_per_person: "$50.00", next: true }
+      { people: 4, price_per_person: "$33.34" }
       ...
     ]
     participants: [
@@ -154,18 +155,15 @@ Base url: https://www.splitmeapp.com/api
     :token
     :is_fixed_price
     :locked
-    breakdown: {
-      1: "$100.00"
-      2: "$50.00"
+    breakdown: [
+      { people: 2, price_per_person: "$100.00", current: true }
+      { people: 3, price_per_person: "$50.00", next: true }
+      { people: 4, price_per_person: "$33.34" }
       ...
-    }
+    ]
     participants: [
       {
-        :id
         :name
-        :email
-        :phone_number
-        :card_type
       },
       ...
     ]

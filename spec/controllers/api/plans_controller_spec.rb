@@ -63,6 +63,7 @@ describe Api::PlansController do
       plan_json["participants"][0]["name"].should == plan.participants.first.name
       plan_json["participants"][0]["email"].should == plan.participants.first.email
       plan_json["participants"][0]["phone_number"].should == plan.participants.first.phone_number
+      plan_json["participants"][0]["state"].should == "unpaid"
     end
 
     it "doesn't blow up with no participants" do
@@ -127,8 +128,9 @@ describe Api::PlansController do
       plan_json = json["response"]
       plan_json["participants"].length.should == plan.participants.length
       plan_json["participants"][0]["name"].should == plan.participants.first.name
-      plan_json["participants"][0]["email"].should == plan.participants.first.email
-      plan_json["participants"][0]["phone_number"].should == plan.participants.first.phone_number
+      plan_json["participants"][0]["email"].should be_blank
+      plan_json["participants"][0]["phone_number"].should be_blank
+      plan_json["participants"][0]["state"].should be_blank
     end
 
     it "shows creator name" do

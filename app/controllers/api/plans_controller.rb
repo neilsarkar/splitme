@@ -24,7 +24,7 @@ class Api::PlansController < Api::BaseController
 
   def preview
     plan = Plan.includes(:user).find_by_token!(params[:plan_token])
-    render_response(plan)
+    render_response(plan.as_json(hide_details: true))
   end
 
   def collect

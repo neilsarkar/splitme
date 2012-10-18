@@ -24,7 +24,7 @@ class Plan < ActiveRecord::Base
     }
 
     unless json[:preview].present?
-      json[:participants] = participants_json
+      json[:participants] = participants_json(options[:hide_details])
       json[:treasurer_name] = user.name
       json[:breakdown] = PriceBreakdown.new(self).result
     end
@@ -90,9 +90,13 @@ class Plan < ActiveRecord::Base
     participants.blank? ? 1 : participants.length + 1
   end
 
-  def participants_json
-    commitments.map do |commitment|
-      commitment.participant.as_json.merge(state: commitment.state)
+  def participants_json(hide_details)
+    if hide_details
+      participants.map { |participant| participant.as_json(:public) }
+    else
+      commitments.map do |commitment|
+        commitment.participant.as_json.merge(state: commitment.state)
+      end
     end
   end
 
