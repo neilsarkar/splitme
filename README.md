@@ -1,4 +1,5 @@
-Base url: https://www.splitmeapp.com/api
+Production Base Url: https://www.splitmeapp.com/api
+Staging Base Url: https://splitme-b.herokuapp.com/api
 
 # Users
 
