@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
                         :date_of_birth
 
   validates_uniqueness_of :email
-  validate :valid_email_format
+  validate :valid_email_format, if: :email?
 
   validate :us_phone_number, if: :phone_number?
   validate :valid_date_of_birth, if: :date_of_birth?
