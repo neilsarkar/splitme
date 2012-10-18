@@ -82,7 +82,7 @@ describe Api::PlansController do
       response.should be_success
 
       plan_json = json["response"]
-      plan_json["breakdown"].should == PriceBreakdown.new(plan).breakdown.as_json
+      plan_json["breakdown"].should == PriceBreakdown.new(plan).result.as_json
     end
 
     it "shows plan as locked if it is locked" do

@@ -1,30 +1,27 @@
 class PriceBreakdown
-  attr_reader :breakdown
+  attr_reader :result
 
   def initialize(plan)
     @plan = plan
-    @breakdown = calculate
+    @result = calculate
   end
 
   private
 
-  def count
-    @count ||= @plan.participants.size.to_i + 2
+  def current
+    @current ||= @plan.participants.size + 1
   end
 
   def calculate
     return [] unless @plan.fixed_price?
 
-    start = [1, count-2].max
-    finish = [5,count+2].max
-
-    (start..finish).to_a.inject([]) do |result, people|
+    (current..(current+4)).to_a.inject([]) do |result, people|
       line = {
         people: people,
         price_per_person: price_string(people)
       }
-      line[:current] = true if people == count - 1
-      line[:next] = true if people == count
+      line[:current] = true if people == current
+      line[:next] = true if people == current + 1
       result.push(line)
     end
   end

@@ -25,7 +25,7 @@ class Plan < ActiveRecord::Base
 
     json[:participants] = participants_json if options[:participants].present?
     json[:treasurer_name] = user.name if options[:treasurer_name].present?
-    json[:breakdown] = PriceBreakdown.new(self).breakdown if options[:breakdown].present?
+    json[:breakdown] = PriceBreakdown.new(self).result if options[:breakdown].present?
     json
   end
 
