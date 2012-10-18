@@ -15,7 +15,7 @@ else if window.config.host.match("127.0.0.1")
 
 if window.config.env == "production"
   window.config.urls.api = "https://www.splitmeapp.com/api"
-  balanced.init("/v1/marketplaces/TEST-MP428UdVEvy6F1lLztbdA99d")
+  balanced.init("/v1/marketplaces/MP3Cm5EGcLGKWXDNsMvn8RvQ")
 else if window.config.env == "staging"
   window.config.urls.api = "https://splitme-b.herokuapp.com/api"
   balanced.init("/v1/marketplaces/TEST-MP3iOVTNMVX7lg0SG16NQV2v")
