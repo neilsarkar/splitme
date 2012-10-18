@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
                         :date_of_birth
 
   validates_uniqueness_of :email
+  validate :valid_email_format
 
   validate :us_phone_number, if: :phone_number?
   validate :valid_date_of_birth, if: :date_of_birth?
@@ -78,6 +79,16 @@ class User < ActiveRecord::Base
   def valid_date_of_birth
     unless date_of_birth.match /\d+\/\d{4}/
       @errors[:date_of_birth] << "Date of birth must be in format mm/yyyy"
+    end
+  end
+
+  def valid_email_format
+    email_name_regex  = '[A-Z0-9_\.%\+\-\']+'
+    domain_head_regex = '(?:[A-Z0-9\-]+\.)+'
+    domain_tld_regex  = '(?:[A-Z]{2,4}|museum|travel)'
+
+    unless email.match /\A#{email_name_regex}@#{domain_head_regex}#{domain_tld_regex}\z/i
+      @errors[:email] << "must be a valid format"
     end
   end
 

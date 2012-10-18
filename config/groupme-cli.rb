@@ -13,7 +13,6 @@ GroupMe.configure do
   environment :production do
     set :heroku_app_name, "splitme"
     set :deploy_steps, [
-      :check_pending_migrations,
       :test_suite,
       :deploy!,
       :migrate!

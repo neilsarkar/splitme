@@ -47,6 +47,16 @@ describe User do
       user.valid?
       user.errors.messages[:phone_number].should be_blank
     end
+
+    it "requires valid email" do
+      user = FactoryGirl.build(:user, email: "neil")
+      user.should_not be_valid
+      user.errors.messages[:email].should include "must be a valid format"
+
+      user.email = "neil@groupme.com"
+      user.valid?
+      user.errors.messages[:email].should be_blank
+    end
   end
 
   it "accepts a password" do
