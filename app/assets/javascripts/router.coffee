@@ -3,7 +3,7 @@ class SM.App extends Backbone.Router
 
   routes:
     "" : "home"
-    ":token": "show_plan"
+    ":token": "join"
 
   route: (route, name, callback) =>
     super(route, name, =>
@@ -26,6 +26,6 @@ class SM.App extends Backbone.Router
     view = new SM.HomeView
     @show(view)
 
-  show_plan: (token) =>
-    view = new SM.PlanView(token)
+  join: (token) =>
+    view = new SM.JoinView(token)
     @show(view)

@@ -95,6 +95,7 @@ Base url: https://www.splitmeapp.com/api
       :price_per_person
       :token
       :is_fixed_price
+      :locked
     },
     ...
   ]
@@ -115,6 +116,7 @@ Base url: https://www.splitmeapp.com/api
     :price_per_person
     :token
     :is_fixed_price
+    :locked
     breakdown: [
       { people: 1, price_per_person: "$100.00" }
       { people: 2, price_per_person: "$50.00" }
@@ -151,6 +153,7 @@ Base url: https://www.splitmeapp.com/api
     :price_per_person
     :token
     :is_fixed_price
+    :locked
     breakdown: {
       1: "$100.00"
       2: "$50.00"

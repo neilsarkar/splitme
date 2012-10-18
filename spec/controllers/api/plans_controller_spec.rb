@@ -49,6 +49,7 @@ describe Api::PlansController do
       plan_json["total_price"].should == "$400.00"
       plan_json["price_per_person"].should == plan.price_per_person_string
       plan_json["token"].should == plan.token
+      plan_json["locked"].should be_false
     end
 
     it "shows participants" do
@@ -88,6 +89,13 @@ describe Api::PlansController do
        "4" => "$25.00",
        "5" => "$20.00"
       }
+    end
+
+    it "shows plan as locked if it is locked" do
+      plan = FactoryGirl.create(:plan, user: @user)
+      plan.lock!
+      get :show, token: @user.token, id: plan.id
+      json["response"]["locked"].should be_true
     end
 
     it "returns 404 if the user does not own the plan" do

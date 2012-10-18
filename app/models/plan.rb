@@ -19,7 +19,8 @@ class Plan < ActiveRecord::Base
       description: description,
       total_price: total_price_string,
       price_per_person: price_per_person_string,
-      fixed_price: read_attribute(:total_price).present?
+      fixed_price: read_attribute(:total_price).present?,
+      locked: locked?
     }
 
     json[:participants] = participants_json if options[:participants].present?
@@ -69,6 +70,10 @@ class Plan < ActiveRecord::Base
     if merchant.credit(total_escrowed)
       commitments.escrowed.each &:mark_collected!
     end
+  end
+
+  def lock!
+    update_attribute :locked, true unless locked?
   end
 
   private

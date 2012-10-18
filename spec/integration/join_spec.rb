@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Viewing Plan" do
+describe "Joining Plan" do
   it "Shows plan details" do
     plan = FactoryGirl.create(:plan, total_price: 10000)
     commitment_1 = FactoryGirl.create(:commitment, plan: plan)
@@ -25,5 +25,20 @@ describe "Viewing Plan" do
 
     page.should have_content(commitment_1.participant.name)
     page.should have_content(commitment_2.participant.name)
+  end
+
+  it "Does not show form if plan is locked" do
+    plan = FactoryGirl.create(:plan)
+    plan.lock!
+
+    visit "/#{plan.token}"
+
+    page.should have_content(plan.title)
+    page.should have_content(plan.description)
+
+    page.should have_content(plan.user.name)
+    page.should have_content("Ya burnt!")
+
+    page.should_not have_css("form")
   end
 end

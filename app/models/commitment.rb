@@ -13,7 +13,7 @@ class Commitment < ActiveRecord::Base
   scope :collected, where(state: "collected")
 
   def charge!
-    plan.update_attribute :locked, true unless plan.locked?
+    plan.lock!
 
     buyer = Balanced::Account.find_by_email(participant.email)
     if buyer.debit(plan.price_per_person_with_fees, plan.title)

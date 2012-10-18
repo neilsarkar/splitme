@@ -1,15 +1,15 @@
-class SM.PlanView extends SM.BaseView
+class SM.JoinView extends SM.BaseView
   mappings: {
     "price_breakdown": "#price-breakdown"
     "participants": "#participants"
-    "join": "#join"
+    "join_form": "#join"
   }
 
   initialize: (token) ->
     @plan = new SM.Plan(token: token)
     @views.price_breakdown = new SM.PriceBreakdownView(@plan)
     @views.participants = new SM.ParticipantsView(@plan)
-    @views.join = new SM.JoinView(@plan)
+    @views.join_form = new SM.JoinFormView(@plan)
 
     @plan.fetch_from_token(
       success: @render

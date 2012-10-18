@@ -1,10 +1,12 @@
-class SM.JoinView extends SM.BaseView
+class SM.JoinFormView extends SM.BaseView
   events: {
     "submit form": "process"
     "focus input": "clearInvalid"
   }
 
   initialize: (@plan) ->
+    @on "pre_render", =>
+      @template = @lockedTemplate if @plan.get("locked")
 
   template: """
 <form action='javascript:void(0)' method="POST">
@@ -33,6 +35,17 @@ class SM.JoinView extends SM.BaseView
 
   <input type='submit' value="I'm in" class='btn btn-success'/>
 </form>
+"""
+
+  lockedTemplate: """
+<div class="disclaimer">
+  <p>
+    Sorry, this plan has already been split.
+  </p>
+  <p>
+    If you're already in, enjoy! If not, Ya burnt!
+  </p>
+</div>
 """
 
   toJSON: =>
