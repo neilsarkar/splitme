@@ -6,7 +6,7 @@ class SM.JoinFormView extends SM.BaseView
 
   initialize: (@plan) ->
     @on "pre_render", =>
-      @template = @lockedTemplate if @plan.get("locked")
+      @template = @lockedTemplate if @plan.get("is_locked")
 
   template: """
 <form action='javascript:void(0)' method="POST">

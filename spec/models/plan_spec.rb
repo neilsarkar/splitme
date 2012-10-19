@@ -159,20 +159,23 @@ describe Plan do
   end
 
   describe "#collected?" do
-    it "returns true if all commitments are collected" do
-      plan = FactoryGirl.create(:plan)
+    it "returns true if all commitments are collected or failed" do
+      plan = FactoryGirl.create(:plan, locked: true)
 
       plan.should_not be_collected
 
       commitment_1 = FactoryGirl.create(:commitment, plan: plan)
-      commitment_1.send :mark_collected!
+      commitment_1.mark_collected!
 
       commitment_2 = FactoryGirl.create(:commitment, plan: plan)
       commitment_2.send :mark_failed!
 
+      commitment_3 = FactoryGirl.create(:commitment, plan: plan)
+      commitment_3.send :mark_escrowed!
+
       plan.reload.should_not be_collected
 
-      commitment_2.send :mark_collected!
+      commitment_3.mark_collected!
       plan.reload.should be_collected
     end
   end

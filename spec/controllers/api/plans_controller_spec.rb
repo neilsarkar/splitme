@@ -50,7 +50,8 @@ describe Api::PlansController do
       plan_json["is_fixed_price"].should == true
       plan_json["price_per_person"].should == plan.price_per_person_string
       plan_json["token"].should == plan.token
-      plan_json["locked"].should be_false
+      plan_json["is_locked"].should be_false
+      plan_json["is_collected"].should be_false
     end
 
     it "shows participants" do
@@ -91,7 +92,7 @@ describe Api::PlansController do
       plan = FactoryGirl.create(:plan, user: @user)
       plan.lock!
       get :show, token: @user.token, id: plan.id
-      json["response"]["locked"].should be_true
+      json["response"]["is_locked"].should be_true
     end
 
     it "returns 404 if the user does not own the plan" do
@@ -161,7 +162,7 @@ describe Api::PlansController do
     end
 
     it "collects funds and returns 200" do
-      Plan.any_instance.should_receive(:collected?).and_return(false)
+      Plan.any_instance.stub(:collected?).and_return(false)
       Plan.any_instance.should_receive(:collect!).and_return(true)
       post :collect, id: @plan.id, token: @user.token
       response.status.should == 200

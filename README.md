@@ -101,7 +101,8 @@ https://splitme-b.herokuapp.com/api
       :price_per_person
       :token
       :is_fixed_price
-      :locked
+      :is_locked
+      :is_collected
     },
     ...
   ]
@@ -122,7 +123,8 @@ https://splitme-b.herokuapp.com/api
     :price_per_person
     :token
     :is_fixed_price
-    :locked
+    :is_locked
+    :is_collected
     :breakdown
     participants: [
       {
@@ -173,7 +175,8 @@ https://splitme-b.herokuapp.com/api
     :price_per_person
     :token
     :is_fixed_price
-    :locked
+    :is_locked
+    :is_collected
     breakdown: [
       { people: 2, price_per_person: "$100.00", current: true }
       { people: 3, price_per_person: "$50.00", next: true }

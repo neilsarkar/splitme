@@ -11,6 +11,7 @@ class Commitment < ActiveRecord::Base
 
   scope :escrowed, where(state: "escrowed")
   scope :collected, where(state: "collected")
+  scope :failed, where(state: "failed")
 
   def charge!
     plan.lock!

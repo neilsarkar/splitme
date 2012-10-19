@@ -20,7 +20,8 @@ class Plan < ActiveRecord::Base
       total_price: total_price_string,
       price_per_person: price_per_person_string,
       is_fixed_price: fixed_price?,
-      locked: locked?
+      is_locked: locked?,
+      is_collected: collected?
     }
 
     unless json[:preview].present?
@@ -65,7 +66,8 @@ class Plan < ActiveRecord::Base
   end
 
   def collected?
-    commitments.present? and commitments.collected.size == commitments.size
+    return false unless locked?
+    commitments.present? and commitments.collected.size + commitments.failed.size == commitments.size
   end
 
   def collect!

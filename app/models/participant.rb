@@ -5,6 +5,9 @@ class Participant < ActiveRecord::Base
 
   before_create :create_balanced_buyer
 
+  has_many :commitments
+  has_many :plans, through: :commitments
+
   def as_json(options = {})
     if options == :public
       {
