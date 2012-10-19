@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./vendor
+//= require balanced_stub
 //= require_tree ./initializers
 //= require request
 //= require ./views/base_view

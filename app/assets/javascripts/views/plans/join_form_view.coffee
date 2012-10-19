@@ -16,7 +16,6 @@ class SM.JoinFormView extends SM.BaseView
 
   <input id='js-email' placeholder='Email' />
 
-
   <input id='js-phone-number' placeholder='Phone Number'/>
 
   <input id='js-card-number' placeholder='Credit Card Number' />
@@ -93,6 +92,7 @@ class SM.JoinFormView extends SM.BaseView
       charge.create_from_sign_in({
         success: (message) =>
           @form().alertSuccess(message)
+          @$("form input").remove()
         error: (message) =>
           @form().alertError(message)
       })
@@ -117,6 +117,7 @@ class SM.JoinFormView extends SM.BaseView
       charge.create({
         success: (message) =>
           @form().alertSuccess(message)
+          @$("form input").remove()
         error: (message) =>
           @form().alertError(message)
       })

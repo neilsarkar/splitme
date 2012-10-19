@@ -24,4 +24,5 @@ else if window.config.env == "development"
   balanced.init("/v1/marketplaces/TEST-MP428UdVEvy6F1lLztbdA99d")
 else if window.config.env == "test"
   port = window.config.host.match(/:(\d+)$/)[1]
+  window.balanced = new BalancedStub
   window.config.urls.api = "http://splitme.dev:#{port}/api"

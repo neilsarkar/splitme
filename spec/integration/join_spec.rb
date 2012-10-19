@@ -42,6 +42,34 @@ describe "Joining Plan" do
     page.should_not have_css("form")
   end
 
+  it "Joins the plan as a new user" do
+    plan = FactoryGirl.create(:plan)
+    visit "/#{plan.token}"
+
+    page.should have_content(plan.title)
+
+    fill_in "js-email", with: "sancho@panza.com"
+    fill_in "js-name", with: "Sancho Panza"
+    fill_in "js-phone-number", with: "9173706969"
+    fill_in "js-card-number", with: "4012888888881881"
+
+    fill_in "js-expiration-month", with: "01"
+    fill_in "js-expiration-year", with: "2016"
+
+    fill_in "js-password", with: "sekret"
+
+    click_button "I'm in"
+    page.should have_content("Awesome, you're in.")
+
+    participant = Participant.last
+    participant.email.should == "sancho@panza.com"
+    participant.name.should == "Sancho Panza"
+    participant.phone_number.should == "9173706969"
+    participant.card_uri.should_not be_blank
+    participant.authenticate("sekret").should == participant
+    plan.reload.participants.should include participant
+  end
+
   it "Joins the plan as an existing user" do
     plan = FactoryGirl.create(:plan)
     participant = FactoryGirl.create(:participant, password: "sekret")
