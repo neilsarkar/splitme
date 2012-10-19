@@ -21,7 +21,7 @@ describe PriceBreakdown do
         }
         result[2].should == {
           people: 3,
-          price_per_person: "$33.34"
+          price_per_person: "$33.33"
         }
         result[3].should == {
           people: 4,
@@ -53,11 +53,11 @@ describe PriceBreakdown do
         }
         result[2].should == {
           people: 6,
-          price_per_person: "$16.67"
+          price_per_person: "$16.66"
         }
         result[3].should == {
           people: 7,
-          price_per_person: "$14.29"
+          price_per_person: "$14.28"
         }
         result[4].should == {
           people: 8,

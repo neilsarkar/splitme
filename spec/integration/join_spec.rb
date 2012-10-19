@@ -13,16 +13,16 @@ describe "Joining Plan" do
     page.should have_content("2")
     page.should have_content("$50.00")
     page.should have_content("3")
-    page.should have_content("$33.34")
+    page.should have_content("$33.33")
     page.should have_content("4")
     page.should have_content("$25.00")
     page.should have_content("5")
     page.should have_content("$20.00")
     page.should have_content("6")
-    page.should have_content("$16.67")
+    page.should have_content("$16.66")
 
     page.find(".current").should have_content "$50.00"
-    page.find(".next").should have_content "$33.34"
+    page.find(".next").should have_content "$33.33"
 
     page.should have_content(commitment.participant.name)
   end

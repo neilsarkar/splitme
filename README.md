@@ -144,10 +144,10 @@ https://splitme-b.herokuapp.com/api
 <pre style='font-style: italic'>
 [
   { people: 2, price_per_person: "$50.00", current: true }
-  { people: 3, price_per_person: "$33.34", next: true }
+  { people: 3, price_per_person: "$33.33", next: true }
   { people: 4, price_per_person: "$25.00" }
   { people: 5, price_per_person: "$20.00" }
-  { people: 6, price_per_person: "$16.67" }
+  { people: 6, price_per_person: "$16.66" }
 ]
 </pre>
 
@@ -180,7 +180,7 @@ https://splitme-b.herokuapp.com/api
     breakdown: [
       { people: 2, price_per_person: "$100.00", current: true }
       { people: 3, price_per_person: "$50.00", next: true }
-      { people: 4, price_per_person: "$33.34" }
+      { people: 4, price_per_person: "$33.33" }
       ...
     ]
     participants: [

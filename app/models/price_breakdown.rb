@@ -35,7 +35,7 @@ class PriceBreakdown
   end
 
   def price_string(people)
-    price_in_cents = (@plan.total_price.to_f / people).ceil
+    price_in_cents = (@plan.total_price.to_f / people).floor
     "$%.2f" % (price_in_cents.to_f / 100)
   end
 end
