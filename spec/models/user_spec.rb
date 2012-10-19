@@ -115,6 +115,32 @@ describe User do
         })
         user.balanced_payments_id.should == "abcdef"
       end
+
+      it "surfaces bank account creation errors" do
+        error = Exception.new
+        error.stub(message: "Balanced::BadRequest(400)::Bad Request:: POST https://api.balancedpayments.com/v1/marketplaces/MP3Cm5EGcLGKWXDNsMvn8RvQ/bank_accounts: request: Invalid field [bank_code] - \"0\" must have length >= 9 Your request id is OHM17c932de1a2911e29dfc026ba7cd33d0.")
+        error.stub(body: {
+          "description" => "Invalid field [bank_code] - \"0\" must have length >= 9 Your request id is OHM17c932de1a2911e29dfc026ba7cd33d0."
+        })
+        account = stub
+        account.should_receive(:save).and_raise(error)
+        Balanced::BankAccount.should_receive(:new).and_return(account)
+
+        user = FactoryGirl.build(:user, {
+          email: "neil@groupme.com",
+          name: "Neil Sarkar",
+          phone_number: "12121231234",
+          bank_account_number: "1234567890",
+          bank_routing_number: "0",
+          street_address: "1600 Pennsylvania Avenue",
+          zip_code: "90210",
+          date_of_birth: "1/1984"
+        })
+
+        user.save
+        user.should_not be_persisted
+        user.errors[:bank_account].should == ["Invalid field [bank_code] - \"0\" must have length >= 9 Your request id is OHM17c932de1a2911e29dfc026ba7cd33d0."]
+      end
     end
   end
 

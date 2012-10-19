@@ -74,6 +74,13 @@ class User < ActiveRecord::Base
       bank_account.uri
     )
     self.balanced_payments_id = merchant.id
+  rescue Exception => e
+    if e.respond_to?(:body)
+      @errors[:bank_account] << e.body["description"]
+    else
+      @errors[:bank_account] << e.message
+    end
+    false
   end
 
   def valid_date_of_birth
