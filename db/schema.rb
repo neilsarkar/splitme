@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121014212254) do
+ActiveRecord::Schema.define(:version => 20121019144757) do
 
   create_table "commitments", :force => true do |t|
     t.integer  "participant_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20121014212254) do
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
     t.string   "state",          :default => "unpaid", :null => false
+    t.string   "debit_uri"
   end
 
   add_index "commitments", ["participant_id"], :name => "index_commitments_on_participant_id"

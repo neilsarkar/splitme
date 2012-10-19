@@ -23,16 +23,17 @@ describe Commitment do
   end
 
   describe "#charge!" do
-    it "charges the card" do
+    it "charges the card and saves the debit uri" do
       commitment = FactoryGirl.create(:commitment)
       buyer = stub
       buyer.should_receive(:debit).
         with(commitment.plan.price_per_person_with_fees, commitment.plan.title).
-        and_return(true)
-      Balanced::Account.stub(:find_by_email).
+        and_return(stub(uri: "/debit/abcd"))
+      Balanced::Account.should_receive(:find_by_email).
         with(commitment.participant.email).
         and_return(buyer)
       commitment.charge!
+      commitment.debit_uri.should == "/debit/abcd"
     end
 
     it "updates the state of the commitment" do

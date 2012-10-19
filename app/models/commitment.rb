@@ -17,8 +17,9 @@ class Commitment < ActiveRecord::Base
     plan.lock!
 
     buyer = Balanced::Account.find_by_email(participant.email)
-    if buyer.debit(plan.price_per_person_with_fees, plan.title)
+    if charge = buyer.debit(plan.price_per_person_with_fees, plan.title)
       mark_escrowed!
+      update_attribute :debit_uri, charge.uri
     else
       mark_failed!
     end
