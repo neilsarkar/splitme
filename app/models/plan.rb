@@ -73,7 +73,8 @@ class Plan < ActiveRecord::Base
   def collect!
     return unless total_escrowed > 0
     merchant = Balanced::Account.find_by_email(user.email)
-    if merchant.credit(total_escrowed)
+    if credit = merchant.credit(total_escrowed)
+      update_attribute :credit_uri, credit.uri
       commitments.escrowed.each &:mark_collected!
     end
   end

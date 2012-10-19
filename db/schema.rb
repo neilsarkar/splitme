@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121019144757) do
+ActiveRecord::Schema.define(:version => 20121019151310) do
 
   create_table "commitments", :force => true do |t|
     t.integer  "participant_id"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20121019144757) do
     t.datetime "updated_at",       :null => false
     t.string   "token"
     t.boolean  "locked"
+    t.string   "credit_uri"
   end
 
   add_index "plans", ["token"], :name => "index_plans_on_token", :unique => true

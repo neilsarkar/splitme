@@ -195,15 +195,16 @@ describe Plan do
       commitment_2.reload.should be_collected
     end
 
-    it "credits merchant" do
+    it "credits merchant and saves uri" do
       plan = FactoryGirl.create(:plan)
       plan.stub(total_escrowed: 10000)
 
       merchant = stub
-      merchant.should_receive(:credit).with(10000)
+      merchant.should_receive(:credit).with(10000).and_return(stub(uri: "/credit/abcd"))
       Balanced::Account.should_receive(:find_by_email).with(plan.user.email).
         and_return(merchant)
       plan.collect!
+      plan.reload.credit_uri.should == "/credit/abcd"
     end
 
     context "error" do

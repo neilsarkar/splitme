@@ -36,13 +36,19 @@ module Balanced
     end
 
     def credit(amount)
-      true
+      FakeCredit.new
     end
   end
 
   class FakeDebit
     def uri
       "/debit/sskdcnskdjcnbb"
+    end
+  end
+
+  class FakeCredit
+    def uri
+      "/credit/sjdkncsoiqeior"
     end
   end
 
