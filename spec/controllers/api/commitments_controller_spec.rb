@@ -1,6 +1,56 @@
 require "spec_helper"
 
 describe Api::CommitmentsController do
+  describe "#create" do
+    before do
+      @participant = FactoryGirl.create(:participant, password: "sekret")
+      @plan = FactoryGirl.create(:plan)
+    end
+
+    it "should link a participant to the plan" do
+      post :create, plan_token: @plan.token, participant: {
+        email: @participant.email,
+        password: "sekret"
+      }
+
+      response.status.should == 201
+      commitment = Commitment.last
+      commitment.plan.should == @plan
+      commitment.participant.should == @participant
+    end
+
+    describe "failure cases" do
+      it "404s if email does not exist" do
+        post :create, plan_token: @plan.token, participant: {
+          email: "nope@fuckno.com",
+          password: "sekret"
+        }
+
+        response.status.should == 404
+      end
+
+      it "401s if password is wrong" do
+        post :create, plan_token: @plan.token, participant: {
+          email: @participant.email,
+          password: "suuuuup"
+        }
+
+        response.status.should == 401
+      end
+
+      it "409s if participant is already in" do
+        FactoryGirl.create(:commitment, participant: @participant, plan: @plan)
+
+        post :create, plan_token: @plan.token, participant: {
+          email: @participant.email,
+          password: "sekret"
+        }
+
+        response.status.should == 409
+      end
+    end
+  end
+
   describe "#charge" do
     context "when participant has not paid" do
       before do

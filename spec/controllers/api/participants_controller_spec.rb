@@ -9,7 +9,8 @@ describe Api::ParticipantsController do
         name: "Neil Sarkar",
         email: "neil@groupme.com",
         phone_number: "9173706969",
-        card_uri: "https://balancedpayments.com/nice"
+        card_uri: "https://balancedpayments.com/nice",
+        password: "sekret"
       }
     }
 
@@ -21,6 +22,7 @@ describe Api::ParticipantsController do
     participant.email.should == "neil@groupme.com"
     participant.phone_number.should == "9173706969"
     participant.card_uri.should == "https://balancedpayments.com/nice"
+    participant.authenticate("sekret").should == participant
     plan.reload.participants.should include participant
   end
 end

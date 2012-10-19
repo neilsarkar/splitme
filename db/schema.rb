@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121019151310) do
+ActiveRecord::Schema.define(:version => 20121019172458) do
 
   create_table "commitments", :force => true do |t|
     t.integer  "participant_id"
@@ -26,14 +26,15 @@ ActiveRecord::Schema.define(:version => 20121019151310) do
   add_index "commitments", ["plan_id"], :name => "index_commitments_on_plan_id"
 
   create_table "participants", :force => true do |t|
-    t.string   "name",         :null => false
-    t.string   "email",        :null => false
-    t.string   "phone_number", :null => false
-    t.string   "card_uri",     :null => false
+    t.string   "name",            :null => false
+    t.string   "email",           :null => false
+    t.string   "phone_number",    :null => false
+    t.string   "card_uri",        :null => false
     t.string   "card_type"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.string   "buyer_uri"
+    t.string   "password_digest"
   end
 
   create_table "plans", :force => true do |t|

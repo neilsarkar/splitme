@@ -1,5 +1,6 @@
 Splitme::Application.routes.draw do
   namespace :api do
+    match "/commitments/:plan_token" => "commitments#create", via: :post
     match "/plans/:plan_id/charge/:participant_id" => "commitments#charge", via: :post
 
     match "/participants/:plan_token/create" => "participants#create", via: :post

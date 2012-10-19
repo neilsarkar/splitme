@@ -68,7 +68,7 @@ body.join
     &:first-child
       margin-top: 0
 
-  input[type=tel]
+  input[type=tel], input[type=password]
     padding: 20px 10px
 
   input.month
@@ -93,6 +93,9 @@ body.join
   input[type="submit"]
     width: 100%
 
+  .center
+    text-align: center
+
 @media (min-width: 640px)
   body.join
     font-size: 24px
@@ -114,7 +117,7 @@ body.join
     input:not([type="submit"])
       font-size: 24px
       padding: 17px 10px 10px
-    input[type=tel]
+    input[type=tel], input[type=password]
       padding: 27px 10px 20px
     input[type="submit"]
       font-size: 24px

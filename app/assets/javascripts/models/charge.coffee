@@ -1,6 +1,6 @@
 class SM.Charge
   constructor: (@attributes, @plan) ->
-    @user_attributes = _.pick(@attributes, 'name', 'email', 'phone_number')
+    @user_attributes = _.pick(@attributes, 'name', 'email', 'phone_number', 'password')
     @payment_attributes = _.pick(@attributes, 'card_number', 'expiration_month', 'expiration_year')
 
   create: (options = {}) =>
@@ -33,6 +33,27 @@ class SM.Charge
           options.error("Something went wrong with our payments provider. Please try again")
           console.error(response.error)
 
+  create_from_sign_in: (options = {}) =>
+    options.error ?= console.error
+    options.success ?= console.log
+
+    SM.post(
+      "#{window.config.urls.api}/commitments/#{@plan.get('token')}"
+      participant: @user_attributes
+      {
+        success: =>
+          options.success("Awesome, you're in.")
+        error: (errors, code, xhr) =>
+          if code == 404
+            options.error("Your email isn't in our system.")
+          else if code == 401
+            options.error("Your password is incorrect.")
+          else if code == 409
+            options.error("You're already in the plan, dummy!")
+          else
+            options.error(errors)
+      }
+    )
 
   join_plan: (options) =>
     SM.post(

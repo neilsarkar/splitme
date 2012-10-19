@@ -41,4 +41,21 @@ describe "Joining Plan" do
 
     page.should_not have_css("form")
   end
+
+  it "Joins the plan as an existing user" do
+    plan = FactoryGirl.create(:plan)
+    participant = FactoryGirl.create(:participant, password: "sekret")
+    visit "/#{plan.token}"
+
+    page.should have_content(plan.title)
+
+    click_link "I have a password and want to sign in"
+
+    fill_in "email", with: participant.email
+    fill_in "password", with: "sekret"
+
+    click_button "I'm in"
+    page.should have_content("Awesome, you're in.")
+    plan.reload.participants.should include participant
+  end
 end

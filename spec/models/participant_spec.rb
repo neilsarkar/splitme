@@ -25,6 +25,12 @@ describe Participant do
       participant.should_not be_valid
       participant.should have_at_least(1).error_on(:card_uri)
     end
+
+    it "requires password" do
+      participant = FactoryGirl.build(:participant, :password => nil)
+      participant.should_not be_valid
+      participant.should have_at_least(1).error_on(:password)
+    end
   end
 
   describe "#before_create" do

@@ -13,6 +13,7 @@ FactoryGirl.define do
     phone_number "1800MATTRES"
     card_type "VISA"
     card_uri "https://balancedpayments.com/fake"
+    password "sekret"
   end
 
   factory :plan do

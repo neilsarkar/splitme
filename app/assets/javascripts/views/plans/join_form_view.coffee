@@ -1,18 +1,21 @@
 class SM.JoinFormView extends SM.BaseView
   events: {
     "submit form": "process"
-    "focus input": "clearInvalid"
+    "focus input": "clear_invalid"
+    "click .toggle": "toggle_forms"
   }
 
   initialize: (@plan) ->
     @on "pre_render", =>
       @template = @lockedTemplate if @plan.get("is_locked")
+    @mode = "register"
 
   template: """
-<form action='javascript:void(0)' method="POST">
+<form action='javascript:void(0)' method="POST" class='register'>
   <input id='js-name' placeholder='Name' />
 
   <input id='js-email' placeholder='Email' />
+
 
   <input id='js-phone-number' placeholder='Phone Number'/>
 
@@ -20,6 +23,8 @@ class SM.JoinFormView extends SM.BaseView
 
   <input id='js-expiration-month' class='month' placeholder='Exp. Month (MM)' type='tel'/>
   <input id='js-expiration-year' class='year' placeholder='Exp. Year (YYYY)' type='tel'/>
+
+  <input id='js-password' placeholder='Set a password' type='password'/>
 
   <div class="disclaimer">
     <p>
@@ -35,6 +40,16 @@ class SM.JoinFormView extends SM.BaseView
 
   <input type='submit' value="I'm in" class='btn btn-success'/>
 </form>
+
+<form action='javascript:void(0)' method='POST' style='display:none' class='sign_in'>
+  <input name='email' id='js-signin-email' placeholder='Email'/>
+  <input name='password' id='js-signin-password' type='password' placeholder='Password'/>
+  <input type='submit' value="I'm in" class="btn btn-success" />
+</form>
+
+<div class='center'>
+  <a class='toggle' href='javascript:void(0)'>I have a password and want to sign in</a>
+</div>
 """
 
   lockedTemplate: """
@@ -52,36 +67,65 @@ class SM.JoinFormView extends SM.BaseView
     creator_name: @plan.get("treasurer_name")
     price_per_person: @plan.get("price_per_person")
 
+  toggle_forms: (e) =>
+    if @mode == "sign_in"
+      @mode = "register"
+      $(e.target).html("JK, I do have an account.")
+    else
+      @mode = "sign_in"
+      $(e.target).html("JK, I don't have an account.")
+    @$("form").toggle()
+
+  form: =>
+    @$("form.#{@mode}")
+
   process: =>
-    @$("form").disableForm()
-    @validate()
-    if @$("input.invalid").length
-      return @$("form").alertError("Please correct the fields in red")
+    @form().disableForm()
+    if @mode == "sign_in"
+      charge = new SM.Charge(
+        {
+          email: @$("#js-signin-email").val()
+          password: @$("#js-signin-password").val()
+        }
+        @plan
+      )
 
-    charge = new SM.Charge(
-      {
-        name: @$("#js-name").val()
-        email: @$("#js-email").val()
-        phone_number: @$("#js-phone-number").val()
-        card_number: @$("#js-card-number").val()
-        expiration_month: @$("#js-expiration-month").val()
-        expiration_year: @$("#js-expiration-year").val()
-      }
-      @plan
-    )
+      charge.create_from_sign_in({
+        success: (message) =>
+          @form().alertSuccess(message)
+        error: (message) =>
+          @form().alertError(message)
+      })
+    else
+      @validate()
+      if @$("input.invalid").length
+        return @form().alertError("Please correct the fields in red")
 
-    charge.create({
-      success: (message) =>
-        @$("form").alertSuccess(message)
-      error: (message) =>
-        @$("form").alertError(message)
-    })
+      charge = new SM.Charge(
+        {
+          name: @$("#js-name").val()
+          email: @$("#js-email").val()
+          phone_number: @$("#js-phone-number").val()
+          card_number: @$("#js-card-number").val()
+          expiration_month: @$("#js-expiration-month").val()
+          expiration_year: @$("#js-expiration-year").val()
+          password: @$("#js-password").val()
+        }
+        @plan
+      )
 
-  clearInvalid: (e) =>
+      charge.create({
+        success: (message) =>
+          @form().alertSuccess(message)
+        error: (message) =>
+          @form().alertError(message)
+      })
+
+  clear_invalid: (e) =>
     $(e.target).removeClass("invalid")
 
   validate: =>
-    _.each @$("input"), (el) =>
+    _.each @form().find("input"), (el) =>
       $el = $(el)
       $el.toggleClass("invalid", $el.val().length == 0)
 

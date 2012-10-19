@@ -223,6 +223,31 @@ https://splitme-b.herokuapp.com/api
 
 ### Response: 400 (Creation failed)
 
+## Create from sign in
+
+### Request: POST /commitments/:plan_token
+
+<pre>
+  {
+    :email
+    :password
+  }
+</pre>
+
+### Response: 200
+
+<pre>
+  {
+    :email
+    :name
+    :phone_number
+    :card_type
+  }
+</pre>
+
+### Response: 404 (email not found)
+### Response: 401 (password incorrect)
+
 # Charge
 
 ## Charge

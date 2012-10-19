@@ -1,12 +1,14 @@
 class Participant < ActiveRecord::Base
-  attr_accessible :card_type, :card_uri, :email, :name, :phone_number
+  attr_accessible :card_type, :card_uri, :email, :name, :phone_number, :password
 
-  validates_presence_of :email, :name, :phone_number, :card_uri
+  validates_presence_of :email, :name, :phone_number, :card_uri, :password
 
   before_create :create_balanced_buyer
 
   has_many :commitments
   has_many :plans, through: :commitments
+
+  has_secure_password
 
   def as_json(options = {})
     if options == :public
