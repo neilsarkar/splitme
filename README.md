@@ -246,7 +246,10 @@ https://splitme-b.herokuapp.com/api
 </pre>
 
 ### Response: 404 (email not found)
+
 ### Response: 401 (password incorrect)
+
+### Response: 409 (participant is already in plan)
 
 # Charge
 
