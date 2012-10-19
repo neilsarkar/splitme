@@ -18,7 +18,7 @@ class SM.JoinView extends SM.BaseView
     )
 
   template: """
-<img src='/assets/header.png' />
+<img src='/assets/header.png' class='header'/>
 <div class='section'>
   <div class='invited'>You've been invited to join</div>
   <div class='title'>
