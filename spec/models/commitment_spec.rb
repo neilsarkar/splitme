@@ -59,4 +59,15 @@ describe Commitment do
       end
     end
   end
+
+  describe "#after_create" do
+    it "sends a broadcast" do
+      plan = FactoryGirl.create(:plan)
+      commitment = FactoryGirl.build(:commitment, plan: plan)
+      broadcaster = stub(:notify_plan_joined)
+      Broadcaster.should_receive(:new).with(plan).and_return(broadcaster)
+      broadcaster.should_receive(:notify_plan_joined).with(commitment.participant)
+      commitment.save
+    end
+  end
 end

@@ -19,8 +19,9 @@ end
 
 group :development, :test do
   gem "capybara"
+  gem "email_spec"
   gem "factory_girl_rails"
   gem 'jasmine-rails'
-  gem "rspec-rails"
   gem "pry"
+  gem "rspec-rails"
 end

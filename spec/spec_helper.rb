@@ -7,6 +7,7 @@ require 'capybara/rspec'
 require "pry"
 
 require 'factory_girl_rails'
+require 'email_spec'
 
 alias running proc
 
