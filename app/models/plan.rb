@@ -90,7 +90,7 @@ class Plan < ActiveRecord::Base
   private
 
   def participants_count
-    participants.blank? ? 1 : participants.length + 1
+    participants.blank? ? 1 : participants.size + 1
   end
 
   def participants_json(hide_details)

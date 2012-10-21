@@ -19,6 +19,17 @@ describe Api::CommitmentsController do
       commitment.participant.should == @participant
     end
 
+    it "notifies the group" do
+      broadcaster = stub
+      Broadcaster.should_receive(:new).with(@plan).and_return(broadcaster)
+      broadcaster.should_receive(:notify_plan_joined).with(@participant)
+
+      post :create, plan_token: @plan.token, participant: {
+        email: @participant.email,
+        password: "sekret"
+      }
+    end
+
     describe "failure cases" do
       it "404s if email does not exist" do
         post :create, plan_token: @plan.token, participant: {

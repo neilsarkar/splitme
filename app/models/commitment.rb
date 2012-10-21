@@ -8,7 +8,7 @@ class Commitment < ActiveRecord::Base
   belongs_to :plan
 
   before_create :set_state
-  after_create :notify_group
+
   scope :escrowed, where(state: "escrowed")
   scope :collected, where(state: "collected")
   scope :failed, where(state: "failed")
@@ -55,11 +55,6 @@ class Commitment < ActiveRecord::Base
   end
 
   private
-
-  def notify_group
-    broadcaster = Broadcaster.new(plan)
-    broadcaster.notify_plan_joined(participant)
-  end
 
   def mark_failed!
     update_attribute :state, "failed"

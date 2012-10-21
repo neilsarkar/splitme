@@ -11,6 +11,8 @@ class Api::CommitmentsController < Api::BaseController
       head 409
     else
       commitment = Commitment.create(plan_id: plan.id, participant_id: participant.id)
+      broadcaster = Broadcaster.new(plan)
+      broadcaster.notify_plan_joined(participant)
       render_response(participant, code: 201)
     end
   end
