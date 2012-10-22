@@ -24,4 +24,5 @@ group :development, :test do
   gem 'jasmine-rails'
   gem "pry"
   gem "rspec-rails"
+  gem "rspec-instafail"
 end
