@@ -29,7 +29,7 @@ class Broadcaster
       to: to,
       subject: subject,
       body: message,
-      from: "support@splitmeapp.com",
+      from: "splitme@splitmeapp.com",
       reply_to: @plan.user.email
     }
 
