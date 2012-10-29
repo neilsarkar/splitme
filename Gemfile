@@ -23,6 +23,7 @@ group :development, :test do
   gem "factory_girl_rails"
   gem 'jasmine-rails'
   gem "pry"
+  gem "rest-client"
   gem "rspec-rails"
   gem "rspec-instafail"
 end

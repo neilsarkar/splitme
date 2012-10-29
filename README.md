@@ -257,7 +257,7 @@ https://splitme-b.herokuapp.com/api
 
 ### Request: POST /plans/:id/charge/:participant_id
 
-### Response: 200
+### Response: 201
 
 ### Response: 409 (Card has already been charged)
 
