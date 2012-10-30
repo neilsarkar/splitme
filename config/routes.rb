@@ -12,6 +12,7 @@ Splitme::Application.routes.draw do
 
     resources :users, only: [:create]
     match "/users/authenticate" => "users#authenticate", via: :post
+    match "/users/update" => "users#update", via: :post
 
     match "/" => "hi#hi"
   end

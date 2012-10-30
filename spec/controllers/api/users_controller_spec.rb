@@ -27,6 +27,36 @@ describe Api::UsersController do
     end
   end
 
+  describe "#update" do
+    before do
+      @user = FactoryGirl.create(:user)
+      User.stub(:find_by_token).and_return(nil)
+      User.stub(:find_by_token).with("token").and_return(@user)
+    end
+
+    it "returns 200 after updating user" do
+      @user.should_receive(:update_attributes).with({"name" => "Neil Sarkar"})
+        .and_return(true)
+      post :update, token: "token", json: { user: { name: "Neil Sarkar" } }
+      response.should be_success
+    end
+
+    it "returns errors" do
+      errors = stub(full_messages: ["You're", "burnt"])
+      @user.stub(update_attributes: false, errors: errors)
+      post :update, token: "token", json: { user: { name: "Neil Sarkar" } }
+
+      response.should be_bad_request
+      json["meta"]["errors"].should == ["You're and burnt"]
+    end
+
+    it "401s if token is invalid" do
+      post :update, token: "PRETEND", json: {}
+
+      response.status.should == 401
+    end
+  end
+
   describe "#authenticate" do
     it "returns 404 if user does not exist" do
       post :authenticate, json: {

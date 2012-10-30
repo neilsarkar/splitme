@@ -69,7 +69,7 @@ https://splitme-b.herokuapp.com/api
 
 ## Update
 
-### Request: POST /users/:id/update
+### Request: POST /users/update
 <pre>
   {
     user: {
