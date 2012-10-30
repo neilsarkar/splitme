@@ -40,8 +40,6 @@ https://splitme-b.herokuapp.com/api
 
 ### Response: 400 (Missing required fields)
 
-### Response: 409 (Email address already exists)
-
 ## Authenticate
 
 ### Request: POST /users/authenticate
