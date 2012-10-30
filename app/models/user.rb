@@ -74,6 +74,8 @@ class User < ActiveRecord::Base
       bank_account.uri
     )
     self.balanced_payments_id = merchant.id
+  rescue Balanced::Conflict => e
+    @errors[:email] << "already registered"
   rescue Exception => e
     if e.respond_to?(:body)
       @errors[:bank_account] << e.body["description"]

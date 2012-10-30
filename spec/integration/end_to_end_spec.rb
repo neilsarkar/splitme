@@ -3,6 +3,8 @@
 # This is probably bad practice.
 #
 # It's kind of nice to have now, but should be ripped out as the service expands.
+#
+# If this is still here by summer of 2013, everyone should be fired.
 
 require "spec_helper"
 
