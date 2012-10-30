@@ -33,7 +33,9 @@ class User < ActiveRecord::Base
 
   def as_json(*)
     {
-      token: token
+      token: token,
+      has_bank_account: bank_account_uri.present?,
+      has_card: card_uri.present?
     }
   end
 
