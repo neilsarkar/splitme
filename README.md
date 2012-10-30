@@ -252,7 +252,9 @@ https://splitme-b.herokuapp.com/api
   }
 </pre>
 
-### Response: 400 (Creation failed)
+### Response: 401 (Token invalid)
+
+### Response: 400 (User has no card associated)
 
 ### Response: 409 (User is already committed to plan)
 

@@ -38,6 +38,18 @@ module Balanced
     def credit(amount)
       FakeCredit.new
     end
+
+    def promote_to_merchant(*)
+      true
+    end
+
+    def add_card(*)
+      true
+    end
+
+    def add_bank_account(*)
+      true
+    end
   end
 
   class FakeDebit

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121019172458) do
+ActiveRecord::Schema.define(:version => 20121030185658) do
 
   create_table "commitments", :force => true do |t|
     t.integer  "participant_id"
@@ -57,8 +57,6 @@ ActiveRecord::Schema.define(:version => 20121019172458) do
     t.string   "name",                 :null => false
     t.string   "email",                :null => false
     t.string   "phone_number",         :null => false
-    t.string   "bank_routing_number",  :null => false
-    t.string   "bank_account_number",  :null => false
     t.string   "token"
     t.string   "password_digest"
     t.datetime "created_at",           :null => false
@@ -67,6 +65,8 @@ ActiveRecord::Schema.define(:version => 20121019172458) do
     t.string   "street_address"
     t.string   "zip_code"
     t.string   "date_of_birth"
+    t.string   "card_uri"
+    t.string   "bank_account_uri"
   end
 
   add_index "users", ["token"], :name => "index_users_on_token", :unique => true
