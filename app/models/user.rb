@@ -48,11 +48,11 @@ class User < ActiveRecord::Base
     super(phone_number)
   end
 
-  private
-
   def balanced_account
     @balanced_account ||= Balanced::Account.find_by_email(email)
   end
+
+  private
 
   def us_phone_number
     unless phone_number.length == 11 && phone_number[0] == "1"
