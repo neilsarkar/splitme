@@ -11,19 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121019172458) do
+ActiveRecord::Schema.define(:version => 20121030214147) do
 
   create_table "commitments", :force => true do |t|
-    t.integer  "participant_id"
+    t.integer  "user_id"
     t.integer  "plan_id"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
-    t.string   "state",          :default => "unpaid", :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.string   "state",      :default => "unpaid", :null => false
     t.string   "debit_uri"
   end
 
-  add_index "commitments", ["participant_id"], :name => "index_commitments_on_participant_id"
   add_index "commitments", ["plan_id"], :name => "index_commitments_on_plan_id"
+  add_index "commitments", ["user_id"], :name => "index_commitments_on_participant_id"
 
   create_table "participants", :force => true do |t|
     t.string   "name",            :null => false
@@ -57,8 +57,6 @@ ActiveRecord::Schema.define(:version => 20121019172458) do
     t.string   "name",                 :null => false
     t.string   "email",                :null => false
     t.string   "phone_number",         :null => false
-    t.string   "bank_routing_number",  :null => false
-    t.string   "bank_account_number",  :null => false
     t.string   "token"
     t.string   "password_digest"
     t.datetime "created_at",           :null => false
@@ -67,6 +65,8 @@ ActiveRecord::Schema.define(:version => 20121019172458) do
     t.string   "street_address"
     t.string   "zip_code"
     t.string   "date_of_birth"
+    t.string   "card_uri"
+    t.string   "bank_account_uri"
   end
 
   add_index "users", ["token"], :name => "index_users_on_token", :unique => true

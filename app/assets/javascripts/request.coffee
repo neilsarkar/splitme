@@ -1,22 +1,29 @@
-SM.get = (url, options = {}) ->
+SM.get = (path, options = {}) ->
   _.extend(options, {
-    url: url
-    headers: { 'X-Access-Token': SM.token() }
+    url: "#{window.config.urls.api}#{path}"
+    headers: { 'X-Access-Token': options.token }
     type: "GET"
     contentType: "application/json"
   })
 
   if errorCallback = options.error
     options.error = (xhr) ->
-      errorCallback(JSON.parse(xhr.responseText).meta.errors, xhr.status, xhr)
+      try
+        errorCallback(JSON.parse(xhr.responseText).meta.errors, xhr.status, xhr)
+      catch error
+        errorCallback(xhr.responseText, xhr.status, xhr)
+
+  if successCallback = options.success
+    options.success = (json, worthless, xhr) ->
+      successCallback(json.response, xhr.status, xhr)
 
   $.ajax(options)
 
-SM.post = (url, data = {}, options = {}) ->
+SM.post = (path, data = {}, options = {}) ->
   _.extend(options, {
-    url: url
+    url: "#{window.config.urls.api}#{path}"
     data: JSON.stringify(data)
-    headers: { 'X-Access-Token': SM.token()}
+    headers: { 'X-Access-Token': options.token}
     type: "POST"
     dataType: "json"
     contentType: "application/json"
@@ -29,7 +36,8 @@ SM.post = (url, data = {}, options = {}) ->
       catch error
         errorCallback(xhr.responseText, xhr.status, xhr)
 
-  $.ajax(options)
+  if successCallback = options.success
+    options.success = (json, worthless, xhr) ->
+      successCallback(json.response, xhr.status, xhr)
 
-SM.token = () ->
-  ""
+  $.ajax(options)

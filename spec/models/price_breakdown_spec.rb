@@ -4,7 +4,7 @@ describe PriceBreakdown do
   describe "#result" do
     context "when no-one has bought in" do
       it "shows the first 5 prices" do
-        plan = stub(total_price: 10000, participants: [], fixed_price?: true)
+        plan = stub(total_price: 10000, participants_count: 1, fixed_price?: true)
         price_breakdown = PriceBreakdown.new(plan)
 
         result = price_breakdown.result
@@ -36,7 +36,7 @@ describe PriceBreakdown do
 
     context "when more than 2 people have bought in" do
       it "shows 5 prices, starting at 1 before the current" do
-        plan = stub(total_price: 10000, participants: [1,2,3], fixed_price?: true)
+        plan = stub(total_price: 10000, participants_count: 4, fixed_price?: true)
         price_breakdown = PriceBreakdown.new(plan)
 
         result = price_breakdown.result
@@ -68,7 +68,7 @@ describe PriceBreakdown do
 
     context "when plan price is per person" do
       it "returns one line" do
-        plan = stub(price_per_person_string: "$10.00", participants: [], fixed_price?: false)
+        plan = stub(price_per_person_string: "$10.00", participants_count: 1, fixed_price?: false)
         price_breakdown = PriceBreakdown.new(plan)
         price_breakdown.result.should == [
           {

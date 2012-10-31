@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
+  attr_accessor :bank_account_number, :bank_routing_number
+
   attr_accessible :bank_account_number,
                   :bank_routing_number,
                   :email,
@@ -11,15 +13,15 @@ class User < ActiveRecord::Base
                   :password,
                   :date_of_birth,
                   :street_address,
-                  :zip_code
+                  :zip_code,
+                  :card_uri,
+                  :card_type
 
-  validates_presence_of :bank_account_number,
-                        :bank_routing_number,
-                        :email,
+  validates_presence_of :email,
                         :name,
-                        :phone_number,
-                        :password,
-                        :date_of_birth
+                        :phone_number
+
+  validates_presence_of :password, on: :create
 
   validates_uniqueness_of :email
   validate :valid_email_format, if: :email?
@@ -27,11 +29,15 @@ class User < ActiveRecord::Base
   validate :us_phone_number, if: :phone_number?
   validate :valid_date_of_birth, if: :date_of_birth?
 
-  before_create :generate_token, :register_with_balanced_payments
+  before_save :add_bank_account, if: :bank_account_number
+  before_save :add_card, if: :card_uri_changed?
+  before_create :generate_token
 
   def as_json(*)
     {
-      token: token
+      token: token,
+      has_bank_account: bank_account_uri.present?,
+      has_card: card_uri.present?
     }
   end
 
@@ -44,6 +50,10 @@ class User < ActiveRecord::Base
 
   private
 
+  def balanced_account
+    @balanced_account ||= Balanced::Account.find_by_email(email)
+  end
+
   def us_phone_number
     unless phone_number.length == 11 && phone_number[0] == "1"
       @errors[:phone_number] << "must be in the U.S."
@@ -54,26 +64,57 @@ class User < ActiveRecord::Base
     self.token = String.random_alphanumeric(40)
   end
 
-  def register_with_balanced_payments
+  def add_card
+    if balanced_payments_id.blank?
+      buyer = Balanced::Marketplace.my_marketplace.create_buyer(email, card_uri)
+      self.balanced_payments_id = buyer.id
+    elsif !card_uri_exists?
+      balanced_account.add_card(card_uri)
+    else
+      true
+    end
+  end
+
+  def card_uri_exists?
+    balanced_account.cards.map(&:id).include?(card_uri.split("/").last)
+  end
+
+  def add_bank_account
     bank_account = Balanced::BankAccount.new({
       account_number: bank_account_number,
       bank_code: bank_routing_number,
       name: name
     }).save
 
-    merchant = Balanced::Marketplace.my_marketplace.create_merchant(
-      email,
-      {
-        type: "person",
-        name: name,
-        phone_number: "+#{phone_number}",
-        street_address: street_address,
-        postal_code: zip_code,
-        dob: balanced_dob
-      },
-      bank_account.uri
-    )
-    self.balanced_payments_id = merchant.id
+    if balanced_payments_id.present?
+      unless bank_account_uri.present?
+        balanced_account.promote_to_merchant({
+          type: "person",
+          name: name,
+          phone_number: "+#{phone_number}",
+          street_address: street_address,
+          postal_code: zip_code,
+          dob: balanced_dob
+        })
+      end
+      balanced_account.add_bank_account(bank_account.uri)
+    else
+      merchant = Balanced::Marketplace.my_marketplace.create_merchant(
+        email,
+        {
+          type: "person",
+          name: name,
+          phone_number: "+#{phone_number}",
+          street_address: street_address,
+          postal_code: zip_code,
+          dob: balanced_dob
+        },
+        bank_account.uri
+      )
+      self.balanced_payments_id = merchant.id
+    end
+  rescue Balanced::Conflict => e
+    @errors[:email] << "already registered"
   rescue Exception => e
     if e.respond_to?(:body)
       @errors[:bank_account] << e.body["description"]

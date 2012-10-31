@@ -3,6 +3,8 @@
 # This is probably bad practice.
 #
 # It's kind of nice to have now, but should be ripped out as the service expands.
+#
+# If this is still here by summer of 2013, everyone should be fired.
 
 require "spec_helper"
 
@@ -67,11 +69,11 @@ describe "splitme" do
     email.should have_subject "Neil Sarkar is in."
 
     # Existing user validates via sign in
-    participant = FactoryGirl.create(:participant, name: "Joey Pfeifer", email: "joey@pfeifer.com")
+    user = FactoryGirl.create(:buyer_user, name: "Joey Pfeifer", email: "joey@pfeifer.com", password: "sekret")
     visit "/#{plan_token}"
     page.should have_content("Ski House")
     click_link "I have a password and want to sign in"
-    fill_in "email", with: participant.email
+    fill_in "email", with: user.email
     fill_in "password", with: "sekret"
     click_button "I'm in"
     page.should have_content("Awesome, you're in.")

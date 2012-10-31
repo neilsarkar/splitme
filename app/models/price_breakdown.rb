@@ -5,11 +5,11 @@ class PriceBreakdown
     @plan = plan
     @result = calculate
   end
-
+  
   private
 
   def current
-    @current ||= @plan.participants.size + 1
+    @current ||= @plan.participants_count
   end
 
   def calculate

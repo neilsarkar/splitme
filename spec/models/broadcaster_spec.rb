@@ -12,13 +12,13 @@ describe Broadcaster do
   it "#notify_plan_joined" do
     commitment = FactoryGirl.create(:commitment, plan: @plan)
     @plan.reload
-    @broadcaster.notify_plan_joined(commitment.participant)
+    @broadcaster.notify_plan_joined(commitment.user)
 
     Pony.deliveries.should_not be_blank
     email = Pony.deliveries.last
     email.should be_delivered_to @plan.user.email
-    email.should cc_to commitment.participant.email
-    email.should have_subject "#{commitment.participant.name} is in."
+    email.should cc_to commitment.user.email
+    email.should have_subject "#{commitment.user.name} is in."
 
     email.should have_body_text @plan.title
     email.should have_body_text @plan.total_price_string

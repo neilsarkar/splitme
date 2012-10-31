@@ -19,6 +19,14 @@ class Api::UsersController < Api::BaseController
     end
   end
 
+  def update
+    if current_user.update_attributes(user_params)
+      render_response(current_user)
+    else
+      render_error(400, current_user.errors)
+    end
+  end
+
   private
 
   def user_params

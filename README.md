@@ -14,15 +14,17 @@ https://splitme-b.herokuapp.com/api
 <pre>
   {
     user: {
-      :bank_account_number*
-      :bank_routing_number*
       :email*
       :name*
       :phone_number*
       :password*
-      :date_of_birth*
-      :street_address*
-      :zip_code*
+      :bank_account_number
+      :bank_routing_number
+      :date_of_birth
+      :street_address
+      :zip_code
+      :card_uri
+      :card_type
     }
   }
 </pre>
@@ -31,8 +33,12 @@ https://splitme-b.herokuapp.com/api
 <pre>
   {
     :token
+    :has_card
+    :has_bank_account
   }
 </pre>
+
+### Response: 400 (Missing required fields)
 
 ## Authenticate
 
@@ -50,12 +56,45 @@ https://splitme-b.herokuapp.com/api
 <pre>
   {
     :token
+    :has_card
+    :has_bank_account
   }
 </pre>
 
 ### Response: 404 (Email not found)
 
 ### Response: 401 (Password Incorrect)
+
+## Update
+
+### Request: POST /users/update
+<pre>
+  {
+    user: {
+      :name
+      :phone_number
+      :password
+      :bank_account_number
+      :bank_routing_number
+      :date_of_birth
+      :street_address
+      :zip_code
+      :card_uri
+      :card_type
+    }
+  }
+</pre>
+
+### Response: 200
+<pre>
+  {
+    :token
+    :has_card
+    :has_bank_account
+  }
+</pre>
+
+### Response: 400 (fields incorrect)
 
 # Plans
 
@@ -194,21 +233,11 @@ https://splitme-b.herokuapp.com/api
 
 ### Response: 404 (Plan doesn't exist)
 
-# Participants
+# Commitments
 
 ## Create
 
-### Request: POST /participants/:plan_token/create
-
-<pre>
-  {
-    :email
-    :name
-    :phone_number
-    :card_uri
-    :card_type
-  }
-</pre>
+### Request: POST /plans/:plan_token/commitments
 
 ### Response: 201
 
@@ -221,35 +250,11 @@ https://splitme-b.herokuapp.com/api
   }
 </pre>
 
-### Response: 400 (Creation failed)
+### Response: 401 (Token invalid)
 
-## Create from sign in
+### Response: 400 (User has no card associated)
 
-### Request: POST /commitments/:plan_token
-
-<pre>
-  {
-    :email
-    :password
-  }
-</pre>
-
-### Response: 200
-
-<pre>
-  {
-    :email
-    :name
-    :phone_number
-    :card_type
-  }
-</pre>
-
-### Response: 404 (email not found)
-
-### Response: 401 (password incorrect)
-
-### Response: 409 (participant is already in plan)
+### Response: 409 (User is already committed to plan)
 
 # Charge
 
@@ -276,4 +281,3 @@ https://splitme-b.herokuapp.com/api
 ### Response: 200
 
 ### Response: 409 (Already collected)
-

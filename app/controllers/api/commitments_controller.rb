@@ -1,24 +1,21 @@
 class Api::CommitmentsController < Api::BaseController
-  skip_before_filter :require_user, only: [:create]
-
   def create
-    participant = Participant.find_by_email!(params[:participant][:email])
-    participant = participant.authenticate(params[:participant][:password])
-    return head 401 if participant.blank?
-    plan = Plan.find_by_token(params[:plan_token])
+    plan = Plan.find_by_token!(params[:plan_token])
 
-    if plan.participants.include?(participant)
+    if current_user.card_uri.blank?
+      render_error(400, ["User does not have a credit card in the system."])
+    elsif plan.users.include?(current_user)
       head 409
     else
-      commitment = Commitment.create(plan_id: plan.id, participant_id: participant.id)
+      commitment = Commitment.create(plan_id: plan.id, user_id: current_user.id)
       broadcaster = Broadcaster.new(plan)
-      broadcaster.notify_plan_joined(participant)
-      render_response(participant, code: 201)
+      broadcaster.notify_plan_joined(current_user)
+      render_response(current_user, code: 201)
     end
   end
 
   def charge
-    commitment = Commitment.find_by_plan_id_and_participant_id!(params[:plan_id], params[:participant_id])
+    commitment = Commitment.find_by_plan_id_and_user_id!(params[:plan_id], params[:user_id])
     raise UnauthorizedError unless commitment.plan.user == current_user
 
     return render_response(commitment, code: 409) unless commitment.unpaid?

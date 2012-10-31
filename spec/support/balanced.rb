@@ -38,6 +38,22 @@ module Balanced
     def credit(amount)
       FakeCredit.new
     end
+
+    def promote_to_merchant(*)
+      true
+    end
+
+    def add_card(*)
+      true
+    end
+
+    def cards
+      []
+    end
+
+    def add_bank_account(*)
+      true
+    end
   end
 
   class FakeDebit
@@ -71,6 +87,10 @@ module Balanced
   class FakeBuyer
     def uri
       "https://balancedpayments.com/buyer_uri"
+    end
+
+    def id
+      "balanced_id_456"
     end
   end
 end

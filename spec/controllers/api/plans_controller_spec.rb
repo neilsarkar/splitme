@@ -61,10 +61,10 @@ describe Api::PlansController do
 
       response.should be_success
       plan_json = json["response"]
-      plan_json["participants"].length.should == plan.participants.length
-      plan_json["participants"][0]["name"].should == plan.participants.first.name
-      plan_json["participants"][0]["email"].should == plan.participants.first.email
-      plan_json["participants"][0]["phone_number"].should == plan.participants.first.phone_number
+      plan_json["participants"].length.should == plan.users.length
+      plan_json["participants"][0]["name"].should == plan.users.first.name
+      plan_json["participants"][0]["email"].should == plan.users.first.email
+      plan_json["participants"][0]["phone_number"].should == plan.users.first.phone_number
       plan_json["participants"][0]["state"].should == "unpaid"
     end
 
@@ -110,7 +110,7 @@ describe Api::PlansController do
   describe "#preview" do
     it "shows an individual plan" do
       plan = FactoryGirl.create(:plan, total_price: 40000)
-      get :preview, plan_token: plan.token
+      get :preview, id: plan.token
 
       response.should be_success
       plan_json = json["response"]
@@ -124,12 +124,12 @@ describe Api::PlansController do
     it "shows participants" do
       plan = FactoryGirl.create(:plan, total_price: 40000)
       commitment = FactoryGirl.create(:commitment, plan: plan)
-      get :preview, plan_token: plan.token
+      get :preview, id: plan.token
 
       response.should be_success
       plan_json = json["response"]
-      plan_json["participants"].length.should == plan.participants.length
-      plan_json["participants"][0]["name"].should == plan.participants.first.name
+      plan_json["participants"].length.should == plan.users.length
+      plan_json["participants"][0]["name"].should == plan.users.first.name
       plan_json["participants"][0]["email"].should be_blank
       plan_json["participants"][0]["phone_number"].should be_blank
       plan_json["participants"][0]["state"].should be_blank
@@ -137,13 +137,13 @@ describe Api::PlansController do
 
     it "shows creator name" do
       plan = FactoryGirl.create(:plan)
-      get :preview, plan_token: plan.token
+      get :preview, id: plan.token
 
       json["response"]["treasurer_name"].should == plan.user.name
     end
 
     it "returns 404 if plan cannot be found" do
-      get :preview, plan_token: "PRETEND"
+      get :preview, id: "PRETEND"
 
       response.status.should == 404
     end

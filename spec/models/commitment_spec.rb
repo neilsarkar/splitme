@@ -8,17 +8,17 @@ describe Commitment do
       commitment.should have_at_least(1).error_on(:plan_id)
     end
 
-    it "requires participant" do
-      commitment = FactoryGirl.build(:commitment, :participant => nil)
+    it "requires user" do
+      commitment = FactoryGirl.build(:commitment, :user => nil)
       commitment.should_not be_valid
-      commitment.should have_at_least(1).error_on(:participant_id)
+      commitment.should have_at_least(1).error_on(:user_id)
     end
 
-    it "does not allow participant to commit multiple times" do
+    it "does not allow user to commit multiple times" do
       commitment = FactoryGirl.create(:commitment)
-      double_commitment = Commitment.new(plan_id: commitment.plan_id, participant_id: commitment.participant_id)
+      double_commitment = Commitment.new(plan_id: commitment.plan_id, user_id: commitment.user_id)
       double_commitment.should_not be_valid
-      double_commitment.should have_at_least(1).error_on :participant_id
+      double_commitment.should have_at_least(1).error_on :user_id
     end
   end
 
@@ -30,7 +30,7 @@ describe Commitment do
         with(commitment.plan.price_per_person_with_fees, commitment.plan.title).
         and_return(stub(uri: "/debit/abcd"))
       Balanced::Account.should_receive(:find_by_email).
-        with(commitment.participant.email).
+        with(commitment.user.email).
         and_return(buyer)
       commitment.charge!
       commitment.debit_uri.should == "/debit/abcd"
@@ -52,7 +52,7 @@ describe Commitment do
       it "updates state to 'failed'" do
         commitment = FactoryGirl.create(:commitment)
         Balanced::Account.stub(:find_by_email).
-          with(commitment.participant.email).
+          with(commitment.user.email).
           and_raise(Balanced::Error)
         commitment.charge!
         commitment.state.should == "failed"
