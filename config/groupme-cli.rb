@@ -5,7 +5,6 @@ GroupMe.configure do
   environment :staging do
     set :heroku_app_name, "splitme-b"
     set :deploy_steps, [
-      :check_pending_migrations,
       :deploy!,
       :migrate!
     ]
@@ -14,7 +13,6 @@ GroupMe.configure do
   environment :production do
     set :heroku_app_name, "splitme"
     set :deploy_steps, [
-      :check_pending_migrations,
       :test_suite,
       :maintenance_on,
       :deploy!,
