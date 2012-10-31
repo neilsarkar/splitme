@@ -89,7 +89,7 @@ class SM.JoinFormView extends SM.BaseView
         @plan
       )
 
-      charge.create_from_sign_in({
+      charge.authenticate_user({
         success: (message) =>
           @form().alertSuccess(message)
           @$("form input").remove()

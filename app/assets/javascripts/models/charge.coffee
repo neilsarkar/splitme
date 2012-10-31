@@ -11,7 +11,13 @@ class SM.Charge
       switch response.status
         when 201
           @user_attributes.card_uri = response.data.uri
-          @join_plan(options)
+          @create_user(
+            success: (user) =>
+              @join_plan(user.token, options)
+            error: (errors, code, xhr) =>
+              debugger
+              options.error(errors)
+          )
 
         when 400 # missing field(s)
           options.error(response.error)
@@ -33,36 +39,39 @@ class SM.Charge
           options.error("Something went wrong with our payments provider. Please try again")
           console.error(response.error)
 
-  create_from_sign_in: (options = {}) =>
-    options.error ?= console.error
-    options.success ?= console.log
-
+  create_user: (options = {}) =>
     SM.post(
-      "#{window.config.urls.api}/plans/#{@plan.get('token')}/commitments"
-      participant: @user_attributes
+      "/users"
+      @user_attributes
       {
-        success: =>
-          options.success("Awesome, you're in.")
-        error: (errors, code, xhr) =>
-          if code == 404
-            options.error("Your email isn't in our system.")
-          else if code == 401
-            options.error("Your password is incorrect.")
-          else if code == 409
-            options.error("You're already in the plan, dummy!")
-          else
-            options.error(errors)
+        success: options.success
+        error: options.error
       }
     )
 
-  join_plan: (options) =>
+  authenticate_user: (options = {}) =>
     SM.post(
-      "#{window.config.urls.api}/participants/#{@plan.get('token')}/create"
-      participant: @user_attributes
+      "/users/authenticate"
+      { email: @user_attributes.email, password: @user_attributes.password }
       {
+        success: (user) =>
+          @join_plan(user.token, options)
+        error: options.error
+      }
+    )
+
+  join_plan: (token, options) =>
+    SM.post(
+      "/plans/#{@plan.get('token')}/commitments"
+      {}
+      {
+        token: token
         success: =>
           options.success("Awesome, you're in.")
         error: (errors, code, xhr) =>
-          options.error(errors)
+          if code == 409
+            options.error("You're already in the plan, dummy!")
+          else
+            options.error(errors)
       }
     )

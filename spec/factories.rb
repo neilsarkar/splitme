@@ -7,15 +7,6 @@ FactoryGirl.define do
     association :plan
   end
 
-  factory :participant do
-    name "Pat Nakajima"
-    email "patnakajima@gmail.com"
-    phone_number "1800MATTRES"
-    card_type "VISA"
-    card_uri "https://balancedpayments.com/fake"
-    password "sekret"
-  end
-
   factory :plan do
     title "Plan Party"
     description "Let's do this"
