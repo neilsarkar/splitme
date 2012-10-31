@@ -1,16 +1,11 @@
 class SM.Card
-  initialize: (card_number, expiration_month, expiration_year) ->
-    @payment_attributes = {
-      card_number: card_number
-      expiration_month: expiration_month
-      expiration_year: expiration_year
-    }
+  initialize: (@card_data) ->
 
   save: (options = {}) =>
     options.error   ?= console.error
     options.success ?= console.log
 
-    balanced.card.create @payment_attributes, (response) =>
+    balanced.card.create @card_data, (response) =>
       switch response.status
         when 201
           options.success(response.data.uri)
