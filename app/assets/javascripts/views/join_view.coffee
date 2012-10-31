@@ -12,10 +12,14 @@ class SM.JoinView extends SM.BaseView
     @views.join_form = new SM.JoinFormView(@plan)
 
     @plan.fetch_from_token(
-      success: @render
+      success: =>
+        @render()
       error: =>
         @$el.html("<h1>Sorry, there's no plan at this URL. Please ask your friend for an updated one.</h1>")
     )
+
+    @on "pre_render", =>
+      @views.join_form = new SM.LockedView if @plan.get("is_locked")
 
   template: """
 <img src='/assets/header.png' class='header'/>

@@ -6,20 +6,17 @@ class SM.JoinFormView extends SM.BaseView
   }
 
   initialize: (@plan) ->
-    @on "pre_render", =>
-      @template = @lockedTemplate if @plan.get("is_locked")
     @mode = "register"
+    @on "render", =>
+      @form_validator = new SM.FormValidator(@form())
 
   template: """
 <form action='javascript:void(0)' method="POST" class='register'>
   <input id='js-name' placeholder='Name' />
-
   <input id='js-email' placeholder='Email' />
-
   <input id='js-phone-number' placeholder='Phone Number'/>
 
   <input id='js-card-number' placeholder='Credit Card Number' />
-
   <input id='js-expiration-month' class='month' placeholder='Exp. Month (MM)' type='tel'/>
   <input id='js-expiration-year' class='year' placeholder='Exp. Year (YYYY)' type='tel'/>
 
@@ -48,17 +45,6 @@ class SM.JoinFormView extends SM.BaseView
 
 <div class='center'>
   <a class='toggle' href='javascript:void(0)'>I have a password and want to sign in</a>
-</div>
-"""
-
-  lockedTemplate: """
-<div class="disclaimer">
-  <p>
-    Sorry, this plan has already been split.
-  </p>
-  <p>
-    If you're already in, enjoy! If not, Ya burnt!
-  </p>
 </div>
 """
 
@@ -115,7 +101,7 @@ class SM.JoinFormView extends SM.BaseView
       )
     else
       @validate()
-      if @$("input.invalid").length
+      unless @form_validator.valid()
         return @form().alertError("Please correct the fields in red")
 
       if @token
@@ -145,34 +131,11 @@ class SM.JoinFormView extends SM.BaseView
       charge.create(options)
 
   clear_invalid: (e) =>
-    $(e.target).removeClass("invalid")
+    @form_validator.clear(e.target)
 
   validate: =>
-    _.each @form().find("input"), (el) =>
-      $el = $(el)
-      $el.toggleClass("invalid", $el.val().length == 0)
-
-    @validate_card_number(@$("#js-card-number"))
-    @validate_dates(@$("#js-expiration-month"), @$("#js-expiration-year"))
+    @form_validator.validate_card_number(@$("#js-card-number"))
+    @form_validator.validate_dates(@$("#js-expiration-month"), @$("#js-expiration-year"))
     unless @token
-      @validate_email(@$("#js-email"))
-      @validate_phone_number(@$("#js-phone-number"))
-
-  validate_card_number: ($el) =>
-    unless balanced.card.isCardNumberValid($el.val())
-      $el.addClass("invalid")
-
-  validate_dates: ($month_el, $year_el) =>
-    unless balanced.card.isExpiryValid($month_el.val(), $year_el.val())
-      $month_el.addClass("invalid")
-      $year_el.addClass("invalid")
-
-  validate_email: ($el) =>
-    @email_regex ?= /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    unless @email_regex.test($el.val())
-      $el.addClass("invalid")
-
-  validate_phone_number: ($el) =>
-    digit_length = $el.val().replace(/[^\d]/g, '').length
-    unless digit_length == 10 || digit_length == 11
-      $el.addClass("invalid")
+      @form_validator.validate_email(@$("#js-email"))
+      @form_validator.validate_phone_number(@$("#js-phone-number"))
