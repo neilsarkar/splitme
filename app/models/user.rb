@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   validate :valid_date_of_birth, if: :date_of_birth?
 
   before_save :add_bank_account, if: :bank_account_number
+  before_save :add_card, if: :card_uri_changed?
   before_create :generate_token
 
   def as_json(*)
@@ -44,11 +45,6 @@ class User < ActiveRecord::Base
     phone_number.gsub!(/[^\d]/,'')
     phone_number = "1#{phone_number}" if phone_number.length == 10
     super(phone_number)
-  end
-
-  def card_uri=(card_uri)
-    add_credit_card(card_uri)
-    super(card_uri)
   end
 
   private
@@ -67,13 +63,19 @@ class User < ActiveRecord::Base
     self.token = String.random_alphanumeric(40)
   end
 
-  def add_credit_card(card_uri)
+  def add_card
     if balanced_payments_id.blank?
       buyer = Balanced::Marketplace.my_marketplace.create_buyer(email, card_uri)
       self.balanced_payments_id = buyer.id
-    else
+    elsif !card_uri_exists?
       balanced_account.add_card(card_uri)
+    else
+      true
     end
+  end
+
+  def card_uri_exists?
+    balanced_account.cards.map(&:id).include?(card_uri.split("/").last)
   end
 
   def add_bank_account

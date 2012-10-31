@@ -47,6 +47,10 @@ module Balanced
       true
     end
 
+    def cards
+      []
+    end
+
     def add_bank_account(*)
       true
     end
@@ -83,6 +87,10 @@ module Balanced
   class FakeBuyer
     def uri
       "https://balancedpayments.com/buyer_uri"
+    end
+
+    def id
+      "balanced_id_456"
     end
   end
 end

@@ -119,7 +119,7 @@ describe User do
         @user = FactoryGirl.create(:user, {
           balanced_payments_id: "abc123"
         })
-        @account = stub
+        @account = stub(cards: [])
         Balanced::Account.should_receive(:find_by_email).
           with(@user.email).and_return(@account)
       end
@@ -156,6 +156,14 @@ describe User do
           card_uri: "http://balancedpayments.com/card_uri"
         })
       end
+
+      it "does not add card when card_uri is already associated with the user" do
+        @account.stub(cards: [stub(id: "card_uri")])
+        @account.should_not_receive(:add_card)
+        @user.update_attributes({
+          card_uri: "http://balancedpayments.com/card_uri"
+        })
+      end
     end
 
     context "when user has a merchant account" do
@@ -164,7 +172,7 @@ describe User do
           balanced_payments_id: "abc123",
           bank_account_uri: "http://balancedpayments.com/chase"
         })
-        @account = stub
+        @account = stub(cards: [])
         Balanced::Account.should_receive(:find_by_email).
           with(@user.email).and_return(@account)
       end
@@ -241,12 +249,13 @@ describe User do
   end
 
   describe "#to_json" do
-    it "returns the token" do
+    it "returns token, has_bank_account, and has_card" do
       user = FactoryGirl.create(:user)
 
-      Yajl::Parser.parse(user.to_json).should == {
-        "token" => user.token
-      }
+      json = Yajl::Parser.parse(user.to_json)
+      json["token"].should == user.token
+      json["has_bank_account"].should be_false
+      json["has_card"].should be_false
     end
   end
 end

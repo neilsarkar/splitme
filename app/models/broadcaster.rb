@@ -3,10 +3,10 @@ class Broadcaster
     @plan = plan
   end
 
-  def notify_plan_joined(participant)
+  def notify_plan_joined(user)
     notify_group(
-      "#{participant.name} is in.",
-      "#{participant.name} has joined #{@plan.title}.
+      "#{user.name} is in.",
+      "#{user.name} has joined #{@plan.title}.
        \n\n
        Price per person: #{@plan.price_per_person_string}
        \n
@@ -45,6 +45,6 @@ class Broadcaster
   end
 
   def all_members
-    @plan.participants.map(&:email).join(",")
+    @plan.users.map(&:email).join(",")
   end
 end

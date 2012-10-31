@@ -3,7 +3,7 @@ FactoryGirl.define do
   sequence(:phone_number) { |n| "#{2120001000 + n}" }
 
   factory :commitment do
-    association :participant
+    association :user
     association :plan
   end
 

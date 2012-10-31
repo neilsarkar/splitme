@@ -38,7 +38,7 @@ class SM.Charge
     options.success ?= console.log
 
     SM.post(
-      "#{window.config.urls.api}/commitments/#{@plan.get('token')}"
+      "#{window.config.urls.api}/plans/#{@plan.get('token')}/commitments"
       participant: @user_attributes
       {
         success: =>

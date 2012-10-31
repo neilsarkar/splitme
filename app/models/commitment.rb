@@ -1,10 +1,10 @@
 class Commitment < ActiveRecord::Base
-  attr_accessible :participant_id, :plan_id, :participant, :plan
+  attr_accessible :user_id, :plan_id, :user, :plan
 
-  validates_presence_of :participant_id, :plan_id
-  validates_uniqueness_of :participant_id, :scope => :plan_id
+  validates_presence_of :user_id, :plan_id
+  validates_uniqueness_of :user_id, :scope => :plan_id
 
-  belongs_to :participant
+  belongs_to :user
   belongs_to :plan
 
   before_create :set_state
@@ -16,7 +16,7 @@ class Commitment < ActiveRecord::Base
   def charge!
     plan.lock!
 
-    buyer = Balanced::Account.find_by_email(participant.email)
+    buyer = Balanced::Account.find_by_email(user.email)
     if charge = buyer.debit(plan.price_per_person_with_fees, plan.title)
       mark_escrowed!
       update_attribute :debit_uri, charge.uri
@@ -46,7 +46,11 @@ class Commitment < ActiveRecord::Base
 
   def as_json(*)
     {
-      state: state
+      name: user.name,
+      state: state,
+      email: user.email,
+      phone_number: user.phone_number,
+      id: user.id
     }
   end
 

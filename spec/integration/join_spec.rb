@@ -86,4 +86,8 @@ describe "Joining Plan" do
     page.should have_content("Awesome, you're in.")
     plan.reload.participants.should include participant
   end
+
+  it "Joins the plan as an existing user without a credit card" do
+    raise "nope."
+  end
 end

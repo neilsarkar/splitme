@@ -281,4 +281,3 @@ https://splitme-b.herokuapp.com/api
 ### Response: 200
 
 ### Response: 409 (Already collected)
-

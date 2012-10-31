@@ -9,7 +9,7 @@ class Plan < ActiveRecord::Base
   before_create :set_token
 
   has_many :commitments
-  has_many :participants, through: :commitments
+  has_many :users, through: :commitments
 
   def as_json(options = {})
     json = {
@@ -87,19 +87,21 @@ class Plan < ActiveRecord::Base
     read_attribute(:total_price).present?
   end
 
-  private
-
   def participants_count
-    participants.blank? ? 1 : participants.size + 1
+    commitments.blank? ? 1 : commitments.size + 1
   end
+
+  private
 
   def participants_json(hide_details)
     if hide_details
-      participants.map { |participant| participant.as_json(:public) }
-    else
-      commitments.map do |commitment|
-        commitment.participant.as_json.merge(state: commitment.state)
+      users.map do |user|
+        {
+          name: user.name
+        }
       end
+    else
+      commitments.as_json
     end
   end
 
