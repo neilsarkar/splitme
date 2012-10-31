@@ -1,7 +1,8 @@
 class ConnectCommitmentsToUsers < ActiveRecord::Migration
   def up
     Commitment.all.each do |commitment|
-      user = User.find_by_email!(commitment.participant.email)
+      participant = Participant.find(commitment.participant_id)
+      user = User.find_by_email!(participant.email)
       commitment.participant_id = user.id
     end
     rename_column :commitments, :participant_id, :user_id
