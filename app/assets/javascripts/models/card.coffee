@@ -1,5 +1,5 @@
 class SM.Card
-  initialize: (@card_data) ->
+  constructor: (@card_data) ->
 
   save: (options = {}) =>
     options.error   ?= console.error
