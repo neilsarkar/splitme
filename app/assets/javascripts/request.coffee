@@ -15,10 +15,7 @@ SM.get = (path, options = {}) ->
 
   if successCallback = options.success
     options.success = (json, worthless, xhr) ->
-      try
-        successCallback(json.response, xhr.status, xhr)
-      catch error
-        successCallback(json)
+      successCallback(json.response, xhr.status, xhr)
 
   $.ajax(options)
 
@@ -41,9 +38,6 @@ SM.post = (path, data = {}, options = {}) ->
 
   if successCallback = options.success
     options.success = (json, worthless, xhr) ->
-      try
-        successCallback(json.response, xhr.status, xhr)
-      catch error
-        successCallback(json)
+      successCallback(json.response, xhr.status, xhr)
 
   $.ajax(options)

@@ -64,44 +64,38 @@ class SM.JoinFormView extends SM.BaseView
   form: =>
     @$("form.#{@mode}")
 
+  success: (message) =>
+    @form().alertSuccess(message)
+    @$("form input").remove()
+
+  error: (message) =>
+    @form().alertError(message)
+
+  value: (field_name) =>
+    @$("#js-#{field_name}").val()
+
   process: =>
     @form().disableForm()
-    options = {
-      success: (message) =>
-        @form().alertSuccess(message)
-        @$("form input").remove()
-      error: (message) =>
-        @form().alertError(message)
-    }
 
     if @mode == "sign_in"
-      charge = new SM.Charge(
-        {}
-        @plan
-      )
-
-      SM.post(
-        "/users/authenticate"
-        {
-          email: @$("#js-signin-email").val(),
-          password: @$("#js-signin-password").val()
-        }
+      email = @value("signin-email")
+      password = @value("signin-password")
+      SM.User.authenticate(email, password,
         {
           success: (user) =>
             if user.has_card
-              charge.join_plan(user.token, options)
+              SM.Commitment.create(user.token, @plan, { success: @success, error: @error })
             else
               @mode = "register"
               @$("form").toggle()
               @form().alertError("It looks like we don't have a credit card saved for you.")
               @$("#js-email, #js-name, #js-phone-number, #js-password").remove()
               @token = user.token
-          error: options.error
+          error: @error
         }
       )
     else
-      @validate()
-      unless @form_validator.valid()
+      unless @validate()
         return @form().alertError("Please correct the fields in red")
 
       if @token
@@ -128,14 +122,17 @@ class SM.JoinFormView extends SM.BaseView
           @plan
         )
 
-      charge.create(options)
+      charge.create(success: @success, error: @error)
 
   clear_invalid: (e) =>
     @form_validator.clear(e.target)
 
   validate: =>
+    @form_validator.validate_presence()
     @form_validator.validate_card_number(@$("#js-card-number"))
     @form_validator.validate_dates(@$("#js-expiration-month"), @$("#js-expiration-year"))
     unless @token
       @form_validator.validate_email(@$("#js-email"))
       @form_validator.validate_phone_number(@$("#js-phone-number"))
+
+    @form_validator.valid()

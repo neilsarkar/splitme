@@ -16,7 +16,7 @@ class SM.Charge
               @token,
               { user: { card_uri: response.data.uri } },
               success: (user) =>
-                @join_plan(@token, options)
+                SM.Commitment.create(@token, @plan, options)
               error: (errors, code, xhr) =>
                 options.error(errors)
             )
@@ -24,7 +24,7 @@ class SM.Charge
             @user_attributes.card_uri = response.data.uri
             @create_user(
               success: (user) =>
-                @join_plan(user.token, options)
+                SM.Commitment.create(user.token, @plan, options)
               error: (errors, code, xhr) =>
                 options.error(errors)
             )
@@ -62,20 +62,4 @@ class SM.Charge
       "/users"
       @user_attributes
       options
-    )
-
-  join_plan: (token, options) =>
-    SM.post(
-      "/plans/#{@plan.get('token')}/commitments"
-      {}
-      {
-        token: token
-        success: =>
-          options.success("Awesome, you're in.")
-        error: (errors, code, xhr) =>
-          if code == 409
-            options.error("You're already in the plan, dummy!")
-          else
-            options.error(errors)
-      }
     )

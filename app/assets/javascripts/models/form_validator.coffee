@@ -4,7 +4,7 @@ class SM.FormValidator
 
   set_form: (@$form) =>
 
-  validate: =>
+  validate_presence: =>
     _.each @$form.find("input"), (el) =>
       $el = $(el)
       $el.toggleClass("invalid", $el.val().length == 0)
