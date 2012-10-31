@@ -1,5 +1,5 @@
 class SM.SignInFormView extends SM.FormView
-  initialize: (@plan) ->
+  initialize: (@plan, @callback) ->
     super
 
   process: =>
@@ -11,11 +11,7 @@ class SM.SignInFormView extends SM.FormView
           if user.has_card
             SM.Commitment.create(user.token, @plan, { success: @success, error: @error })
           else
-            # @mode = "register"
-            # @$("form").toggle()
-            # @form().alertError("It looks like we don't have a credit card saved for you.")
-            # @$("#js-email, #js-name, #js-phone-number, #js-password").remove()
-            # @token = user.token
+            @callback(user)
         error: @error
       }
     )

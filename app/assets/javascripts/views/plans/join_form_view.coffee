@@ -28,5 +28,12 @@ class SM.JoinFormView extends SM.BaseView
     else
       @mode = "sign_in"
       $(e.target).html("JK, I don't have an account.")
-      @views.form = new SM.SignInFormView(@plan)
+      @views.form = new SM.SignInFormView(@plan, @load_add_card)
     @render()
+
+  load_add_card: (user) =>
+    @views.form.close()
+    @views.form = new SM.AddCardFormView(user, @plan)
+    @render()
+    @views.form.$el.alertError("It looks like we don't have a credit card saved for you.")
+    @$(".center").remove()

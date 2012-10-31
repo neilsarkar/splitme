@@ -12,20 +12,34 @@ class SM.RegisterFormView extends SM.FormView
     unless @validate()
       return @error("Please correct the fields in red")
 
-    charge = new SM.Charge(
-      {
-        name: @value("name")
-        email: @value("email")
-        phone_number: @value("phone-number")
-        card_number: @value("card-number")
-        expiration_month: @value("expiration-month")
-        expiration_year: @value("expiration-year")
-        password: @value("password")
-      }
-      @plan
-    )
+    card = new SM.Card({
+      card_number: @value("card-number")
+      expiration_month: @value("expiration-month")
+      expiration_year: @value("expiration-year")
+    })
 
-    charge.create(success: @success, error: @error)
+    card.save({
+      success: (card_uri) =>
+        SM.post(
+          "/users"
+          {
+            name: @value("name")
+            email: @value("email")
+            phone_number: @value("phone-number")
+            password: @value("password")
+            card_uri: card_uri
+          }
+          {
+            success: (user) =>
+              SM.Commitment.create(user.token, @plan, {
+                success: @success
+                error: @error
+              })
+            error: @error
+          }
+        )
+      error: @error
+    })
 
   validate: =>
     @form_validator.validate_presence()
