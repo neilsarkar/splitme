@@ -26,6 +26,14 @@ describe User do
       user.should have_at_least(1).error_on(:password)
     end
 
+    it "does not require password if password has already been set" do
+      user = FactoryGirl.create(:user, password: "sekret")
+
+      user.reload
+      user.name = "Joey"
+      user.should be_valid
+    end
+
     it "requires US phone number" do
       user = FactoryGirl.build(:user, phone_number: "+44 1231234")
       user.should_not be_valid

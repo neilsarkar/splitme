@@ -80,47 +80,69 @@ class SM.JoinFormView extends SM.BaseView
 
   process: =>
     @form().disableForm()
+    options = {
+      success: (message) =>
+        @form().alertSuccess(message)
+        @$("form input").remove()
+      error: (message) =>
+        @form().alertError(message)
+    }
+
     if @mode == "sign_in"
       charge = new SM.Charge(
-        {
-          email: @$("#js-signin-email").val()
-          password: @$("#js-signin-password").val()
-        }
+        {}
         @plan
       )
 
-      charge.authenticate_user({
-        success: (message) =>
-          @form().alertSuccess(message)
-          @$("form input").remove()
-        error: (message) =>
-          @form().alertError(message)
-      })
+      SM.post(
+        "/users/authenticate"
+        {
+          email: @$("#js-signin-email").val(),
+          password: @$("#js-signin-password").val()
+        }
+        {
+          success: (user) =>
+            if user.has_card
+              charge.join_plan(user.token, options)
+            else
+              @mode = "register"
+              @$("form").toggle()
+              @form().alertError("It looks like we don't have a credit card saved for you.")
+              @$("#js-email, #js-name, #js-phone-number, #js-password").remove()
+              @token = user.token
+          error: options.error
+        }
+      )
     else
       @validate()
       if @$("input.invalid").length
         return @form().alertError("Please correct the fields in red")
 
-      charge = new SM.Charge(
-        {
-          name: @$("#js-name").val()
-          email: @$("#js-email").val()
-          phone_number: @$("#js-phone-number").val()
-          card_number: @$("#js-card-number").val()
-          expiration_month: @$("#js-expiration-month").val()
-          expiration_year: @$("#js-expiration-year").val()
-          password: @$("#js-password").val()
-        }
-        @plan
-      )
+      if @token
+        charge = new SM.Charge(
+          {
+            token: @token
+            card_number: @$("#js-card-number").val()
+            expiration_month: @$("#js-expiration-month").val()
+            expiration_year: @$("#js-expiration-year").val()
+          },
+          @plan
+        )
+      else
+        charge = new SM.Charge(
+          {
+            name: @$("#js-name").val()
+            email: @$("#js-email").val()
+            phone_number: @$("#js-phone-number").val()
+            card_number: @$("#js-card-number").val()
+            expiration_month: @$("#js-expiration-month").val()
+            expiration_year: @$("#js-expiration-year").val()
+            password: @$("#js-password").val()
+          }
+          @plan
+        )
 
-      charge.create({
-        success: (message) =>
-          @form().alertSuccess(message)
-          @$("form input").remove()
-        error: (message) =>
-          @form().alertError(message)
-      })
+      charge.create(options)
 
   clear_invalid: (e) =>
     $(e.target).removeClass("invalid")
@@ -132,8 +154,9 @@ class SM.JoinFormView extends SM.BaseView
 
     @validate_card_number(@$("#js-card-number"))
     @validate_dates(@$("#js-expiration-month"), @$("#js-expiration-year"))
-    @validate_email(@$("#js-email"))
-    @validate_phone_number(@$("#js-phone-number"))
+    unless @token
+      @validate_email(@$("#js-email"))
+      @validate_phone_number(@$("#js-phone-number"))
 
   validate_card_number: ($el) =>
     unless balanced.card.isCardNumberValid($el.val())

@@ -2,6 +2,7 @@ class SM.Charge
   constructor: (@attributes, @plan) ->
     @user_attributes = _.pick(@attributes, 'name', 'email', 'phone_number', 'password')
     @payment_attributes = _.pick(@attributes, 'card_number', 'expiration_month', 'expiration_year')
+    @token = @attributes.token
 
   create: (options = {}) =>
     options.error ?= console.error
@@ -10,14 +11,23 @@ class SM.Charge
     balanced.card.create @payment_attributes, (response) =>
       switch response.status
         when 201
-          @user_attributes.card_uri = response.data.uri
-          @create_user(
-            success: (user) =>
-              @join_plan(user.token, options)
-            error: (errors, code, xhr) =>
-              debugger
-              options.error(errors)
-          )
+          if @token
+            @update_user(
+              @token,
+              { user: { card_uri: response.data.uri } },
+              success: (user) =>
+                @join_plan(@token, options)
+              error: (errors, code, xhr) =>
+                options.error(errors)
+            )
+          else
+            @user_attributes.card_uri = response.data.uri
+            @create_user(
+              success: (user) =>
+                @join_plan(user.token, options)
+              error: (errors, code, xhr) =>
+                options.error(errors)
+            )
 
         when 400 # missing field(s)
           options.error(response.error)
@@ -39,25 +49,19 @@ class SM.Charge
           options.error("Something went wrong with our payments provider. Please try again")
           console.error(response.error)
 
+  update_user: (token, data, options = {}) =>
+    options.token = token
+    SM.post(
+      "/users/update"
+      data
+      options
+    )
+
   create_user: (options = {}) =>
     SM.post(
       "/users"
       @user_attributes
-      {
-        success: options.success
-        error: options.error
-      }
-    )
-
-  authenticate_user: (options = {}) =>
-    SM.post(
-      "/users/authenticate"
-      { email: @user_attributes.email, password: @user_attributes.password }
-      {
-        success: (user) =>
-          @join_plan(user.token, options)
-        error: options.error
-      }
+      options
     )
 
   join_plan: (token, options) =>

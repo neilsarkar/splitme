@@ -101,11 +101,13 @@ describe "Joining Plan" do
     fill_in "password", with: "sekret"
 
     click_button "I'm in"
-    page.should have_content("Looks like we don't have a credit card saved for you.")
+    page.should have_content("It looks like we don't have a credit card saved for you.")
 
     fill_in "js-card-number", with: "4012888888881881"
     fill_in "js-expiration-month", with: "01"
     fill_in "js-expiration-year", with: "2016"
+
+    click_button "I'm in"
 
     page.should have_content("Awesome, you're in.")
     user.reload.card_uri.should_not be_blank

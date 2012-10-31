@@ -19,8 +19,9 @@ class User < ActiveRecord::Base
 
   validates_presence_of :email,
                         :name,
-                        :phone_number,
-                        :password
+                        :phone_number
+
+  validates_presence_of :password, on: :create
 
   validates_uniqueness_of :email
   validate :valid_email_format, if: :email?
