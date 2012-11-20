@@ -233,4 +233,11 @@ describe Plan do
       end
     end
   end
+
+  describe "#statement_title" do
+    it "truncates long titles" do
+      p = Plan.new(title: "12345678901234567890")
+      p.statement_title.should == "SplitMe: 123456789012"
+    end
+  end
 end

@@ -27,7 +27,7 @@ describe Commitment do
       commitment = FactoryGirl.create(:commitment)
       buyer = stub
       buyer.should_receive(:debit).
-        with(commitment.plan.price_per_person_with_fees, commitment.plan.title).
+        with(commitment.plan.price_per_person_with_fees, commitment.plan.statement_title).
         and_return(stub(uri: "/debit/abcd"))
       Balanced::Account.should_receive(:find_by_email).
         with(commitment.user.email).
@@ -54,7 +54,9 @@ describe Commitment do
         Balanced::Account.stub(:find_by_email).
           with(commitment.user.email).
           and_raise(Balanced::Error)
-        commitment.charge!
+        running {
+          commitment.charge!
+        }.should raise_error
         commitment.state.should == "failed"
       end
     end

@@ -91,6 +91,10 @@ class Plan < ActiveRecord::Base
     commitments.blank? ? 1 : commitments.size + 1
   end
 
+  def statement_title
+    "SplitMe: #{title[0..11]}"
+  end
+
   private
 
   def participants_json(hide_details)
