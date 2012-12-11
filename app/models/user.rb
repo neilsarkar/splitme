@@ -115,12 +115,14 @@ class User < ActiveRecord::Base
     end
   rescue Balanced::Conflict => e
     @errors[:email] << "already registered"
+    false
   rescue Exception => e
     if e.respond_to?(:body)
       @errors[:bank_account] << e.body["description"]
     else
       @errors[:bank_account] << e.message
     end
+    Airbrake.notify(e)
     false
   end
 
