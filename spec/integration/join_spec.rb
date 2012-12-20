@@ -72,17 +72,23 @@ describe "Joining Plan" do
 
   it "Joins the plan as an existing user" do
     plan = FactoryGirl.create(:plan)
-    user = FactoryGirl.create(:buyer_user, password: "sekret")
+    user = FactoryGirl.create(:buyer_user, password: "sekret", email: "Neil@gmail.com")
     visit "/#{plan.token}"
 
     page.should have_content(plan.title)
 
     click_link "I have a password and want to sign in"
 
-    fill_in "email", with: user.email
+    fill_in "email", with: "nope@crap.com"
     fill_in "password", with: "sekret"
 
     click_button "I'm in"
+
+    page.should have_content("Sorry, we couldn't find the email nope@crap.com in our system.")
+
+    fill_in "email", with: "neil@gmail.com"
+    click_button "I'm in"
+
     page.should have_content("Awesome, you're in.")
     plan.reload.users.should include user
   end

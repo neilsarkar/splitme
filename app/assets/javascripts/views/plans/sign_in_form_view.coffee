@@ -12,6 +12,12 @@ class SM.SignInFormView extends SM.FormView
             SM.Commitment.create(user.token, @plan, { success: @success, error: @error })
           else
             @callback(user)
+        statusCode: {
+          404: =>
+            @error("Sorry, we couldn't find the email nope@crap.com in our system.")
+          401: =>
+            @error("Your password is incorrect.")
+        }
         error: @error
       }
     )

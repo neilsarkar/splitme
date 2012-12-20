@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :password, on: :create
 
-  validates_uniqueness_of :email
+  validates_uniqueness_of :email, case_sensitive: false
   validate :valid_email_format, if: :email?
 
   validate :us_phone_number, if: :phone_number?
@@ -50,6 +50,18 @@ class User < ActiveRecord::Base
 
   def balanced_account
     @balanced_account ||= Balanced::Account.find_by_email(email)
+  end
+
+  def email=(new_email)
+    super(new_email.try(:downcase).try(:strip))
+  end
+
+  def self.find_by_email(email)
+    super(email.try(:downcase))
+  end
+
+  def self.find_by_email!(email)
+    super(email.try(:downcase))
   end
 
   private

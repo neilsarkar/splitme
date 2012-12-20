@@ -55,6 +55,11 @@ describe User do
     end
   end
 
+  it "does not use case sensitive emails" do
+    user = FactoryGirl.create(:user, email: "NeIl@gmail.com")
+    User.find_by_email("neil@gmail.com").should == user
+  end
+
   it "accepts a password" do
     user = FactoryGirl.create(:user, password: "gunit")
     User.find_by_email(user.email).authenticate("gunit").should == user
@@ -253,6 +258,31 @@ describe User do
       user = User.new
       user.phone_number = "(917) 370-6969"
       user.phone_number.should == "19173706969"
+    end
+  end
+
+  describe "#email=" do
+    it "downcases email" do
+      user = User.new
+      user.email = "NEIL@GMAIL.COM"
+      user.email.should == "neil@gmail.com"
+    end
+
+    it "does not blow up on nil" do
+      user = User.new
+      running {
+        user.email = nil
+      }.should_not raise_error
+    end
+  end
+
+  describe "#find_by_email!" do
+    it "finds by downcased email" do
+      user = FactoryGirl.create(:user, email: "neil@gmail.com")
+      User.find_by_email!("NEIL@GMAIL.COM").should == user
+      running {
+        User.find_by_email!("nope@fake.com")
+      }.should raise_error
     end
   end
 
