@@ -2,12 +2,13 @@ require "spec_helper"
 
 describe "Joining Plan" do
   it "Shows plan details" do
-    plan = FactoryGirl.create(:plan, total_price: 10000)
+    plan = FactoryGirl.create(:plan, total_price: 10000, description: "Check this out http://airbnb.com")
     commitment = FactoryGirl.create(:commitment, plan: plan)
     visit "/#{plan.token}"
 
     page.should have_content(plan.title)
     page.should have_content(plan.description)
+    page.should have_link("http://airbnb.com")
 
     page.should have_content(plan.user.name)
     page.should have_content("2")

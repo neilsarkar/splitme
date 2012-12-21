@@ -45,3 +45,11 @@ $.fn.dotdotdot = ->
     else
       @html(baseHtml)
   , 300
+
+$.fn.autolink = ->
+  this.each ->
+    el = $(this)
+    if el.html() && !el.find('a').length
+      regex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
+      linkedText = el.html().replace(regex, "<a href='$1' target='_blank'>$1</a>")
+      el.html(linkedText)

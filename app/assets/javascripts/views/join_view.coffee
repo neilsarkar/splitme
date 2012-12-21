@@ -21,6 +21,9 @@ class SM.JoinView extends SM.BaseView
     @on "pre_render", =>
       @views.join_form = new SM.LockedView if @plan.get("is_locked")
 
+    @on "render", =>
+      @$(".description").autolink()
+
   template: """
 <img src='/assets/header.png' class='header'/>
 <div class='section'>
