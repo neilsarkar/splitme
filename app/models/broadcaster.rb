@@ -5,12 +5,10 @@ class Broadcaster
 
   def notify_plan_joined(user)
     notify_group(
-      "#{user.name} is in.",
-      "#{user.name} has joined #{@plan.title}.
-       \n\n
-       Price per person: #{@plan.price_per_person_string}
-       \n
-       Total committed: #{@plan.total_price_string}"
+      "#{@plan.title}",
+      "#{user.name} is in.
+       \nPrice per person: #{@plan.price_per_person_string}
+       \nTotal committed: #{@plan.total_price_string}"
     )
   end
 

@@ -18,9 +18,9 @@ describe Broadcaster do
     email = Pony.deliveries.last
     email.should be_delivered_to @plan.user.email
     email.should cc_to commitment.user.email
-    email.should have_subject "#{commitment.user.name} is in."
+    email.should have_subject @plan.title
 
-    email.should have_body_text @plan.title
+    email.should have_body_text "#{commitment.user.name} is in."
     email.should have_body_text @plan.total_price_string
     email.should have_body_text @plan.price_per_person_string
   end

@@ -66,7 +66,8 @@ describe "splitme" do
     email = Pony.deliveries.last
     email.should be_delivered_to "cam@hunt.io"
     email.should cc_to "neil@neilsarkar.com"
-    email.should have_subject "Neil Sarkar is in."
+    email.should have_subject "Ski House"
+    email.should have_body_text "Neil Sarkar is in."
 
     # Existing user validates via sign in
     user = FactoryGirl.create(:buyer_user, name: "Joey Pfeifer", email: "joey@pfeifer.com", password: "sekret")
@@ -82,7 +83,8 @@ describe "splitme" do
     email = Pony.deliveries.last
     email.should be_delivered_to "cam@hunt.io"
     email.should cc_to ["joey@pfeifer.com","neil@neilsarkar.com"]
-    email.should have_subject "Joey Pfeifer is in."
+    email.should have_subject "Ski House"
+    email.should have_body_text "Joey Pfeifer is in."
 
     # Client charges cards
     plan = get "/plans/#{id}?token=#{token}"
