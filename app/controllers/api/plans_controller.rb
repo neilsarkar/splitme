@@ -33,6 +33,8 @@ class Api::PlansController < Api::BaseController
       render_error(409)
     else
       plan.collect!
+      broadcaster = Broadcaster.new(plan)
+      broadcaster.notify_plan_collected
       render_response(plan)
     end
   end

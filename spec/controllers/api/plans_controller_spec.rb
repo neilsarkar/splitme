@@ -161,17 +161,30 @@ describe Api::PlansController do
       response.status.should == 404
     end
 
-    it "collects funds and returns 200" do
-      Plan.any_instance.stub(:collected?).and_return(false)
-      Plan.any_instance.should_receive(:collect!).and_return(true)
-      post :collect, id: @plan.id, token: @user.token
-      response.status.should == 200
-    end
-
     it "returns 409 if funds are already collected" do
       Plan.any_instance.should_receive(:collected?).and_return(true)
       post :collect, id: @plan.id, token: @user.token
       response.status.should == 409
+    end
+
+    context "success" do
+      before do
+        Plan.any_instance.stub(:collected?).and_return(false)
+        Plan.any_instance.should_receive(:collect!).and_return(true)
+      end
+
+      it "collects funds and returns 200" do
+        post :collect, id: @plan.id, token: @user.token
+        response.status.should == 200
+      end
+
+      it "broadcasts to the plan on successful collection" do
+        broadcaster = stub
+        Broadcaster.should_receive(:new).with(@plan).and_return(broadcaster)
+        broadcaster.should_receive(:notify_plan_collected)
+
+        post :collect, id: @plan.id, token: @user.token
+      end
     end
   end
 end

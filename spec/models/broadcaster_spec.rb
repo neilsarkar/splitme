@@ -24,4 +24,18 @@ describe Broadcaster do
     email.should have_body_text @plan.total_price_string
     email.should have_body_text @plan.price_per_person_string
   end
+
+  it "#notify_plan_collected" do
+    commitment = FactoryGirl.create(:commitment, plan: @plan)
+    @plan.reload
+    @broadcaster.notify_plan_collected
+
+    Pony.deliveries.should_not be_blank
+    email = Pony.deliveries.last
+    email.should be_delivered_to @plan.user.email
+    email.should cc_to commitment.user.email
+    email.should have_subject @plan.title
+
+    email.should have_body_text @plan.price_per_person_string
+  end
 end

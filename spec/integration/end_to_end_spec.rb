@@ -105,6 +105,14 @@ describe "splitme" do
     # Client collects
     post "/plans/#{id}/collect?token=#{token}"
     @response.code.should == 200
+
+    # Participants receive a confirmation email
+    email = Pony.deliveries.last
+    email.should be_delivered_to "cam@hunt.io"
+    email.should cc_to ["joey@pfeifer.com","neil@neilsarkar.com"]
+    email.should have_subject "Ski House"
+    email.should have_body_text "It's on."
+    email.should have_body_text "Each person paid $33.33"
   end
 
   def post(path, body={})

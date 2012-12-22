@@ -12,6 +12,14 @@ class Broadcaster
     )
   end
 
+  def notify_plan_collected
+    notify_group(
+      "#{@plan.title}",
+      "It's on.
+       \nEach person paid #{@plan.price_per_person_string}."
+    )
+  end
+
   private
 
   def notify_creator(subject, message)
