@@ -8,7 +8,7 @@ class Plan < ActiveRecord::Base
 
   before_create :set_token
 
-  has_many :commitments
+  has_many :commitments, dependent: :destroy
   has_many :users, through: :commitments
 
   def as_json(options = {})

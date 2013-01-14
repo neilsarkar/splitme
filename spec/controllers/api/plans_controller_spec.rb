@@ -187,4 +187,25 @@ describe Api::PlansController do
       end
     end
   end
+
+  describe "#destroy" do
+    before do
+      @plan = FactoryGirl.create(:plan, user: @user)
+    end
+
+    it "returns 404 if user doesn't own plan" do
+      plan = FactoryGirl.create(:plan)
+      post :destroy, id: plan.id, token: @user.token
+
+      response.status.should == 404
+    end
+
+    it "returns 200 on successful plan destruction" do
+      running {
+        post :destroy, id: @plan.id, token: @user.token
+      }.should change { Plan.count }.by(-1)
+
+      response.status.should == 200
+    end
+  end
 end

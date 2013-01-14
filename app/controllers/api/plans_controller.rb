@@ -38,4 +38,10 @@ class Api::PlansController < Api::BaseController
       render_response(plan)
     end
   end
+
+  def destroy
+    plan = current_user.plans.find(params[:id])
+    plan.destroy
+    head 200
+  end
 end

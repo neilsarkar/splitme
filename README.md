@@ -199,6 +199,14 @@ https://splitme-b.herokuapp.com/api
 
 ### Response: 404 (Plan doesn't exist or User doesn't own plan)
 
+## Destroy
+
+### Request: POST /plans/:id/destroy
+
+### Response: 200
+
+### Response: 404 (User doesn't own plan or plan doesn't exist)
+
 ## Preview
 
 ### GET /plans/:plan_token/preview

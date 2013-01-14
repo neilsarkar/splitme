@@ -4,6 +4,7 @@ Splitme::Application.routes.draw do
       post :collect, :on => :member
       get :preview, :on => :member
     end
+    match "/plans/:id/destroy" => "plans#destroy", via: :post
     match "/plans/:plan_token/commitments" => "commitments#create", via: :post
     match "/plans/:plan_id/charge/:user_id" => "commitments#charge", via: :post
 
