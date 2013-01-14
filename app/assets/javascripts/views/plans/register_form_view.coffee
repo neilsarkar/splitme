@@ -62,7 +62,7 @@ class SM.RegisterFormView extends SM.FormView
 
 <div class="disclaimer">
   <p>
-    The current price per person is {{price_per_person}}.
+    The current price per person is {{price_per_person}} plus a $1 + 3% Processing Fee.
   </p>
   <p>
     This price will go down if more people join.
