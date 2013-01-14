@@ -1,6 +1,7 @@
 class Broadcaster
   def initialize(plan)
     @plan = plan
+    @plan_url = Rails.application.routes.url_helpers.plan_url(host: OUR_HOST, token: @plan.token)
   end
 
   def notify_plan_joined(user)
@@ -8,7 +9,8 @@ class Broadcaster
       "#{@plan.title}",
       "#{user.name} is in.
        \nPrice per person: #{@plan.price_per_person_string}
-       \nTotal committed: #{@plan.total_price_string}"
+       \nTotal committed: #{@plan.total_price_string}
+       \n\nYour URL: #{@plan_url}"
     )
   end
 

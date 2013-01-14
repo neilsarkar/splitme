@@ -36,4 +36,6 @@ Splitme::Application.configure do
   config.active_support.deprecation = :stderr
 
   BALANCED_API_KEY = "233fba60121911e28f7a026ba7f8ec28"
+
+  OUR_HOST = "splitme.dev:4444"
 end

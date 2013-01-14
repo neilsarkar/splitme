@@ -23,6 +23,7 @@ describe Broadcaster do
     email.should have_body_text "#{commitment.user.name} is in."
     email.should have_body_text @plan.total_price_string
     email.should have_body_text @plan.price_per_person_string
+    email.should have_body_text "http://#{OUR_HOST}/#{@plan.token}"
   end
 
   it "#notify_plan_collected" do

@@ -36,4 +36,6 @@ Splitme::Application.configure do
   config.assets.debug = true
 
   BALANCED_API_KEY = "847306f815c411e28fcb026ba7f8ec28"
+
+  OUR_HOST = ENV["GROUPME_HOST"] || "splitme.dev:3000"
 end

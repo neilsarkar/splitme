@@ -17,6 +17,6 @@ Splitme::Application.routes.draw do
 
   mount JasmineRails::Engine => "/specs" if Rails.env.development?
 
-  match "/:token" => "site#hi"
+  match "/:token" => "site#hi", as: :plan
   root to: "site#hi"
 end

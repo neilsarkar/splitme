@@ -67,6 +67,8 @@ Splitme::Application.configure do
 
   BALANCED_API_KEY = ENV["BALANCED_API_KEY"]
 
+  OUR_HOST = "splitmeapp.com"
+
   Pony.options = {
     via: :smtp,
     via_options: {
