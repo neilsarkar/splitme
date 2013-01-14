@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
 
   def add_card
     if balanced_payments_id.blank?
-      buyer = Balanced::Marketplace.my_marketplace.create_buyer(email, card_uri)
+      buyer = Balanced::Marketplace.my_marketplace.create_buyer(email, card_uri, name)
       self.balanced_payments_id = buyer.id
     elsif !card_uri_exists?
       balanced_account.add_card(card_uri)

@@ -114,7 +114,8 @@ describe User do
       it "creates a buyer account when card uri is passed" do
         @marketplace.should_receive(:create_buyer).with(
           "neil@groupme.com",
-          "http://balancedpayments.com/mycard"
+          "http://balancedpayments.com/mycard",
+          "Neil Sarkar"
         ).and_return(stub(id: "ghijkl"))
 
         user = FactoryGirl.create(:user, {
