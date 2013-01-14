@@ -239,5 +239,10 @@ describe Plan do
       p = Plan.new(title: "12345678901234567890")
       p.statement_title.should == "SplitMe: 123456789012"
     end
+
+    it "strips offensive characters" do
+      p = Plan.new(title: "1234/5678,901234567890")
+      p.statement_title.should == "SplitMe: 123456789012"
+    end
   end
 end

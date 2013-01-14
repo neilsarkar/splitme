@@ -92,7 +92,13 @@ class Plan < ActiveRecord::Base
   end
 
   def statement_title
-    "SplitMe: #{title[0..11]}"
+    if title.blank?
+      "SplitMe"
+    else
+      statement_title = title.gsub(/[^0-9a-z]/i, '')
+      statement_title = statement_title[0..11]
+      "SplitMe: #{statement_title}"
+    end
   end
 
   private
