@@ -93,6 +93,12 @@ describe "splitme" do
     joey = plan["participants"].last
     post "/plans/#{id}/charge/#{neil["id"]}?token=#{token}"
     @response.code.should == 201
+    Balanced::FakeAccount.any_instance.stub(:debit).and_return(false)
+    post "/plans/#{id}/charge/#{joey["id"]}?token=#{token}"
+    @response.code.should == 400
+
+    # Client recharges a card that failed once
+    Balanced::FakeAccount.any_instance.unstub(:debit)
     post "/plans/#{id}/charge/#{joey["id"]}?token=#{token}"
     @response.code.should == 201
 
@@ -134,6 +140,8 @@ describe "splitme" do
     else # e.g. head 200
       nil
     end
+  rescue => error
+    @response = WrappedError.new(error)
   end
 
   def get(path)
@@ -142,5 +150,25 @@ describe "splitme" do
       { accept: :json }
     )
     Yajl::Parser.parse(@response)["response"]
+  end
+
+  class WrappedError
+    def initialize(error)
+      @error = error
+      @json  = Yajl::Parser.parse(@error.http_body)
+      @meta  = @json["meta"] if @json
+    end
+
+    def code
+      @error.http_code
+    end
+
+    def [](key)
+      if @json
+        @json[key]
+      else
+        nil
+      end
+    end
   end
 end

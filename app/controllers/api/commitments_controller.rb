@@ -18,7 +18,7 @@ class Api::CommitmentsController < Api::BaseController
     commitment = Commitment.find_by_plan_id_and_user_id!(params[:plan_id], params[:user_id])
     raise UnauthorizedError unless commitment.plan.user == current_user
 
-    return render_response(commitment, code: 409) unless commitment.unpaid?
+    return render_response(commitment, code: 409) unless commitment.unpaid? || commitment.failed?
 
     if commitment.charge!
       render_response(commitment, code: 201)

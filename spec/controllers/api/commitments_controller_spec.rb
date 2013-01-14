@@ -74,17 +74,24 @@ describe Api::CommitmentsController do
         response.should be_bad_request
         json["meta"]["errors"].should == ["Card was declined."]
       end
+
+      it "attempts card charge on failed card" do
+        @commitment.update_attribute :state, "failed"
+
+        post :charge, token: @user.token, plan_id: @commitment.plan_id, user_id: @commitment.user_id
+        response.should be_success
+      end
     end
 
     context "when participant has paid" do
       it "returns an error" do
         commitment = FactoryGirl.create(:commitment)
-        commitment.update_attribute :state, "paid"
+        commitment.update_attribute :state, "escrowed"
         token = commitment.plan.user.token
         post :charge, token: token, plan_id: commitment.plan_id, user_id: commitment.user_id
 
         response.status.should == 409
-        json["response"]["state"].should == "paid"
+        json["response"]["state"].should == "escrowed"
       end
     end
 

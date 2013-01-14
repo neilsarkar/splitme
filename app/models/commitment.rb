@@ -20,8 +20,10 @@ class Commitment < ActiveRecord::Base
     if charge = buyer.debit(plan.price_per_person_with_fees, plan.statement_title)
       mark_escrowed!
       update_attribute :debit_uri, charge.uri
+      charge.uri
     else
       mark_failed!
+      false
     end
   rescue
     mark_failed!
