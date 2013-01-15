@@ -60,6 +60,8 @@ class SM.RegisterFormView extends SM.FormView
 
 <input id='js-password' placeholder='Set a password' type='password'/>
 
+<img class="balanced_logo" src="/assets/balanced.png" />
+
 <div class="disclaimer">
   <p>
     The current price per person is {{price_per_person}} plus a $1 + 3% Processing Fee.
