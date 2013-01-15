@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121220234230) do
+ActiveRecord::Schema.define(:version => 20130115215753) do
 
   create_table "commitments", :force => true do |t|
     t.integer  "user_id"
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(:version => 20121220234230) do
     t.string   "password_digest"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
-    t.string   "balanced_payments_id"
+    t.string   "balanced_account_uri"
     t.string   "street_address"
     t.string   "zip_code"
     t.string   "date_of_birth"
