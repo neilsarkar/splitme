@@ -11,19 +11,19 @@ describe "Joining Plan" do
     page.should have_link("http://airbnb.com")
 
     page.should have_content(plan.user.name)
-    page.should have_content("2")
-    page.should have_content("$50.00")
     page.should have_content("3")
-    page.should have_content("$33.33")
+    page.should have_content("$35.33")
     page.should have_content("4")
-    page.should have_content("$25.00")
+    page.should have_content("$26.75")
     page.should have_content("5")
-    page.should have_content("$20.00")
+    page.should have_content("$21.60")
     page.should have_content("6")
-    page.should have_content("$16.66")
+    page.should have_content("$18.16")
+    page.should have_content("7")
+    page.should have_content("$15.71")
 
-    page.find(".current").should have_content "$50.00"
-    page.find(".next").should have_content "$33.33"
+    page.find(".current").should have_content "$35.33"
+    page.find(".next").should have_content "$26.75"
 
     page.should have_content(commitment.user.name)
   end

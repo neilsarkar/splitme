@@ -50,7 +50,11 @@ class Plan < ActiveRecord::Base
   end
 
   def price_per_person_with_fees
-    price_per_person + 100 + (price_per_person*0.03).round
+    price_per_person + 100 + (price_per_person*0.03).floor
+  end
+
+  def price_per_person_with_fees_string
+    price_string(price_per_person_with_fees)
   end
 
   def total_price=(price)
