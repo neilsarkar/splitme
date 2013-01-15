@@ -32,6 +32,7 @@ describe "splitme" do
 
     @response.code.should == 201
     token = user["token"]
+    user["has_bank_account"].should be
 
     # Client creates a plan
     post "/plans?token=#{token}", {

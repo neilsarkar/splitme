@@ -130,6 +130,8 @@ class User < ActiveRecord::Base
       )
       self.balanced_payments_id = merchant.id
     end
+
+    self.bank_account_uri = bank_account.uri
   rescue Balanced::Conflict => e
     @errors[:email] << "already registered"
     false
