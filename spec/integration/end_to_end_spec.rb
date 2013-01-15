@@ -106,7 +106,10 @@ describe "splitme" do
     Balanced::Account.should_receive(:find_by_email).
       with("cam@hunt.io").
       and_return(balanced_user)
-    balanced_user.should_receive(:credit).with(6666)
+    balanced_user.should_receive(:credit).with({
+      amount: 6666,
+      appears_on_statement_as: "SplitMe: SkiHouse"
+    })
 
     # Client collects
     post "/plans/#{id}/collect?token=#{token}"

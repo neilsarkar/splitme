@@ -68,16 +68,14 @@ describe User do
   describe "balanced payments integration" do
     before do
       @marketplace = stub
-      Balanced::Marketplace.stub(:my_marketplace).and_return(@marketplace)
-      Balanced::BankAccount.stub(:new).with(
+      Balanced::Marketplace.stub(:mine).and_return(@marketplace)
+      @marketplace.stub(:create_bank_account).with(
         account_number: "1234567890",
         bank_code: "321174851",
         name: "Neil Sarkar"
       ).and_return(
         stub({
-          save: stub({
-            uri: "http://balancedpayments.com/bank_uri"
-          })
+          uri: "http://balancedpayments.com/bank_uri"
         })
       )
     end
@@ -85,8 +83,8 @@ describe User do
     context "when user has no balanced account" do
       it "creates a merchant account when bank info is passed" do
         @marketplace.should_receive(:create_merchant).with(
-          "neil@groupme.com",
-          {
+          email_address: "neil@groupme.com",
+          merchant: {
             type: "person",
             name: "Neil Sarkar",
             phone_number: "+12121231234",
@@ -94,7 +92,8 @@ describe User do
             postal_code: "90210",
             dob: "1984-01"
           },
-          "http://balancedpayments.com/bank_uri"
+          bank_account_uri: "http://balancedpayments.com/bank_uri",
+          name: "Neil Sarkar"
         ).and_return(stub(id: "abcdef"))
 
         user = FactoryGirl.build(:user, {
@@ -113,9 +112,9 @@ describe User do
 
       it "creates a buyer account when card uri is passed" do
         @marketplace.should_receive(:create_buyer).with(
-          "neil@groupme.com",
-          "http://balancedpayments.com/mycard",
-          "Neil Sarkar"
+          email_address: "neil@groupme.com",
+          card_uri: "http://balancedpayments.com/mycard",
+          name: "Neil Sarkar"
         ).and_return(stub(id: "ghijkl"))
 
         user = FactoryGirl.create(:user, {
@@ -223,9 +222,8 @@ describe User do
       error.stub(body: {
         "description" => "Invalid field [bank_code] - \"0\" must have length >= 9 Your request id is OHM17c932de1a2911e29dfc026ba7cd33d0."
       })
-      account = stub
-      account.should_receive(:save).and_raise(error)
-      Balanced::BankAccount.should_receive(:new).and_return(account)
+
+      Balanced::Marketplace.mine.should_receive(:create_bank_account).and_raise(error)
 
       user = FactoryGirl.build(:user, {
         email: "neil@groupme.com",

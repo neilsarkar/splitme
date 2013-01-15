@@ -19,7 +19,7 @@ module Balanced
     def initialize(*)
     end
 
-    def self.my_marketplace
+    def self.mine
       FakeMarketplace.new
     end
   end
@@ -31,11 +31,11 @@ module Balanced
   end
 
   class FakeAccount
-    def debit(amount, name)
+    def debit(*)
       FakeDebit.new
     end
 
-    def credit(amount)
+    def credit(*)
       FakeCredit.new
     end
 
@@ -75,6 +75,10 @@ module Balanced
 
     def create_buyer(*)
       FakeBuyer.new
+    end
+
+    def create_bank_account(*args)
+      BankAccount.new(args)
     end
   end
 

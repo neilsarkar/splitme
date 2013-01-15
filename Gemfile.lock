@@ -33,7 +33,7 @@ GEM
       builder
       girl_friday
     arel (3.0.2)
-    balanced (0.3.11)
+    balanced (0.5.4)
       faraday (~> 0.8)
       faraday_middleware (~> 0.8.7)
     bcrypt-ruby (3.0.1)

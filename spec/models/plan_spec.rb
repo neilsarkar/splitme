@@ -208,7 +208,10 @@ describe Plan do
       plan.stub(total_escrowed: 10000)
 
       merchant = stub
-      merchant.should_receive(:credit).with(10000).and_return(stub(uri: "/credit/abcd"))
+      merchant.should_receive(:credit).with({
+        amount: 10000,
+        appears_on_statement_as: plan.statement_title
+      }).and_return(stub(uri: "/credit/abcd"))
       Balanced::Account.should_receive(:find_by_email).with(plan.user.email).
         and_return(merchant)
       plan.collect!

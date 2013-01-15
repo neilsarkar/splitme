@@ -78,7 +78,11 @@ class User < ActiveRecord::Base
 
   def add_card
     if balanced_payments_id.blank?
-      buyer = Balanced::Marketplace.my_marketplace.create_buyer(email, card_uri, name)
+      buyer = Balanced::Marketplace.mine.create_buyer({
+        email_address: email,
+        card_uri: card_uri,
+        name: name
+      })
       self.balanced_payments_id = buyer.id
     elsif !card_uri_exists?
       balanced_account.add_card(card_uri)
@@ -92,11 +96,11 @@ class User < ActiveRecord::Base
   end
 
   def add_bank_account
-    bank_account = Balanced::BankAccount.new({
+    bank_account = Balanced::Marketplace.mine.create_bank_account({
       account_number: bank_account_number,
       bank_code: bank_routing_number,
       name: name
-    }).save
+    })
 
     if balanced_payments_id.present?
       unless bank_account_uri.present?
@@ -111,9 +115,9 @@ class User < ActiveRecord::Base
       end
       balanced_account.add_bank_account(bank_account.uri)
     else
-      merchant = Balanced::Marketplace.my_marketplace.create_merchant(
-        email,
-        {
+      merchant = Balanced::Marketplace.mine.create_merchant(
+        email_address: email,
+        merchant: {
           type: "person",
           name: name,
           phone_number: "+#{phone_number}",
@@ -121,7 +125,8 @@ class User < ActiveRecord::Base
           postal_code: zip_code,
           dob: balanced_dob
         },
-        bank_account.uri
+        bank_account_uri: bank_account.uri,
+        name: name
       )
       self.balanced_payments_id = merchant.id
     end
