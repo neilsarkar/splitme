@@ -94,7 +94,7 @@ describe User do
           },
           bank_account_uri: "http://balancedpayments.com/bank_uri",
           name: "Neil Sarkar"
-        ).and_return(stub(id: "abcdef"))
+        ).and_return(stub(uri: "http://balancedpayments.com/account_uri"))
 
         user = FactoryGirl.build(:user, {
           email: "neil@groupme.com",
@@ -107,7 +107,7 @@ describe User do
           date_of_birth: "1/1984"
         })
         user.save
-        user.balanced_payments_id.should == "abcdef"
+        user.balanced_account_uri.should == "http://balancedpayments.com/account_uri"
       end
 
       it "creates a buyer account when card uri is passed" do
@@ -115,7 +115,7 @@ describe User do
           email_address: "neil@groupme.com",
           card_uri: "http://balancedpayments.com/mycard",
           name: "Neil Sarkar"
-        ).and_return(stub(id: "ghijkl"))
+        ).and_return(stub(uri: "http://balancedpayments.com/account_uri"))
 
         user = FactoryGirl.create(:user, {
           email: "neil@groupme.com",
@@ -123,14 +123,14 @@ describe User do
           phone_number: "12121231234",
           card_uri: "http://balancedpayments.com/mycard"
         })
-        user.balanced_payments_id.should == "ghijkl"
+        user.balanced_account_uri.should == "http://balancedpayments.com/account_uri"
       end
     end
 
     context "when user has a buyer account" do
       before do
         @user = FactoryGirl.create(:user, {
-          balanced_payments_id: "abc123"
+          balanced_account_uri: "http://balancedpayments.com/account"
         })
         @account = stub(cards: [])
         Balanced::Account.should_receive(:find_by_email).
@@ -182,7 +182,7 @@ describe User do
     context "when user has a merchant account" do
       before do
         @user = FactoryGirl.create(:user, {
-          balanced_payments_id: "abc123",
+          balanced_account_uri: "http://balancedpayments.com/account",
           bank_account_uri: "http://balancedpayments.com/chase"
         })
         @account = stub(cards: [])

@@ -83,8 +83,8 @@ module Balanced
   end
 
   class FakeMerchant
-    def id
-      "balanced_id_123"
+    def uri
+      "https://balancedpayments.com/account_uri"
     end
   end
 
