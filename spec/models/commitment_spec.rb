@@ -29,7 +29,8 @@ describe Commitment do
       buyer.should_receive(:debit).
         with({
           amount: commitment.plan.price_per_person_with_fees,
-          appears_on_statement_as: commitment.plan.statement_title
+          appears_on_statement_as: commitment.plan.statement_title,
+          merchant_uri: commitment.plan.user.balanced_account_uri
         }).and_return(stub(uri: "/debit/abcd"))
       Balanced::Account.should_receive(:find_by_email).
         with(commitment.user.email).

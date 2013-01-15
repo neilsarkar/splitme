@@ -19,7 +19,8 @@ class Commitment < ActiveRecord::Base
     buyer = Balanced::Account.find_by_email(user.email)
     charge = buyer.debit({
       amount: plan.price_per_person_with_fees,
-      appears_on_statement_as: plan.statement_title
+      appears_on_statement_as: plan.statement_title,
+      merchant_uri: plan.user.balanced_account_uri
     })
 
     if charge
