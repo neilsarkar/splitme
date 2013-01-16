@@ -7,6 +7,8 @@ class SM.AddCardFormView extends SM.FormView
       card_number: @value("card-number")
       expiration_month: @value("expiration-month")
       expiration_year: @value("expiration-year")
+      postal_code:   @value("zip-code")
+      security_code:   @value("cvv")
     })
 
     card.save({
@@ -31,6 +33,8 @@ class SM.AddCardFormView extends SM.FormView
 <input id='js-card-number' placeholder='Credit Card Number' />
 <input id='js-expiration-month' class='month' placeholder='Exp. Month (MM)' type='tel'/>
 <input id='js-expiration-year' class='year' placeholder='Exp. Year (YYYY)' type='tel'/>
+<input id='js-zip-code' placeholder='Zip Code' type='tel'/>
+<input id='js-cvv' placeholder='CVV' type='password'/>
 
 <input type='submit' value="I'm in" class="btn btn-success" />
 """

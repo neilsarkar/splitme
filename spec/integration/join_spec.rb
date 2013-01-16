@@ -57,6 +57,9 @@ describe "Joining Plan" do
     fill_in "js-expiration-month", with: "01"
     fill_in "js-expiration-year", with: "2016"
 
+    fill_in "js-zip-code", with: "10003"
+    fill_in "js-cvv", with: "232"
+
     fill_in "js-password", with: "sekret"
 
     click_button "I'm in"
@@ -113,6 +116,8 @@ describe "Joining Plan" do
     fill_in "js-card-number", with: "4012888888881881"
     fill_in "js-expiration-month", with: "01"
     fill_in "js-expiration-year", with: "2016"
+    fill_in "js-zip-code", with: "10003"
+    fill_in "js-cvv", with: "232"
 
     click_button "I'm in"
 
