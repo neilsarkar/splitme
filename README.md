@@ -35,6 +35,7 @@ https://splitme-b.herokuapp.com/api
     :token
     :has_card
     :has_bank_account
+    :name
   }
 </pre>
 
@@ -58,12 +59,29 @@ https://splitme-b.herokuapp.com/api
     :token
     :has_card
     :has_bank_account
+    :name
   }
 </pre>
 
 ### Response: 404 (Email not found)
 
 ### Response: 401 (Password Incorrect)
+
+## Me
+
+### Request: GET /me
+
+### Response: 200
+<pre>
+  {
+    :token
+    :has_card
+    :has_bank_account
+    :name
+  }
+</pre>
+
+### Response: 401 (Authentication of token failed)
 
 ## Update
 
@@ -91,6 +109,7 @@ https://splitme-b.herokuapp.com/api
     :token
     :has_card
     :has_bank_account
+    :name
   }
 </pre>
 

@@ -37,7 +37,8 @@ class User < ActiveRecord::Base
     {
       token: token,
       has_bank_account: bank_account_uri.present?,
-      has_card: card_uri.present?
+      has_card: card_uri.present?,
+      name: name
     }
   end
 

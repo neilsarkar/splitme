@@ -85,4 +85,14 @@ describe Api::UsersController do
       json["response"]["token"].should == user.token
     end
   end
+
+  describe "#me" do
+    it "returns user data if authentication is successful" do
+      user = FactoryGirl.create(:user)
+      get :me, token: user.token
+
+      response.should be_success
+      json["response"]["name"].should == user.name
+    end
+  end
 end

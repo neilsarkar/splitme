@@ -6,3 +6,9 @@ SM.User.authenticate = (email, password, options = {}) ->
     { user: { email: email, password: password } }
     options
   )
+
+SM.User.me = (token, options = {}) ->
+  SM.get(
+    "/me?token=#{token}"
+    options
+  )

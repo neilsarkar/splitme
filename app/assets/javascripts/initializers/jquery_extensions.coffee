@@ -20,7 +20,7 @@ $.fn.alertMessage = (message, htmlClass) ->
   $(this).clearMessage()
   $alert = $("<div class='alert #{htmlClass}'></div>")
   $alert.html(message)
-  $alert.prepend("<button class='close' data-dismiss='alert'>&times;</button>")
+  $alert.prepend("<a class='close' data-dismiss='alert'>&times;</a>")
   $(this).prepend($alert)
 
 $.fn.clearMessage = ->
@@ -28,13 +28,13 @@ $.fn.clearMessage = ->
 
 $.fn.disableForm = ->
   form = $(this)
-  form.attr("disabled", "disabled")
-  form.find(".btn").addClass("disabled")
+  form.attr("onsubmit", "return false;")
+  form.find(".btn").attr("disabled", "disabled").addClass("disabled")
 
 $.fn.enableForm = ->
   form = $(this)
-  form.removeAttr("disabled")
-  form.find(".btn").removeClass("disabled")
+  form.removeAttr("onsubmit")
+  form.find(".btn").removeAttr("disabled").removeClass("disabled")
 
 $.fn.dotdotdot = ->
   baseHtml = @html()

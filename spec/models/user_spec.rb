@@ -293,6 +293,7 @@ describe User do
       json["token"].should == user.token
       json["has_bank_account"].should be_false
       json["has_card"].should be_false
+      json["name"].should == user.name
     end
   end
 end

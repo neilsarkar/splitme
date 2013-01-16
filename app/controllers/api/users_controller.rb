@@ -27,6 +27,10 @@ class Api::UsersController < Api::BaseController
     end
   end
 
+  def me
+    render_response(current_user)
+  end
+
   private
 
   def user_params
