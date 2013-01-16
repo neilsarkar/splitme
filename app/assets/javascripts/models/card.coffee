@@ -1,6 +1,5 @@
 class SM.Card
   constructor: (@card_data) ->
-    @card_data.country_code = "USA"
 
   save: (options = {}) =>
     options.error   ?= console.error
