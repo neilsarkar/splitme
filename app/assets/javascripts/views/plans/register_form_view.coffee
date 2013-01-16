@@ -16,7 +16,6 @@ class SM.RegisterFormView extends SM.FormView
       card_number: @value("card-number")
       expiration_month: @value("expiration-month")
       expiration_year: @value("expiration-year")
-      postal_code:   @value("zip-code")
       security_code:   @value("cvv")
     })
 
