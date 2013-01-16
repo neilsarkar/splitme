@@ -1,6 +1,9 @@
 class SM.App extends Backbone.Router
-  view: null
+  start: =>
+    SM.Session.start().always ->
+      Backbone.history.start({pushState: true})
 
+  # Routes
   routes:
     "" : "home"
     "log_in": "log_in"
@@ -20,14 +23,14 @@ class SM.App extends Backbone.Router
     @show(view)
 
   plans: =>
-    SM.Session.getUser (user) =>
-      if user
-        view = new SM.PlansView(user)
-        @show(view)
-      else
-        @navigate("", triggerRoute=true)
+    if user = SM.Session.user
+      view = new SM.PlansView(user)
+      @show(view)
+    else
+      @navigate("", triggerRoute=true)
 
   # Internals
+  view: null
 
   route: (route, name, callback) =>
     super(route, name, =>

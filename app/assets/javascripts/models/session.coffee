@@ -3,17 +3,13 @@ SM.Session = {
     SM.Session.user = user
     Cookie.set("token", user.token)
 
-  getUser: (callback) ->
-    if SM.Session.user
-      return callback(SM.Session.user)
-    else if Cookie.get("token")
-      SM.User.me(Cookie.get("token"), {
-        success: (user) ->
-          SM.Session.user = user
-          callback(user)
-        error: ->
-          callback(null)
-      })
+  start: ->
+    if token = Cookie.get("token")
+      deferred = SM.User.me(token)
+      deferred.done (response) ->
+        SM.Session.user = response.response
     else
-      return callback(null)
+      deferred = new jQuery.Deferred
+      deferred.resolve()
+    deferred
 }

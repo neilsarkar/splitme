@@ -17,5 +17,5 @@ html[lang="en"]
       jQuery(function($) {
         $("#loading").dotdotdot()
         window.app = new SM.App
-        Backbone.history.start({pushState: true})
+        window.app.start()
       })
