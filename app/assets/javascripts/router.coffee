@@ -3,6 +3,7 @@ class SM.App extends Backbone.Router
 
   routes:
     "" : "home"
+    "log_in": "log_in"
     ":token": "join"
 
   route: (route, name, callback) =>
@@ -28,4 +29,8 @@ class SM.App extends Backbone.Router
 
   join: (token) =>
     view = new SM.JoinView(token)
+    @show(view)
+
+  log_in: =>
+    view = new SM.LogInView
     @show(view)

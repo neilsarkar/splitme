@@ -11,11 +11,6 @@ require "spec_helper"
 describe "splitme" do
   include EmailSpec::Matchers
 
-  before do
-    server = Capybara.current_session.driver.rack_server
-    @api_root = "http://#{server.host}:#{server.port}/api"
-  end
-
   it "works" do
     # Client creates a user
     user = post "/users", {
@@ -129,50 +124,5 @@ describe "splitme" do
     @response.code.should == 200
 
     Plan.find_by_id(id).should be_nil
-  end
-
-  def post(path, body={})
-    @response = RestClient.post(
-      "#{@api_root}#{path}",
-      Yajl::Encoder.encode(body),
-      { content_type: :json, accept: :json }
-    )
-
-    parsed_response = Yajl::Parser.parse(@response)
-    if parsed_response
-      parsed_response["response"]
-    else # e.g. head 200
-      nil
-    end
-  rescue => error
-    @response = WrappedError.new(error)
-  end
-
-  def get(path)
-    @response = RestClient.get(
-      "#{@api_root}#{path}",
-      { accept: :json }
-    )
-    Yajl::Parser.parse(@response)["response"]
-  end
-
-  class WrappedError
-    def initialize(error)
-      @error = error
-      @json  = Yajl::Parser.parse(@error.http_body)
-      @meta  = @json["meta"] if @json
-    end
-
-    def code
-      @error.http_code
-    end
-
-    def [](key)
-      if @json
-        @json[key]
-      else
-        nil
-      end
-    end
   end
 end
