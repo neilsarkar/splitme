@@ -1,4 +1,5 @@
 SM.get = (path, options = {}) ->
+  options.token ||= SM.Session.user?.token
   _.extend(options, {
     url: "#{window.config.urls.api}#{path}"
     headers: { 'X-Access-Token': options.token }

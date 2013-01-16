@@ -23,6 +23,7 @@ describe "User can log in via the web site" do
       page.should have_content("Welcome, Cameron")
       page.current_path.should == "/plans"
 
+      # Ensure that log in persists on page reload
       visit current_path
       page.should have_content("Welcome, Cameron")
     end

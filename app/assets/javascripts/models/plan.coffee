@@ -11,3 +11,6 @@ class SM.Plan extends SM.Base
     @participants = json.participants
     delete json.participants
     json
+
+  @all: =>
+    SM.get("/plans")
