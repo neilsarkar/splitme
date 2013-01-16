@@ -3,7 +3,7 @@ class SM.JoinFormView extends SM.BaseView
     "click .toggle": "toggle_forms"
   }
 
-  mappings: {
+  subviews: {
     "form": "form"
   }
 

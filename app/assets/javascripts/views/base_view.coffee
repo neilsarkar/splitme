@@ -16,7 +16,7 @@ class SM.BaseView extends Backbone.View
     @$el.html(html)
 
   renderSubviews: =>
-    _.each @mappings, (element, view_name) =>
+    _.each @subviews, (element, view_name) =>
       view = @views[view_name]
       $element = @$(element)
       return console.error("No view named #{view_name}") unless view

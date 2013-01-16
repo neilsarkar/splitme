@@ -1,5 +1,5 @@
 class SM.JoinView extends SM.BaseView
-  mappings: {
+  subviews: {
     "price_breakdown": "#price-breakdown"
     "participants": "#participants"
     "join_form": "#join"
