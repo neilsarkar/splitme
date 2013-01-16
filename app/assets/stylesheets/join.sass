@@ -2,6 +2,9 @@ body.join
   color: #646254
   font-size: 14px
 
+  #page
+    padding: 0
+
   img.header
     display: block
     margin-top: -1px
@@ -19,16 +22,12 @@ body.join
     color: #adaba0
     margin-bottom: 10px
 
-  .title
-    font-size: 24px
-    font-weight: bold
-    line-height: 30px
-    .price
-      background-color: #d4d2c3
-      color: #fff
-      font-size: 17px
-      padding: 6px 8px
-      display: none
+  h1 .price
+    background-color: #d4d2c3
+    color: #fff
+    font-size: 17px
+    padding: 6px 8px
+    display: none
 
   .description
     margin-bottom: 20px
@@ -64,19 +63,6 @@ body.join
       &:first-child
         border-top: 0
 
-  input:not([type=submit])
-    width: 100%
-    padding: 10px
-    border: 1px solid #e5e3d9
-    border-radius: 3px
-    margin-top: 10px
-    box-shadow: none
-    &:first-child
-      margin-top: 0
-
-  input[type=tel], input[type=password]
-    padding: 20px 10px
-
   input.month
     width: 45%
     float: left
@@ -96,9 +82,6 @@ body.join
     clear: both
     border-radius: 3px
 
-  input[type="submit"]
-    width: 100%
-
   .center
     text-align: center
 
@@ -116,22 +99,10 @@ body.join
         display: none
     .invited
       font-size: 25px
-    .title
-      font-size: 64px
-      line-height: 64px
-      .price
-        font-size: 47px
+    h1 .price
+      font-size: 47px
     .subheading
       font-size: 20px
-    input:not([type="submit"])
-      font-size: 24px
-      padding: 17px 10px 10px
-    input[type=tel], input[type=password]
-      padding: 27px 10px 20px
-    input[type="submit"]
-      font-size: 24px
-      padding: 20px 0
-
     img.balanced_logo
       width: 50%
       display: block

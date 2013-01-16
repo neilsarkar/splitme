@@ -15,5 +15,5 @@ class SM.LogInView extends SM.FormView
 <h1> Log In </h1>
 <input type="text" id="js-email" placeholder="Email" />
 <input type="password" id="js-password" placeholder="Password" />
-<input type="submit" value="Log In"/>
+<input type="submit" value="Log In" class="btn btn-success"/>
 """

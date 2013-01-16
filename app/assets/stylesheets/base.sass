@@ -21,3 +21,38 @@ html[lang] .clearfix
 * html .clearfix
   height: 1%
 
+#page
+  padding: 0 20px
+
+h1
+  font-size: 24px
+  font-weight: bold
+  line-height: 30px
+
+input:not([type=submit])
+  width: 100%
+  height: auto
+  padding: 10px
+  border: 1px solid #e5e3d9
+  border-radius: 3px
+  margin-top: 10px
+  box-shadow: none
+  &:first-child
+    margin-top: 0
+
+input[type="submit"]
+  width: 100%
+  margin-top: 10px
+
+@media (min-width: 640px)
+  h1
+    font-size: 64px
+    line-height: 64px
+
+  input:not([type="submit"])
+    font-size: 24px
+    padding: 17px 10px 10px
+
+  input[type="submit"]
+    font-size: 24px
+    padding: 20px 0

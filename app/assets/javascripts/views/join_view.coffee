@@ -28,10 +28,10 @@ class SM.JoinView extends SM.BaseView
 <img src='/assets/header.png' class='header'/>
 <div class='section'>
   <div class='invited'>You've been invited to join</div>
-  <div class='title'>
+  <h1>
     {{title}}
     <span class='price'>{{total_price}}</span>
-  </div>
+  </h1>
 </div>
 <div class='section'>
   <div class='description'>{{description}}</div>
