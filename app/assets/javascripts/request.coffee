@@ -4,7 +4,7 @@ SM.get = (path, options = {}) ->
 
 SM.post = (path, data = {}, options = {}) ->
   options.method = "POST"
-  SM.request(path, data, options) ->
+  SM.request(path, data, options)
 
 SM.request = (path, data = null, options = {}) ->
   options.token ||= SM.Session.user?.token

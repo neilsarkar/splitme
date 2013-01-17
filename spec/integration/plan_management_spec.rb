@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe "Plan Management" do
-  it "shows your existing plans" do
+  it "showing your plans" do
     user = FactoryGirl.create(:user, password: "sekret")
 
     post "/plans?token=#{user.token}", {
@@ -22,5 +22,23 @@ describe "Plan Management" do
     page.should have_content("$100")
 
     page.should have_content("Kegs")
+  end
+
+  it "creating a plan" do
+    user = FactoryGirl.create(:user, password: "sekret")
+    login(user, "sekret")
+
+    click_link "+"
+
+    fill_in "js-title", with: "Team Lunch"
+    fill_in "js-description", with: "Rye House at noon"
+    fill_in "js-amount", with: "$100.00"
+    choose  "js-price-per-person"
+    click_button "Start"
+
+    page.should have_content("Welcome, #{user.name}")
+    page.should have_content("Team Lunch")
+    page.should have_content("Rye House at noon")
+    page.should have_content("$100.00")
   end
 end

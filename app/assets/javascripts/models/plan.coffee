@@ -14,3 +14,6 @@ class SM.Plan extends SM.Base
 
   @all: =>
     SM.get("/plans")
+
+  @create: (attributes) =>
+    SM.post("/plans", plan: attributes)

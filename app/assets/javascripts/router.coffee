@@ -8,6 +8,7 @@ class SM.App extends Backbone.Router
     "" : "home"
     "log_in": "log_in"
     "plans": "plans"
+    "plans/new": "plans_new"
     ":token": "join"
 
   home: =>
@@ -23,9 +24,18 @@ class SM.App extends Backbone.Router
     @show(view)
 
   plans: =>
-    if user = SM.Session.user
+    @require_user (user) =>
       view = new SM.PlansView(user)
       @show(view)
+
+  plans_new: =>
+    @require_user (user) =>
+      view = new SM.NewPlanView(user)
+      @show(view)
+
+  require_user: (callback) =>
+    if user = SM.Session.user
+      callback(user)
     else
       @navigate("", triggerRoute=true)
 

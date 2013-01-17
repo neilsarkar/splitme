@@ -17,8 +17,16 @@ class SM.PlansView extends SM.BaseView
   notify: ->
     alert("Sorry, we couldn't fetch your plans")
 
+  create: ->
+    window.app.navigate("plans/new", triggerRoute=true)
+
+  events: {
+    "click .create": "create"
+  }
+
   template: """
   <h1>Welcome, {{name}}</h1>
+  <a href='javascript:void(0)' class='create'>+</a>
 """
 
   planTemplate: """
