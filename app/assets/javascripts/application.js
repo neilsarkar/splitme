@@ -16,7 +16,7 @@
 //= require balanced_stub
 //= require_tree ./initializers
 //= require request
-//= require ./views/base_view
+//= require_tree ./views/base
 //= require_tree ./views
 //= require ./models/base
 //= require_tree ./models
