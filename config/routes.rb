@@ -19,5 +19,6 @@ Splitme::Application.routes.draw do
   mount JasmineRails::Engine => "/specs" if Rails.env.development?
 
   match "/:token" => "site#hi", as: :plan
+  match "/*anything" => "site#hi" #serve Backbone routes like /plans/new
   root to: "site#hi"
 end
