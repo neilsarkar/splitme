@@ -2,6 +2,14 @@ class SM.NewPlanView extends SM.FormView
   process: =>
     @$el.disableForm()
 
+    SM.Plan.create(@planAttributes()).
+      done( ->
+        window.app.navigate("plans", triggerRoute=true)
+      ).error( (xhr) =>
+        @error(JSON.parse(xhr.responseText).meta.errors)
+      )
+
+  planAttributes: =>
     planAttributes = {
       title: @value("title")
       description: @value("description")
@@ -9,11 +17,7 @@ class SM.NewPlanView extends SM.FormView
 
     price_format = @$el.find("input[name=price_format]:checked").val()
     planAttributes[price_format] = @value("amount")
-
-    SM.Plan.create(planAttributes).done(@redirect).error(@error)
-
-  redirect: =>
-    window.app.navigate("plans", triggerRoute=true)
+    planAttributes
 
   template: """
 <h1> New Plan </h1>
@@ -27,6 +31,7 @@ class SM.NewPlanView extends SM.FormView
   <input type="radio" id="js-total-price" name="price_format" value="total_price" checked="checked"/>
   <label for="js-total-price">Total Price</label>
   <input type="radio" id="js-price-per-person" name="price_format" value="price_per_person" />
+  <label for="js-price-per-person">Price Per Person</label>
 </div>
 
 <input type="submit" value="Start" class="btn btn-success" />

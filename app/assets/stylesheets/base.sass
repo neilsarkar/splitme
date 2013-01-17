@@ -29,7 +29,7 @@ h1
   font-weight: bold
   line-height: 30px
 
-input:not([type=submit])
+input:not([type=submit]):not([type=radio])
   width: 100%
   height: auto
   padding: 10px
@@ -44,12 +44,22 @@ input[type="submit"]
   width: 100%
   margin-top: 10px
 
+input[type=radio] + label
+  display: inline
+  margin: 0 10px 0 2px
+  position: relative
+  top: 4px
+
+textarea
+  width: 100%
+  margin-top: 10px
+
 @media (min-width: 640px)
   h1
     font-size: 64px
     line-height: 64px
 
-  input:not([type="submit"])
+  input:not([type=submit]):not([type=radio])
     font-size: 24px
     padding: 17px 10px 10px
 

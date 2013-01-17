@@ -30,10 +30,13 @@ describe "Plan Management" do
 
     click_link "+"
 
-    fill_in "js-title", with: "Team Lunch"
     fill_in "js-description", with: "Rye House at noon"
     fill_in "js-amount", with: "$100.00"
     choose  "js-price-per-person"
+    click_button "Start"
+
+    page.should have_content("Title can't be blank")
+    fill_in "js-title", with: "Team Lunch"
     click_button "Start"
 
     page.should have_content("Welcome, #{user.name}")
