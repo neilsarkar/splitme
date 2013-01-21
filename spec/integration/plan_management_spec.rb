@@ -70,10 +70,10 @@ describe "Plan Management" do
 
     check buyer_1.name
     check buyer_2.name
-
     click_link "Get Money"
 
-    # page.should have_content("&#10004;")
+    page.should have_css(".success")
+    page.should have_no_css("input[type=checkbox]")
     click_link "Collect"
 
     page.should have_content("You did it!")

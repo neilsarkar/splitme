@@ -16,9 +16,10 @@ class SM.CollectView extends SM.BaseView
   collect: =>
     if @plan.get("is_locked")
       @plan.collect().done( =>
+        $.flash("You did it!")
         $("#page").html("You did it!")
       ).error( =>
-        $("#page").html("Nope.")
+        $.flash("Sorry, something went wrong. Please try again or email support@splitmeapp.com")
       )
     else
       @delegate.chargeCards()

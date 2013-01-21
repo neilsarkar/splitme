@@ -17,7 +17,10 @@ class SM.Plan extends SM.Base
 
   charge: =>
     ajaxRequests = _.map @participants(), (participant) =>
-      participant.charge(@id)
+      participant_id = participant.id
+      participant.charge(@id).then =>
+        @updateParticipantStatus(participant_id, "escrowed")
+        @trigger("collection:success", participant_id)
 
     $.when.apply($, ajaxRequests)
 
@@ -26,6 +29,11 @@ class SM.Plan extends SM.Base
 
   participants: =>
     SM.Participant.new(@get("participants"))
+
+  updateParticipantStatus: (id, state) =>
+    participant = _.detect @get("participants"), (participant) ->
+      participant.id == id
+    participant.state = state
 
   @new: (json) =>
     if json instanceof Array

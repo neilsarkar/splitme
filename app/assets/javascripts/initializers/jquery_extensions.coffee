@@ -53,3 +53,13 @@ $.fn.autolink = ->
       regex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
       linkedText = el.html().replace(regex, "<a href='$1' target='_blank'>$1</a>")
       el.html(linkedText)
+
+$.flashError = (message) ->
+  $.flash(message, "error")
+
+$.flash = (message, className='') ->
+  $("#page").remove("#flash")
+  flash = $("<div id='flash'></div>")
+  flash.html(message).addClass(className).click ->
+    $(this).remove()
+  $("#page").prepend(flash)
