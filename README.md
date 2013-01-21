@@ -1,3 +1,11 @@
+You can generate new coffeescript views via
+
+    $ rails g view [page_name]
+
+<hr />
+
+# API
+
 **Production Base Url**
 
 https://www.splitmeapp.com/api
