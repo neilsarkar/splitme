@@ -7,6 +7,13 @@ SM.User.authenticate = (email, password, options = {}) ->
     options
   )
 
+SM.User.update = (token, userData, options = {}) ->
+  SM.post(
+    "/users/update?token=#{token}"
+    { user: userData }
+    options
+  )
+
 SM.User.me = (token, options = {}) ->
   SM.get(
     "/me?token=#{token}"

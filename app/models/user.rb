@@ -15,7 +15,8 @@ class User < ActiveRecord::Base
                   :street_address,
                   :zip_code,
                   :card_uri,
-                  :card_type
+                  :card_type,
+                  :bank_account_uri
 
   validates_presence_of :email,
                         :name,
@@ -30,6 +31,7 @@ class User < ActiveRecord::Base
   validate :valid_date_of_birth, if: :date_of_birth?
 
   before_save :add_bank_account, if: :bank_account_number
+  before_save :update_balanced_merchant, if: :bank_account_uri_changed?
   before_save :add_card, if: :card_uri_changed?
   before_create :generate_token
 
@@ -38,7 +40,9 @@ class User < ActiveRecord::Base
       token: token,
       has_bank_account: bank_account_uri.present?,
       has_card: card_uri.present?,
-      name: name
+      name: name,
+      email: email,
+      phone_number: phone_number
     }
   end
 
@@ -102,9 +106,20 @@ class User < ActiveRecord::Base
       bank_code: bank_routing_number,
       name: name
     })
+    self.bank_account_uri = bank_account.uri
+  rescue Exception => e
+    if e.respond_to?(:body)
+      @errors[:bank_account] << e.body["description"]
+    else
+      @errors[:bank_account] << e.message
+    end
+    Airbrake.notify(e)
+    false
+  end
 
+  def update_balanced_merchant
     if balanced_account_uri.present?
-      unless bank_account_uri.present?
+      unless bank_account_uri_was.present?
         balanced_account.promote_to_merchant({
           type: "person",
           name: name,
@@ -114,7 +129,7 @@ class User < ActiveRecord::Base
           dob: balanced_dob
         })
       end
-      balanced_account.add_bank_account(bank_account.uri)
+      balanced_account.add_bank_account(bank_account_uri)
     else
       merchant = Balanced::Marketplace.mine.create_merchant(
         email_address: email,
@@ -126,13 +141,11 @@ class User < ActiveRecord::Base
           postal_code: zip_code,
           dob: balanced_dob
         },
-        bank_account_uri: bank_account.uri,
+        bank_account_uri: bank_account_uri,
         name: name
       )
       self.balanced_account_uri = merchant.uri
     end
-
-    self.bank_account_uri = bank_account.uri
   rescue Balanced::Conflict => e
     @errors[:email] << "already registered"
     false

@@ -10,6 +10,7 @@ class SM.App extends Backbone.Router
     "plans": "plans"
     "plans/new": "plans_new"
     "plans/:id": "plans_admin"
+    "payment_information": "payment_information"
     ":token": "join"
 
   home: =>
@@ -37,6 +38,11 @@ class SM.App extends Backbone.Router
   plans_admin: (plan_id) =>
     @require_user (user) =>
       view = new SM.AdminPlanView(user, plan_id)
+      @show(view)
+
+  payment_information: =>
+    @require_user (user) =>
+      view = new SM.PaymentInformationView
       @show(view)
 
   require_user: (callback) =>

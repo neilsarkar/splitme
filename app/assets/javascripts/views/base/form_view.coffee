@@ -25,4 +25,4 @@ class SM.FormView extends SM.BaseView
     @$el.alertError(message)
 
   value: (field_name) =>
-    @$("#js-#{field_name}").val()
+    @$("#js-#{field_name}, [name=#{field_name}]").val()

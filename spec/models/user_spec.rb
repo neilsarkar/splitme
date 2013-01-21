@@ -110,6 +110,34 @@ describe User do
         user.balanced_account_uri.should == "http://balancedpayments.com/account_uri"
       end
 
+      it "creates a merchant account when bank uri is passed" do
+        @marketplace.should_receive(:create_merchant).with(
+          email_address: "neil@groupme.com",
+          merchant: {
+            type: "person",
+            name: "Neil Sarkar",
+            phone_number: "+12121231234",
+            street_address: "1600 Pennsylvania Avenue",
+            postal_code: "90210",
+            dob: "1984-01"
+          },
+          bank_account_uri: "http://balancedpayments.com/bank_uri",
+          name: "Neil Sarkar"
+        ).and_return(stub(uri: "http://balancedpayments.com/account_uri"))
+
+        user = FactoryGirl.build(:user, {
+          email: "neil@groupme.com",
+          name: "Neil Sarkar",
+          phone_number: "12121231234",
+          street_address: "1600 Pennsylvania Avenue",
+          zip_code: "90210",
+          date_of_birth: "1/1984",
+          bank_account_uri: "http://balancedpayments.com/bank_uri"
+        })
+        user.save
+        user.balanced_account_uri.should == "http://balancedpayments.com/account_uri"
+      end
+
       it "creates a buyer account when card uri is passed" do
         @marketplace.should_receive(:create_buyer).with(
           email_address: "neil@groupme.com",
@@ -162,6 +190,30 @@ describe User do
         })
       end
 
+      it "promotes to merchant when bank uri is passed" do
+        @account.should_receive(:promote_to_merchant).with(
+          {
+            type: "person",
+            name: "Neil Sarkar",
+            phone_number: "+12121231234",
+            street_address: "1600 Pennsylvania Avenue",
+            postal_code: "90210",
+            dob: "1984-01"
+          }
+        )
+        @account.should_receive(:add_bank_account).
+          with("http://balancedpayments.com/bank_uri")
+
+        @user.update_attributes({
+          bank_account_uri: "http://balancedpayments.com/bank_uri",
+          name: "Neil Sarkar",
+          phone_number: "12121231234",
+          street_address: "1600 Pennsylvania Avenue",
+          zip_code: "90210",
+          date_of_birth: "1/1984"
+        })
+     end
+
       it "adds card when card_uri is passed" do
         @account.should_receive(:add_card).
           with("http://balancedpayments.com/card_uri")
@@ -181,13 +233,9 @@ describe User do
 
     context "when user has a merchant account" do
       before do
-        @user = FactoryGirl.create(:user, {
-          balanced_account_uri: "http://balancedpayments.com/account",
-          bank_account_uri: "http://balancedpayments.com/chase"
-        })
+        @user = FactoryGirl.create(:merchant_user, name: "Neil Sarkar")
         @account = stub(cards: [])
-        Balanced::Account.should_receive(:find_by_email).
-          with(@user.email).and_return(@account)
+        @user.stub(balanced_account: @account)
       end
 
       it "changes bank account when bank info is passed" do
@@ -196,6 +244,7 @@ describe User do
 
         @account.should_not_receive(:promote_to_merchant)
 
+        @user.bank_account_uri.should_not be_blank
         @user.update_attributes({
           name: "Neil Sarkar",
           phone_number: "12121231234",
@@ -204,6 +253,17 @@ describe User do
           street_address: "1600 Pennsylvania Avenue",
           zip_code: "90210",
           date_of_birth: "1/1984"
+        })
+      end
+
+      it "changes bank account when bank uri is passed" do
+        @account.should_receive(:add_bank_account).
+          with("http://balancedpayments.com/bank_uri")
+
+        @account.should_not_receive(:promote_to_merchant)
+
+        @user.update_attributes({
+          bank_account_uri: "http://balancedpayments.com/bank_uri"
         })
       end
 

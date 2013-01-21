@@ -22,11 +22,11 @@ FactoryGirl.define do
   end
 
   factory :merchant_user, parent: :user do
-    sequence(:bank_account_number) { FactoryGirl.generate(:bank_account_number) }
-    bank_routing_number "021000021"
+    bank_account_uri "http://balancedpayments.com/old_bank_uri"
     street_address "162 Baraud Rd"
     zip_code "10583"
     date_of_birth "7/1989"
+    balanced_account_uri "http://balancedpayments.com/account_uri"
   end
 
   factory :buyer_user, parent: :user do
