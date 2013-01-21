@@ -3,8 +3,8 @@ class SM.NewPlanView extends SM.FormView
     @$el.disableForm()
 
     SM.Plan.create(@planAttributes()).
-      done( ->
-        window.app.navigate("plans", triggerRoute=true)
+      done( (response) ->
+        window.app.navigate("plans/#{response.response.id}", triggerRoute=true)
       ).error( (xhr) =>
         @error(JSON.parse(xhr.responseText).meta.errors)
       )

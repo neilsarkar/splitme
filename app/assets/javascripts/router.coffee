@@ -9,6 +9,7 @@ class SM.App extends Backbone.Router
     "log_in": "log_in"
     "plans": "plans"
     "plans/new": "plans_new"
+    "plans/:id": "plans_admin"
     ":token": "join"
 
   home: =>
@@ -33,6 +34,11 @@ class SM.App extends Backbone.Router
       view = new SM.NewPlanView(user)
       @show(view)
 
+  plans_admin: (plan_id) =>
+    @require_user (user) =>
+      view = new SM.AdminPlanView(user, plan_id)
+      @show(view)
+
   require_user: (callback) =>
     if user = SM.Session.user
       callback(user)
@@ -53,7 +59,8 @@ class SM.App extends Backbone.Router
     @view = view
     $page = $("#page")
     $page.empty()
-    $page.append(@view.render().el)
+    $page.append(@view.el)
+    @view.render()
 
   teardown: =>
     @view?.close()

@@ -4,6 +4,7 @@ module LoginHelper
     fill_in "js-email", with: user.email
     fill_in "js-password", with: password
     click_button "Log In"
+    page.should have_content("Welcome")
   end
 end
 

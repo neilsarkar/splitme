@@ -15,7 +15,7 @@ class SM.PlansView extends SM.BaseView
       @$el.append(html)
 
   notify: ->
-    alert("Sorry, we couldn't fetch your plans")
+    @$el.append("Sorry, we couldn't fetch your plans. Please reload the page.")
 
   create: ->
     window.app.navigate("plans/new", triggerRoute=true)
