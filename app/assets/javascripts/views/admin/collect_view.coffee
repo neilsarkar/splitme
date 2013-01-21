@@ -26,6 +26,6 @@ class SM.CollectView extends SM.BaseView
 
   template: """
 <div class="collect">
-  <a id="collect" href="javascript:void(0)">{{label}}</a>
+  <a id="collect" href="javascript:void(0)" class="btn btn-success">{{label}}</a>
 </div>
 """

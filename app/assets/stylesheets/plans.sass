@@ -21,3 +21,45 @@ body.plans
 body.plans_new
   .payment-info
     margin-top: 20px
+
+body.plans_admin
+  padding-bottom: 50px
+  #price-breakdown
+    margin: 20px 0
+  .line
+    margin: 5px 0
+    overflow: hidden
+    &.current
+      font-weight: bold
+    .people
+      float: left
+    .price
+      float: right
+  .participant
+    padding: 10px 25px 10px 10px
+    margin: 10px 0
+    box-shadow: 0 1px 3px #888
+    border-radius: 3px
+    position: relative
+    .status
+      position: absolute
+      right: 10px
+      top: 10px
+    .contact-info
+      div
+        display: inline-block
+        margin-right: 10px
+  a.btn
+    position: fixed
+    bottom: 0
+    left: 0
+    right: 0
+
+@media(min-width: 640px)
+  body.plans_admin
+    padding-bottom: 0
+    a.btn
+      position: static
+      bottom: auto
+      left: auto
+      right: auto

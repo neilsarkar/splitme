@@ -29,7 +29,7 @@ class SM.AdminPlanView extends SM.BaseView
 <h1> {{title}} </h1>
 <p> {{description}} </p>
 <p> {{total_price}} </p>
-<p> Your link: <a href="/token">/{{token}}</a> </p>
+<p> <a href="http://splitmeapp.com/token">http://splitmeapp.com/{{token}}</a> </p>
 <div id="price-breakdown"></div>
 <div id="participants"></div>
 <div id="collect"></div>

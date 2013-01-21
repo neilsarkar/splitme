@@ -45,7 +45,7 @@ describe "Plan Management" do
     page.should have_content("Team Lunch")
     page.should have_content("Rye House at noon")
     page.should have_content("$100.00")
-    page.should have_content("/#{plan.token}")
+    page.should have_content("#{plan.token}")
   end
 
   it "collecting a plan" do
