@@ -27,3 +27,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "rspec-instafail"
 end
+
+group :test do
+  gem "webmock"
+end
