@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130115215753) do
+ActiveRecord::Schema.define(:version => 20130122153704) do
 
   create_table "commitments", :force => true do |t|
     t.integer  "user_id"
@@ -67,6 +67,8 @@ ActiveRecord::Schema.define(:version => 20130115215753) do
     t.string   "date_of_birth"
     t.string   "card_uri"
     t.string   "bank_account_uri"
+    t.string   "groupme_user_id"
+    t.string   "groupme_access_token"
   end
 
   add_index "users", ["token"], :name => "index_users_on_token", :unique => true
