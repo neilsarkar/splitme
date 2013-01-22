@@ -17,7 +17,6 @@ class SM.CollectView extends SM.BaseView
     if @plan.get("is_locked")
       @plan.collect().done( =>
         $.flash("You did it!")
-        $("#page").html("You did it!")
       ).error( =>
         $.flash("Sorry, something went wrong. Please try again or email support@splitmeapp.com")
       )

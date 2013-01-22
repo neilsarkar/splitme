@@ -39,12 +39,12 @@ describe "Plan Management" do
     fill_in "js-title", with: "Team Lunch"
     click_button "Start"
 
-    plan = Plan.last
-    plan.should_not be_nil
-
     page.should have_content("Team Lunch")
     page.should have_content("Rye House at noon")
     page.should have_content("$100.00")
+
+    plan = Plan.last
+    plan.should_not be_nil
     page.should have_content("#{plan.token}")
   end
 

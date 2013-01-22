@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
                         :name,
                         :phone_number
 
-  validates_presence_of :password, on: :create
+  validates_presence_of :password, on: :create, unless: :groupme_user_id
 
   validates_uniqueness_of :email, case_sensitive: false
   validate :valid_email_format, if: :email?
@@ -30,6 +30,7 @@ class User < ActiveRecord::Base
   validate :us_phone_number, if: :phone_number?
   validate :valid_date_of_birth, if: :date_of_birth?
 
+  before_validation :stub_password_digest, on: :create, if: :groupme_user_id
   before_save :add_bank_account, if: :bank_account_number
   before_save :update_balanced_merchant, if: :bank_account_uri_changed?
   before_save :add_card, if: :card_uri_changed?
@@ -179,5 +180,12 @@ class User < ActiveRecord::Base
     month, year = date_of_birth.split("/")
     month = "0#{month}" if month.length == 1
     "#{year}-#{month}"
+  end
+
+  # This is unfortunate, but it looks like we can't get away from
+  # requiring a password_digest.
+  # See this for more information: http://stackoverflow.com/questions/7493809/getting-rails-3-1s-has-secure-password-to-work-well-with-omniauth
+  def stub_password_digest
+    self.password_digest = "0"
   end
 end
