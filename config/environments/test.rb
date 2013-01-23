@@ -38,4 +38,5 @@ Splitme::Application.configure do
   BALANCED_API_KEY = "233fba60121911e28f7a026ba7f8ec28"
 
   OUR_HOST = "splitme.dev:4444"
+  GROUPME_API_URL = "https://v2.groupme.com"
 end

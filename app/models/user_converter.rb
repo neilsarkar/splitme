@@ -7,7 +7,7 @@ class UserConverter
   end
 
   def process
-    response = @client.get("/me")
+    response = @client.get("/users/me")
     if response.success?
       user_data = response.response[:user]
       @user = User.find_by_groupme_user_id(user_data["id"])

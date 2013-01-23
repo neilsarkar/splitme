@@ -76,9 +76,9 @@ describe Api::UsersController do
     end
 
     it "returns user data if authentication is successful" do
-      user = FactoryGirl.create(:user, email: "neil@groupme.com", password: "gunit")
+      user = FactoryGirl.create(:user, email: "NEIL@groupme.com", password: "gunit")
       post :authenticate, json: {
-        user: { email: "neil@groupme.com", password: "gunit" }
+        user: { email: "neil@GROUPME.com", password: "gunit" }
       }
 
       response.should be_success

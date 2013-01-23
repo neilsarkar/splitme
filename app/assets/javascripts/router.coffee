@@ -11,6 +11,7 @@ class SM.App extends Backbone.Router
     "plans/new": "plans_new"
     "plans/:id": "plans_admin"
     "payment_information": "payment_information"
+    "connect_with_groupme/:groupme_token": "connect_with_groupme"
     ":token": "join"
 
   home: =>
@@ -45,11 +46,22 @@ class SM.App extends Backbone.Router
       view = new SM.PaymentInformationView
       @show(view)
 
+  connect_with_groupme: (groupme_token) =>
+    SM.User.convert_groupme_token(groupme_token, {
+      success: (user) =>
+        SM.Session.setUser(user)
+        window.app.navigate("/plans", triggerRoute=true)
+      error: =>
+        debugger
+        # @navigate("", triggerRoute=true)
+    })
+
   require_user: (callback) =>
     if user = SM.Session.user
       callback(user)
     else
       @navigate("", triggerRoute=true)
+
 
   # Internals
   view: null

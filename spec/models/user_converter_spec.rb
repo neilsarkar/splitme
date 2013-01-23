@@ -6,7 +6,7 @@ describe UserConverter do
       before do
         response = stub(success?: false)
         client = stub
-        client.stub(:get).with("/me").and_return(response)
+        client.stub(:get).with("/users/me").and_return(response)
         GroupmeClient.stub(:new).with("TOKEN").and_return(client)
       end
 
@@ -28,7 +28,7 @@ describe UserConverter do
           }
         })
         client = stub
-        client.stub(:get).with("/me").and_return(response)
+        client.stub(:get).with("/users/me").and_return(response)
         GroupmeClient.stub(:new).with("TOKEN").and_return(client)
       end
 

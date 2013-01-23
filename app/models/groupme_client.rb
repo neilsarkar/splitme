@@ -1,12 +1,12 @@
 class GroupmeClient
   def initialize(token = nil)
     @token = token
-    @base_url = "https://v2.groupme.com"
+    @base_url = GROUPME_API_URL
   end
 
   def get(path)
     path = "/#{path}" unless path[0] == "/"
-    path += "?token=#{token}" if @token
+    path += "?token=#{@token}" if @token
     Response.new(Faraday.get(@base_url + path))
   end
 

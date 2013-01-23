@@ -3,7 +3,7 @@ require "spec_helper"
 describe GroupmeClient do
   describe "#get" do
     it "should return an unwrapped response from groupme" do
-      stub_request(:get, "https://v2.groupme.com/some_resource")
+      stub_request(:get, "#{GROUPME_API_URL}/some_resource")
         .to_return(
           body: {
             response: {
@@ -20,7 +20,7 @@ describe GroupmeClient do
     end
 
     it "should return errors if they exist" do
-      stub_request(:get, "https://v2.groupme.com/some_resource")
+      stub_request(:get, "#{GROUPME_API_URL}/some_resource")
         .to_return(
           status: 400,
           body: {

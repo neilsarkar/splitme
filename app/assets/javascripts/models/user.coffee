@@ -19,3 +19,10 @@ SM.User.me = (token, options = {}) ->
     "/me?token=#{token}"
     options
   )
+
+SM.User.convert_groupme_token = (groupme_token, options = {}) ->
+  SM.post(
+    "/access_tokens/from_groupme_token",
+    { groupme_token: groupme_token },
+    options
+  )

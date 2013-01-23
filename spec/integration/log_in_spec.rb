@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe "User can log in via the web site" do
-  describe "Successful log in" do
+  describe "Splitme email and password login" do
     example do
       user = post "/users", {
         name: "Cameron Hunt",
@@ -17,6 +17,12 @@ describe "User can log in via the web site" do
 
       visit "/log_in"
       fill_in "js-email", with: "cam@hunt.io"
+      fill_in "js-password", with: "nope"
+      click_button "Log In"
+
+      page.should have_content("Sorry, your email or password is incorrect.")
+
+      fill_in "js-email", with: "cam@hunt.io"
       fill_in "js-password", with: "sekret"
       click_button "Log In"
 
@@ -29,14 +35,23 @@ describe "User can log in via the web site" do
     end
   end
 
-  describe "Unsuccessful log in" do
+  describe "Groupme access token login" do
     example do
-      visit "/log_in"
-      fill_in "js-email", with: "cam@hunt.io"
-      fill_in "js-password", with: "sekret"
-      click_button "Log In"
+      user = FactoryGirl.create(:user, groupme_user_id: "66")
+      plan = FactoryGirl.create(:plan, user: user)
 
-      page.should have_content("Sorry, your email or password is incorrect.")
+      visit "/connect_with_groupme/TOKEN"
+      stub_request(:get, "#{GROUPME_API_URL}/users/me?token=TOKEN").to_return(
+        body: {
+          response: {
+            user: {
+              id: "66"
+            }
+          }
+        }.to_json
+      )
+      page.should have_content("Welcome, #{user.name}")
+      page.should have_content(plan.title)
     end
   end
 end

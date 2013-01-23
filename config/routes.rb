@@ -1,5 +1,7 @@
 Splitme::Application.routes.draw do
   namespace :api do
+    match "/access_tokens/from_groupme_token" => "access_tokens#from_groupme_token", via: :post
+
     resources :plans, only: [:index, :create, :show] do
       post :collect, :on => :member
       get :preview, :on => :member

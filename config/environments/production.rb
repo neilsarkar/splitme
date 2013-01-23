@@ -68,6 +68,7 @@ Splitme::Application.configure do
   BALANCED_API_KEY = ENV["BALANCED_API_KEY"]
 
   OUR_HOST = "splitmeapp.com"
+  GROUPME_API_URL = "https://v2.groupme.com"
 
   Pony.options = {
     via: :smtp,
