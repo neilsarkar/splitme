@@ -1,5 +1,6 @@
 class SM.Card
   constructor: (@card_data) ->
+    @card_data.card_number = @card_data.card_number?.replace(/[^\d]/g, "")
 
   save: (options = {}) =>
     options.error   ?= console.error
