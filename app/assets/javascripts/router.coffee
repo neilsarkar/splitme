@@ -52,8 +52,7 @@ class SM.App extends Backbone.Router
         SM.Session.setUser(user)
         window.app.navigate("/plans", triggerRoute=true)
       error: =>
-        debugger
-        # @navigate("", triggerRoute=true)
+        @navigate("", triggerRoute=true)
     })
 
   require_user: (callback) =>

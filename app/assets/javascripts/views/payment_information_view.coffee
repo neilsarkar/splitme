@@ -28,8 +28,9 @@ class SM.PaymentInformationView extends SM.FormView
           zip_code: @value("zip_code")
           date_of_birth: "#{@value("month")}/#{@value("year")}}"
           street_address: @value("street_address")
-        }).done( ->
-          window.app.navigate("plans", triggerRoute=true)
+        }).done( (json) ->
+          SM.Session.setUser(json.response)
+          SM.Location.redirectBack(default: "plans")
           $.flash("Cool, your bank account is linked now.")
         ).error( ->
           @error("Sorry, something went wrong in linking your bank account. Please try again or email support@splitmeapp.com")

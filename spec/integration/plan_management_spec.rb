@@ -49,7 +49,7 @@ describe "Plan Management" do
   end
 
   it "collecting a plan" do
-    user = FactoryGirl.create(:merchant_user, password: "sekret")
+    user = FactoryGirl.create(:user, password: "sekret")
     buyer_1 = FactoryGirl.create(:user)
     buyer_2 = FactoryGirl.create(:user)
 
@@ -67,6 +67,23 @@ describe "Plan Management" do
     page.should have_content("#{buyer_1.phone_number}")
     page.should have_content("#{buyer_1.email}")
     page.should have_content("#{buyer_2.name}")
+
+    check buyer_1.name
+    check buyer_2.name
+    click_link "Get Money"
+
+    # Since the user doesn't have a bank account, we prompt them to connect one.
+    fill_in "bank_routing_number", with: "021000021"
+    fill_in "bank_account_number", with: "979689188"
+    fill_in "street_address", with: "202 East 13th Street"
+    fill_in "zip_code", with: "10003"
+    fill_in "month", with: "01"
+    fill_in "day", with: "06"
+    fill_in "year", with: "1984"
+    click_button "Link Bank Account"
+
+    # Now that they have a bank account, they should be able to collect.
+    page.should have_content("Cool, your bank account is linked now.")
 
     check buyer_1.name
     check buyer_2.name

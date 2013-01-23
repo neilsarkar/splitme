@@ -20,6 +20,9 @@ class SM.CollectView extends SM.BaseView
       ).error( =>
         $.flash("Sorry, something went wrong. Please try again or email support@splitmeapp.com")
       )
+    else if !SM.Session.user.has_bank_account
+      SM.Location.store()
+      window.app.navigate("payment_information", true)
     else
       @delegate.chargeCards()
 
