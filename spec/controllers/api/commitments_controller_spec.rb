@@ -52,12 +52,13 @@ describe Api::CommitmentsController do
   describe "#charge" do
     context "when participant has not paid" do
       before do
-        @commitment = FactoryGirl.create(:commitment)
+        @user = FactoryGirl.create(:merchant_user)
+        @plan = FactoryGirl.create(:plan, user: @user)
+        @commitment = FactoryGirl.create(:commitment, plan: @plan, user: @user)
         Commitment.
           stub(:find_by_plan_id_and_user_id!).
           with(@commitment.plan_id.to_s, @commitment.user_id.to_s).
           and_return(@commitment)
-        @user = @commitment.plan.user
         @commitment.stub(charge!: true)
       end
 
@@ -83,8 +84,21 @@ describe Api::CommitmentsController do
       end
     end
 
+    context "when creator has no bank account" do
+      it "returns 402 payment required" do
+        user = FactoryGirl.create(:user)
+        plan = FactoryGirl.create(:plan, user: user)
+        commitment = FactoryGirl.create(:commitment, plan: plan)
+
+        post :charge, token: user.token, plan_id: commitment.plan_id, user_id: commitment.user_id
+        response.status.should == 402
+      end
+    end
+
     context "when participant has paid" do
       it "returns an error" do
+        User.any_instance.stub(:has_bank_account? => true)
+
         commitment = FactoryGirl.create(:commitment)
         commitment.update_attribute :state, "escrowed"
         token = commitment.plan.user.token

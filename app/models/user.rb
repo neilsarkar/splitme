@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   def as_json(*)
     {
       token: token,
-      has_bank_account: bank_account_uri.present?,
+      has_bank_account: has_bank_account?,
       has_card: card_uri.present?,
       name: name,
       email: email,
@@ -68,6 +68,10 @@ class User < ActiveRecord::Base
 
   def self.find_by_email!(email)
     super(email.try(:downcase))
+  end
+
+  def has_bank_account?
+    bank_account_uri.present?
   end
 
   private

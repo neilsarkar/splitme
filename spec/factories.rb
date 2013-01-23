@@ -11,7 +11,7 @@ FactoryGirl.define do
     title "Plan Party"
     description "Let's do this"
     total_price 10000
-    association :user
+    association :user, factory: :merchant_user
   end
 
   factory :user do

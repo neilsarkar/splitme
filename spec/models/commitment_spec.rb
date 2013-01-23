@@ -23,6 +23,13 @@ describe Commitment do
   end
 
   describe "#charge!" do
+    it "does not charge the card if the plan user has no merchant account" do
+      commitment = FactoryGirl.create(:commitment)
+      commitment.plan.user.stub(has_bank_account?: false)
+      commitment.charge!.should be_false
+      commitment.should be_unpaid
+    end
+
     it "charges the card and saves the debit uri" do
       commitment = FactoryGirl.create(:commitment)
       buyer = stub

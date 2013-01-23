@@ -13,7 +13,13 @@ class Commitment < ActiveRecord::Base
   scope :collected, where(state: "collected")
   scope :failed, where(state: "failed")
 
+  def merchant_user_error?
+    !plan.user.has_bank_account?
+  end
+
   def charge!
+    return false if merchant_user_error?
+
     plan.lock!
 
     buyer = Balanced::Account.find_by_email(user.email)

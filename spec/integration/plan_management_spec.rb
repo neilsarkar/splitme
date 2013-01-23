@@ -49,7 +49,7 @@ describe "Plan Management" do
   end
 
   it "collecting a plan" do
-    user = FactoryGirl.create(:user, password: "sekret")
+    user = FactoryGirl.create(:merchant_user, password: "sekret")
     buyer_1 = FactoryGirl.create(:user)
     buyer_2 = FactoryGirl.create(:user)
 

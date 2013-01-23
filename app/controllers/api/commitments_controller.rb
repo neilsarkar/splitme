@@ -23,7 +23,11 @@ class Api::CommitmentsController < Api::BaseController
     if commitment.charge!
       render_response(commitment, code: 201)
     else
-      render_error(400, commitment.errors)
+      if commitment.merchant_user_error?
+        render_error(402)
+      else
+        render_error(400, commitment.errors)
+      end
     end
   end
 end
