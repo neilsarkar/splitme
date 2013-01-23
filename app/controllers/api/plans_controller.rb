@@ -41,7 +41,11 @@ class Api::PlansController < Api::BaseController
 
   def destroy
     plan = current_user.plans.find(params[:id])
-    plan.destroy
-    head 200
+
+    if plan.destroy
+      head 200
+    else
+      render_error(400, "Plan is locked.")
+    end
   end
 end

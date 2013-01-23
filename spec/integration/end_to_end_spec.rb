@@ -118,11 +118,5 @@ describe "splitme" do
     email.should have_subject "Ski House"
     email.should have_body_text "It's on."
     email.should have_body_text "Each person paid $33.33"
-
-    # Client destroys the plan
-    post "/plans/#{id}/destroy?token=#{token}"
-    @response.code.should == 200
-
-    Plan.find_by_id(id).should be_nil
   end
 end

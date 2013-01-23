@@ -207,5 +207,16 @@ describe Api::PlansController do
 
       response.status.should == 200
     end
+
+    it "returns 400 if plan is locked" do
+      @plan.update_attribute :locked, true
+
+      running {
+        post :destroy, id: @plan.id, token: @user.token
+      }.should_not change { Plan.count }
+
+      response.status.should == 400
+      json["meta"]["errors"].should == ["Plan is locked."]
+    end
   end
 end

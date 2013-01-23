@@ -41,6 +41,23 @@ describe Plan do
     end
   end
 
+  describe "#before_destroy" do
+    it "does nothing if the plan is locked" do
+      plan = FactoryGirl.create(:plan)
+      plan.locked = true
+      running {
+        plan.destroy.should be_false
+      }.should_not change { Plan.count }
+    end
+
+    it "destroys the plan if it is not locked" do
+      plan = FactoryGirl.create(:plan)
+      running {
+        plan.destroy.should be_true
+      }.should change { Plan.count }.by(-1)
+    end
+  end
+
   describe "price calculations" do
     describe "#total_price" do
       it "reads attribute when set" do

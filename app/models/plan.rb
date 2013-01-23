@@ -7,6 +7,7 @@ class Plan < ActiveRecord::Base
   validate :price_exclusive_or
 
   before_create :set_token
+  before_destroy :halt_if_locked
 
   has_many :commitments, dependent: :destroy
   has_many :users, through: :commitments
@@ -128,6 +129,10 @@ class Plan < ActiveRecord::Base
 
   def set_token
     self.token = String.random_alphanumeric(20)
+  end
+
+  def halt_if_locked
+    return false if locked?
   end
 
   def price_string(price)
